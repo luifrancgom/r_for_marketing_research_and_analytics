@@ -1,0 +1,69 @@
+---
+title: An overview of the R Language
+author: Luis Francisco Gomez Lopez
+date: 2023-06-08 23:15:07
+format: 
+  html:
+    toc: true
+    toc-depth: 2
+    toc-title: Contents
+    number-sections: true
+    number-depth: 2
+    code-fold: show
+    embed-resources: true
+editor: visual
+bibliography: r_for_marketing_research_and_analytics.bib
+---
+
+# Sales and product satisfaction survey
+
+```{r libraries, echo=TRUE, message=FALSE}
+library(tidyverse)
+library(skimr)
+```
+
+-   Ordinal 7 point scale
+
+    -   Extremely satisfied: 7
+    -   Moderately satisfied: 6
+    -   Slightly satisfied: 5
+    -   Neither satisfied or dissatisfied: 4
+    -   Slightly dissatisfied: 3
+    -   Moderately dissatisfied: 2
+    -   Extremely dissatisfied: 1
+
+-   Variables
+
+    -   iProdSAT: satisfaction with a product
+    -   iSalesSAT: satisfaction with sales experience
+    -   iProdREC: likelihood to recommend the product
+    -   iSalesREC: likelihood to recommend the sales person
+    -   Segment: market segment assigned by a clustering algorithm
+
+## Import data: the base R way
+
+```{r }
+satisfaction_data <- read.csv(file = "http://goo.gl/UDv12g")
+satisfaction_data |> head(n=5)
+```
+
+## Import data: the tidyverse way
+
+```{r message=FALSE}
+satisfaction_data <- read_csv(file = "http://goo.gl/UDv12g")
+satisfaction_data |> slice_head(n=5)
+```
+
+## Transform data: the base R way
+
+```{r}
+satisfaction_data$Segment <- factor(x = satisfaction_data$Segment, 
+                                    ordered = FALSE)
+summary(object = satisfaction_data)
+```
+
+## Transform data: the skimr way (relies on tidyverse)
+
+```{r}
+satisfaction_data |> skim()
+```
