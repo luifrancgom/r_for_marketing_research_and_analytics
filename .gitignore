@@ -1,0 +1,73 @@
+# History files
+.Rhistory
+.Rapp.history
+
+# Session Data files
+.RData
+.RDataTmp
+
+# User-specific files
+.Ruserdata
+
+# Example code in package build process
+*-Ex.R
+
+# Output files from R CMD build
+/*.tar.gz
+
+# Output files from R CMD check
+/*.Rcheck/
+
+# RStudio files
+.Rproj.user/
+
+# produced vignettes
+vignettes/*.html
+vignettes/*.pdf
+
+# OAuth2 token, see https://github.com/hadley/httr/releases/tag/v0.3
+.httr-oauth
+
+# knitr and R markdown default cache directories
+*_cache/
+/cache/
+
+# Temporary files created by R markdown
+*.utf8.md
+*.knit.md
+
+# R Environment Variables
+.Renviron
+
+# pkgdown site
+docs/
+
+# translation temp files
+po/*~
+
+# RStudio Connect folder
+rsconnect/
+
+# Files related to the course
+000_book/
+000_comites_umng/
+000_learning_plan/
+000_papers/
+000_prerrequisitos_umng/
+000_promocion_electiva/
+000_resources/
+000_syllabus/
+000_contacts.txt
+000_items_about_R.txt
+
+005_sentiment_analysis/
+006_for_loop_if_block.R
+007_notas_clase_jhonier_sebastian_rangel_gutierrez/
+007_about_the_binomial_cumulative_distribution_function.txt
+007_anova.txt
+007_change_of_variable_in_a_probability_density_function.txt
+007_cumulative_distribution_function_student_distribution.txt
+007_f_distribution.txt
+007_p_value_definition.txt
+007_toy_data_anova.csv
+007_understanding_two_way_anova.R
