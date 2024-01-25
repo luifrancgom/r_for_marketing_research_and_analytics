@@ -1,0 +1,245 @@
+---
+title: Quantiles
+author: Luis Francisco Gomez Lopez
+date: 2023-06-22 09:56:45
+format: 
+  html:
+    toc: true
+    toc-depth: 3
+    toc-location: body
+    toc-title: Contents
+    number-sections: true
+    number-depth: 3
+    embed-resources: true
+editor: visual
+bibliography: r_for_marketing_research_and_analytics.bib
+---
+
+```{r}
+#| include: false
+#| message: false
+library(tidyverse)
+```
+
+# What 85% of people actually want
+
+Let $x = (3, 13, 8, 7, 20, 10, 8, 16, 15, 6)$ then order the data, $x$, from lowest to highest $x_{order} = (3, 6, 7, 8, 8, 10, 13, 15, 16, 20)$
+
+Also define the following variables:
+
+-   $n$ the size of the data, which for $x$ is 10 because it has 10 data points without eliminating repeated values
+
+Now let calculate the 0.25-quantile (aka first quartile, aka 25% percentile), 0.5-quantile (aka median, aka second quartile, aka 50% percentile) and 0.75-quantile (aka third quartile, aka 75% percentile)
+
+-   0.25-quantile
+
+    -   $\lceil Np \rceil = \lceil 10*0.25 \rceil = \rceil = \lceil 2.5 \rceil = 3$. Then find the 3 position in $x_{order}$, which is $7$ and this will be the 0.25-quantile
+
+        -   $\lceil Np \rceil$ means the least integer greater than or equal to $Np$. For example $\lceil 2 \rceil = 2$, $\lceil 2.25 \rceil = 3$, $\lceil 2.5 \rceil = 3$, $\lceil 2.75 \rceil = 3$ or $\lceil 3 \rceil = 3$
+
+-   0.5-quantile
+
+    -   $\lceil Np \rceil = \lceil 10*0.5 \rceil = \lceil 5 \rceil = 5$. Then find the 5 position in $x_{order}$, which is $8$ and this will be the 0.5-quantile
+
+-   0.75-quantile
+
+    -   $\lceil Np \rceil = \lceil 10*0.75 \rceil = \lceil 7.5 \rceil = 8$. Then find the 8 position in $x_{order}$, which is $15$ and this will be the 0.75-quantile
+
+If anyone says that what you learn in this section is wrong just point them out the following reference [@hyndman_sample_1996, Definition 1] and the following R and Python code:
+
+-   R code:
+
+```{r}
+quantile(x = c(3, 13, 8, 7, 20, 10, 8, 16, 15, 6),
+         probs = c(0.25, 0.5, 0.75),
+         na.rm = FALSE,
+         names = TRUE,
+         type = 1,
+         digits = 7)
+```
+
+-   Python code:
+
+```{python}
+import numpy as np
+
+np.quantile([3, 13, 8, 7, 20, 10, 8, 16, 15, 6],
+            [0.25, 0.5, 0.75],
+            axis=None, 
+            out=None, 
+            overwrite_input=False,
+            method='inverted_cdf',
+            keepdims=False,
+            interpolation=None)
+```
+
+# What 15% of people actually want
+
+## Quantile of a distribution
+
+::: {#def-p-quantile}
+## p-quantile of a distribution $F$ [@florescu_handbook_2014, p 178-179, Definition 6.1]
+
+If $F$ is a distribution function. Let $p \in (0,1)$ be a constant. Define:
+
+$$
+Q(p) = \inf\{x:F(x) \geq p\}
+$$ where $Q(p)$ is the p-quantile of the distribution $F$ and $\inf$ is the infimum of the set $\{x:F(x) \geq p\}$
+:::
+
+### Quantile of a normal standard distribution
+
+If we assume $F$ is the standard normal distribution function and we apply @def-p-quantile to find the $x$ associated to $p$ we need to solve the following problem:
+
+$$p =  \int_{-\infty}^{x} \frac{1}{\sqrt{2\pi}}e^{-\frac{z^2}{2}}\,dz \equiv \Phi(x)$$ We need first to calculate $\Phi(x)$:
+
+-   Let define $t = \frac{z}{\sqrt{2}}$ so we have that:
+
+    -   $z = \sqrt{2}t$
+    -   $\frac{z^2}{2} = t^2$
+    -   $\,dz = \sqrt{2}\,dt$
+
+$$\begin{split}
+   \Phi(x) & = \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{x} e^{-\frac{z^2}{2}}\,dz \\
+   & = \frac{\sqrt{2}}{\sqrt{2\pi}} \int_{-\infty}^{\frac{x}{\sqrt{2}}} e^{-t^2}\,dt \\
+   & = \frac{1}{\sqrt{\pi}} \biggl[ \int_{-\infty}^{0} e^{-t^2}\,dt + \int_{0}^{\frac{x}{\sqrt{2}}} e^{-t^2}\,dt \biggr] \\
+   & = \frac{1}{\sqrt{\pi}} \biggl[ \frac{\sqrt{\pi}}{2} + \int_{0}^{\frac{x}{\sqrt{2}}} e^{-t^2}\,dt \biggr] \\
+   & = \frac{1}{2} \biggl[ 1 + \frac{2}{\sqrt{\pi}} \int_{0}^{\frac{x}{\sqrt{2}}} e^{-t^2}\,dt \biggr] \\
+   & = \frac{1}{2} \biggl[ 1 + \text{erf} \biggl( \frac{x}{\sqrt{2}} \biggr) \biggr] \\
+  \end{split}$$
+
+For more information about $\text{erf}$ check out [@oldham_error_2008]. What we need to know is that:
+
+-   $\text{erf} \biggl( \frac{x}{\sqrt{2}} \biggr)$ can not be represented using elementary functions taking into account the work by Joseph Liouville (1809 - 1882) (See Liouville's theorem (differential algebra))
+
+-   The inverse function of $\text{erf}$ exists, $\text{erf}^{-1}$ and $\text{erf}^{-1}(\text{erf}(z)) = z$ for $z \in \mathbb{R}$ so we restrict the domain of $\text{erf}$ to $\mathbb{R}$
+
+-   The range of $\text{erf}$ is $(-1, 1)$ so the domain of $\text{erf}^{-1}$ is also $(-1, 1)$
+
+-   Because $p \in (0,1)$ we have that $2p - 1 \in (-1,1)$
+
+Also to understand more about $\text{erf}$ and $\text{erf}^{-1}$ we can plot them using the R packages `ggplot2`, `pracma` and `latex2exp`:
+
+```{r}
+#| warning: false
+library(ggplot2)
+library(pracma)
+library(latex2exp)
+
+ggplot() + 
+  geom_function(aes(colour = 'erf'), fun = erf) + 
+  geom_function(aes(colour = 'erfinv'), fun = erfinv) + 
+  scale_x_continuous(limits = c(-2, 2)) + 
+  scale_y_continuous(limits = c(-2, 2)) +
+  scale_color_manual(labels = c(TeX(input = r'($\textrm{erf}(z)$)'), 
+                                TeX(input = r'($\textrm{erf}^{-1}(z)$)')),
+                     values = c("blue", "red")) +
+  labs(x = TeX(input = r'($z$)'), 
+       y = TeX(input =r'($\textrm{erf}(z)\textrm{, }\textrm{erf}^{-1}(z)$)'),
+       colour = "Function",
+       title = TeX(input = r'(\textrm{The error function, }$\textrm{erf}(z)$\textrm{, and its inverse, }$\textrm{erf}^{-1}(z)$)'))
+```
+
+Therefore we have that:
+
+$$\begin{split}
+   p & = \Phi(x) \\
+   p & = \frac{1}{2} \biggl[ 1 + \text{erf} \biggl( \frac{x}{\sqrt{2}} \biggr) \biggr] \\
+   \sqrt{2} \text{erf}^{-1}(2p - 1) & = x \\
+  \end{split}$$
+
+See:
+
+-   https://en.wikipedia.org/wiki/Error_function#Approximation_with_elementary_functions
+-   https://en.wikipedia.org/wiki/Closed-form_expression
+-   https://stats.libretexts.org/Bookshelves/Probability_Theory/Probability_Mathematical_Statistics_and_Stochastic_Processes\_(Siegrist)/03%3A_Distributions/3.06%3A_Distribution_and_Quantile_Functions
+-   https://en.wikipedia.org/wiki/Normal_distribution#Quantile_function
+
+## Sample quantile
+
+The theorical explanation is pointed out in [\@[@hyndman_sample_1996] where there are 9 options. To see the source code in R you can use the following commands:
+
+-   Inspect the function
+
+```{r}
+quantile
+```
+
+-   Inspect the methods
+
+```{r}
+methods(quantile)
+```
+
+-   Inspect the code for `quantile.default*`
+
+```{r}
+# Also you can use getAnywhere(quantile.default) if you
+# don't know the package
+stats:::quantile.default   
+```
+
+## QQ plot
+
+A QQ plot, short for quantile-quantile plot, is a graphical tool used to assess whether a dataset follows a particular theoretical distribution, such as the normal distribution. It compares the quantiles of the observed data against the quantiles of a specified theoretical distribution.
+
+You build a QQ plot in the following way:
+
+-   First we create some data where we are going to obtain it from a poisson probability mass function with $\lambda = 4$
+
+```{r}
+set.seed(seed = 1234)
+sample_data <- rpois(n = 20, lambda = 4)
+sample_data
+```
+
+-   Then we need to sort the data in ascending order:
+
+```{r}
+sample_data_sort <- sort(x = sample_data, decreasing = FALSE)
+sample_data_sort
+```
+
+-   Now in the case of R it uses the `ppoints` function:
+
+```{r}
+ppoints
+```
+
+So we have the following formula for $j = 1, \ldots, n$:
+
+$$a = \begin{cases}
+      \frac{3}{8} & \text{ if } & n \leq 10 \\
+      \frac{1}{2} & \text{ if } & n > 10
+      \end{cases}$$
+
+$$quantile_j = \frac{j - a}{n + 1 - 2a}$$ In the case of $n > 10$ we have that $quantile_j = \frac{j - \frac{1}{2}}{n + 1 - 2\frac{1}{2}} = \frac{j - \frac{1}{2}}{n}$ where a **continuity correction** is applied. This correction is applied when you want to use a continuous distribution to approximate a discrete distribution.
+
+The literature about **continuity correction** according to `?ppoints` is motivated by [@blom_statistical_1958]
+
+Therefore we can calculate the QQ-plot in the following way:
+
+```{r}
+qq_plot_data <- tibble(sample_data_sort = sample_data_sort,
+                       sample_quantile = ppoints(n = length(sample_data_sort)))
+```
+
+Now we need to add the standard normal distribution quantiles:
+
+```{r}
+qq_plot_data <- qq_plot_data |> 
+  mutate(standard_normal_quantiles = qnorm(p = sample_quantile, mean = 0, sd = 1))
+```
+
+Then we create the QQ plot:
+
+```{r}
+qq_plot_data |> 
+  ggplot() + 
+  geom_point(aes(x = standard_normal_quantiles,
+                 y = sample_data_sort)) + 
+  labs(x = 'Theorical standard normal quantiles',
+       y = 'Sample quantiles')
+```
+
+# References

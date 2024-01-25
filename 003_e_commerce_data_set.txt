@@ -1,0 +1,20 @@
+The data set comprises responses to intercept surveys
+asked when users visited the site, along with data about 
+each user’s site activity such as number of pages visited 
+and whether a sale was completed.
+
+Each row identifies the information of a visitor
+
+country: country of origin for site visits
+intentWasPlanningToBuy: intent to purchase
+profile: user profile # What is Person with [condition A]
+region: US state of origin for site visits # What is the meaning of numbers
+# Be aware of the difference between page visits vs page views
+# https://themeisle.com/blog/page-views-vs-visits/
+# https://blog.hubspot.com/customers/marketing/understanding-the-difference-between-a-page-view-visit-and-session
+## A page view occurs when a page on your website is loaded or reloaded 
+## whether the user was already on your page or came from an external page
+## A page visit, on the other hand, only occurs when someone lands on your 
+## site from an external page, such as Google or another website.
+behavNumVisits: number of visits to the site 
+behavPageviews: number of views to the site
