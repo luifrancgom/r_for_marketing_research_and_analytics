@@ -1,0 +1,250 @@
+---
+title: "Welcome to R"
+author: Luis Francisco Gomez Lopez
+institute: FAEDIS
+date: 2023-06-08 10:41:53
+format:
+  beamer:
+    colortheme: dolphin
+    fonttheme: structurebold
+    theme: AnnArbor
+    urlcolor: blue
+    include-in-header:
+      - text: |
+          \usepackage{booktabs}
+          \usepackage{longtable}
+          \usepackage{array}
+          \usepackage{multirow}
+          \usepackage{wrapfig}
+          \usepackage{float}
+          \usepackage{colortbl}
+          \usepackage{pdflscape}
+          \usepackage{tabu}
+          \usepackage{threeparttable}
+          \usepackage{threeparttablex}
+          \usepackage[normalem]{ulem}
+          \usepackage{makecell}
+          \usepackage{xcolor}
+editor: visual
+bibliography: r_for_marketing_research_and_analytics.bib
+---
+
+```{r libraries}
+
+```
+
+# Contents
+
+-   Please Read Me
+-   Purpose
+-   Forgetting curves
+-   Installing R, RStudio IDE and Quarto
+-   R packages
+-   Please help me: Errors, warnings, and messages
+-   R for Marketing Research and Analytics, 2nd Ed
+-   Acknowledgments
+-   References
+
+# Please Read Me
+
+-   This presentation is based on [@chapman_r_2019, Chapter 1]
+
+# Purpose
+
+-   Deliver essential knowledge within a minimal timeframe by employing hands-on learning techniques to enhance productivity in the R programming language
+
+# Forgetting curves
+
+-   **Learning and forgetting curves** [@posit_pbc_learning_2023]
+
+![Learning and forgetting curves](images/002_forgetting_curves.png){width="350px" height="350px"}
+
+# Forgetting curves
+
+-   **Practicing and forgetting curves** [@posit_pbc_learning_2023]
+
+![Practicing and forgetting curves](images/002_forgetting_curves_practice.png){width="350px" height="350px"}
+
+# Installing R, RStudio IDE and Quarto
+
+-   **What are R and RStudio IDE?** [@ismay_statistical_2020, Chapter 1]
+
+::: {#fig-r_vs_rstudio_ide_1 layout-ncol="2"}
+![R: Engine](images/002_car_engine.jpg){#fig-r-1 width="200px" height="200px"}
+
+![RStudio IDE: Dashboard](images/002_dashboard_car.jpg){#fig-rstudio-ide-1 width="200px" height="200px"}
+
+Analogy of difference between R and RStudio
+:::
+
+# Installing R, RStudio IDE and Quarto
+
+-   **What is Quarto?**
+
+    -   Open-source scientific and technical publishing system
+    -   It is possible to integrate prose, code and results via Rstudio IDE [@wickham_r_2023, Chapter 29]
+
+![Quarto workflow](images/002_quarto_flow.png){#fig-quarto fig-alt="Quarto workflow" fig-align="center" width="400px" height="400px"}
+
+# Installing R, Rstudio IDE and Quarto
+
+-   **Download and install R**: <https://cloud.r-project.org/>
+
+    -   Download R for Linux (Debian, Fedora/Redhat, Ubuntu)
+    -   Download R for macOS
+    -   Download R for Windows
+
+-   **Download and install RStudio IDE**: <https://posit.co/download/rstudio-desktop/>
+
+    -   Windows 10/11
+    -   macOS 11+
+    -   Ubuntu 18/Debian 10, Ubuntu 20/Debian 11, Ubuntu 22, Fedora 19/Red Hat 7, OpenSUSE 15, Fedora 34/Red Hat 8, Fedora 36/Red Hat 9
+
+# Installing R, RStudio IDE and Quarto
+
+-   **Download and install Quarto**: <https://quarto.org/docs/get-started/>
+
+    -   Ubuntu 18+/Debian 10+, Linux Arm64
+    -   Mac OS
+    -   Windows
+
+-   **Nothing works help me!!!**
+
+    -   Don't worry posit get you cover!!!
+
+    -   Use posit Cloud: <https://posit.cloud/>
+
+        -   Sign Up \> Cloud Free \> Sign Up
+
+# Installing R, RStudio IDE and Quarto
+
+-   **Using R and Quarto via RStudio IDE** [@ismay_statistical_2020, Chapter 1]
+
+    -   Don't worry about Quarto because it will be embedded in RStudio IDE
+        -   If you are using posit Cloud don't worry about anything!!!
+
+::: {#fig-r_vs_rstudio_ide_2 layout-ncol="2"}
+![R: Do not open this](images/002_R_logo.png){#fig-r-2 width="100px" height="100px"}
+
+![RStudio IDE: Open this](images/002_RStudio_ide_logo.png){#fig-rstudio-ide-2 width="80px" height="80px"}
+
+R versus RStudio IDE icons on your computer
+:::
+
+# R packages
+
+-   **What are R packages?** [@ismay_statistical_2020, Chapter 1]
+
+::: {#fig-r_packages layout-ncol="2"}
+![R: A new phone](images/002_cell_phone.png){#fig-package-base width="100px" height="100px"}
+
+![R packages: Apps you can download](images/002_apps.jpg){#fig-package width="140px" height="80px"}
+
+Analogy of R vs R packages
+:::
+
+# R packages
+
+-   **Installing the tidyverse as an example**
+
+    -   Copy and paste this code in the console. If you have already installed the tidyverse nothing will happen but if you don't have installed the tidyverse then the package is going to be installed
+
+    -   Installing a package is like downloading an app from a store where you need to do it only once
+
+\scriptsize
+
+```{r }
+#| echo: true
+#| eval: false
+packages <- c("tidyverse")
+for (package in packages) {
+  if (!(package %in% rownames(installed.packages()))) {
+    install.packages(package)
+  }
+}
+```
+
+\normalsize
+
+-   **Loading a package**
+
+    -   Loading a package is like opening an app you already installed on your phone where you need to do it every time you want to use the app
+
+\scriptsize
+
+```{r}
+#| eval: false
+#| echo: true
+library(tidyverse)
+```
+
+# Please help me: Errors, warnings, and messages
+
+-   **Error**: Generally when there's an error, the code will not run and a message will try to explain what went wrong [@ismay_statistical_2020, Chapter 1]
+
+\small
+
+```{r }
+#| echo: true
+#| error: true
+x <- c(1, 2, 3, 4, 5)
+X
+```
+
+\normalsize
+
+-   **Warning**: Generally your code will still work, but with some caveats [@ismay_statistical_2020, Chapter 1]
+
+\small
+
+```{r}
+#| echo: true
+#| warning: true
+sqrt(-9)
+```
+
+# Please help me: Errors, warnings, and messages
+
+\normalsize
+
+-   **Message**: it's just a friendly message [@ismay_statistical_2020, Chapter 1]
+
+    -   Read it, wave back at R, and thank it for talking to you [@ismay_statistical_2020, Chapter 1]
+
+\tiny
+
+```{r}
+#| message: true
+#| echo: true
+packages<-c("tidyverse")
+for(package in packages) {
+  if(!(package %in% rownames(installed.packages()))) {
+    install.packages(package)
+  }
+}
+library(tidyverse)
+```
+
+# R for Marketing Research and Analytics, 2nd Ed
+
+-   **Download from UMNG Springer Link database**:
+
+    -   <https://www.umng.edu.co/inicio> \> Bases virtuales y libros electrónicos \> S \> Springer Link \> Search: R for Marketing Research and Analytics \> R For Marketing Research and Analytics Chris Chapman, Elea McDonnell Feit in Use R! (2019) \> Download book PDF
+
+-   **Check the book site**:
+
+    -   <http://r-marketing.r-forge.r-project.org>
+
+# Acknowledgments
+
+-   To my family that supports me
+
+-   To the taxpayers of Colombia and the [**UMNG students**](https://www.umng.edu.co/estudiante) who pay my salary
+
+-   To the [**Business Science**](https://www.business-science.io/) and [**R4DS Online Learning**](https://www.rfordatasci.com/) communities where I learn [**R**](https://www.r-project.org/about.html)
+
+-   To the [**R Core Team**](https://www.r-project.org/contributors.html), the creators of [**RStudio IDE**](https://posit.co/products/open-source/rstudio/), [**Quarto**](https://quarto.org/) and the authors and maintainers of the packages [**tidyverse**](https://CRAN.R-project.org/package=tidyverse) and [**tinytex**](https://CRAN.R-project.org/package=tinytex) for allowing me to access these tools without paying for a license
+
+-   To the [**Linux kernel community**](https://www.kernel.org/category/about.html) for allowing me the possibility to use some [**Linux distributions**](https://static.lwn.net/Distributions/) as my main [**OS**](https://en.wikipedia.org/wiki/Operating_system) without paying for a license
+
+# References
