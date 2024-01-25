@@ -1,0 +1,483 @@
+---
+title: "Relationships Between Continuous Variables"
+author: Luis Francisco Gomez Lopez
+institute: FAEDIS
+date: 2023-06-23 13:50:13
+format:
+  beamer:
+    colortheme: dolphin
+    fonttheme: structurebold
+    theme: AnnArbor
+    urlcolor: blue
+    include-in-header:
+      - text: |
+          \usepackage{booktabs}
+          \usepackage{longtable}
+          \usepackage{array}
+          \usepackage{multirow}
+          \usepackage{wrapfig}
+          \usepackage{float}
+          \usepackage{colortbl}
+          \usepackage{pdflscape}
+          \usepackage{tabu}
+          \usepackage{threeparttable}
+          \usepackage{threeparttablex}
+          \usepackage[normalem]{ulem}
+          \usepackage{makecell}
+          \usepackage{xcolor}
+editor: visual
+bibliography: r_for_marketing_research_and_analytics.bib
+---
+
+```{r libraries}
+#| echo: false
+library(tidyverse)
+library(skimr)
+```
+
+# Contents
+
+-   Please Read Me
+-   Purpose
+-   CRM system data
+-   Acknowledgments
+-   References
+
+# Please Read Me
+
+-   This presentation is based on [@chapman_r_2019, Chapter 4]
+
+# Purpose
+
+-   Understand the relationships between pairs of variables in multivariate data and examine how to visualize the relationships and compute statistics that describe their associations
+
+# CRM system data
+
+-   **cust.id**: customer identifier
+-   **age**: decimal age in years
+-   **credit.score**: 3-digit number in \[300, 900\], representing the credit risk
+-   **email**: whether or not there is information about the customer email
+-   **distance.to.store**: distance in kilometers to the nearest physical store
+-   **online.visits**: yearly visits to the online store
+-   **online.trans**: yearly online orders
+-   **online.spend**: yearly spending in those online orders
+-   **store.trans**: yearly orders in physical stores
+-   **store.spend**: yearly spending in those physical store orders
+
+# CRM system data
+
+-   **sat.service**: satisfaction with service using an ordinal 5 point scale and collected using a survey
+
+-   **sat.selection**: satisfaction with product selection using an ordinal 5 point scale and collected using a survey
+
+    -   **Ordinal 5 point scale used and possible values in the survey**:
+
+        -   Extremely satisfied: 5
+        -   Very satisfied: 4
+        -   Moderately satisfied: 3
+        -   Very satisfied: 2
+        -   Extremely satisfied: 1
+        -   NA: customer did not response the survey
+
+# CRM system data
+
+-   **Import data**
+
+\tiny
+
+```{r}
+#| echo: true
+customer <- read_csv(file = "http://goo.gl/PmPkaG")
+customer |> head(n=5)
+```
+
+# CRM system data
+
+-   **Transform data**
+
+\tiny
+
+```{r}
+#| echo: true
+customer <- customer |>
+  mutate(cust.id = factor(x = cust.id, ordered = FALSE),
+         email = factor(x = email, ordered = FALSE),
+         online.visits = as.integer(x = online.visits),
+         online.trans = as.integer(x = online.trans),
+         store.trans = as.integer(x = store.trans),
+         sat.service = factor(x = sat.service, ordered = TRUE),
+         sat.selection = factor(x = sat.selection, ordered = TRUE))
+customer |> head(n=5)
+```
+
+# CRM system data
+
+-   **Inspect data**
+
+\tiny
+
+```{r}
+#| echo: true
+customer |> glimpse()
+```
+
+# CRM system data
+
+-   **Summarize data**
+
+    -   Ups the table is really big!!! Try it in your console to see the complete table
+
+\tiny
+
+```{r}
+#| echo: true
+customer |> skim()
+```
+
+# CRM system data
+
+-   **Scatterplots: the base R way**
+
+\tiny
+
+```{r out.width = '50%', fig.align='center'}
+#| echo: true
+plot(x = customer$store.spend, y = customer$online.spend)
+```
+
+# CRM system data
+
+-   **Scatterplots: the base R way**
+
+\tiny
+
+```{r out.width = '50%', fig.align='center'}
+#| echo: true
+plot(x = customer$store.spend, y = customer$online.spend,
+     cex=0.7,
+     main="Customers as of June 2014", 
+     xlab="Prior 12 months in-store sales ($)", 
+     ylab="Prior 12 months online sales ($)")
+```
+
+# CRM system data
+
+-   **Scatterplots: the base R way**
+
+\tiny
+
+```{r out.width = '50%', fig.align='center'}
+#| echo: true
+my.col <- c("black", "green3")
+my.pch <- c(1, 19)
+plot(x = customer$store.spend, y = customer$online.spend,
+     cex=0.7, col=my.col[customer$email], pch=my.pch[customer$email],
+     main="Customers as of June 2014", 
+     xlab="Prior 12 months in-store sales ($)", 
+     ylab="Prior 12 months online sales ($)")
+```
+
+# CRM system data
+
+-   **Scatterplots: the base R way**
+
+\tiny
+
+```{r out.width = '50%', fig.align='center'}
+#| echo: true
+my.col <- c("black", "green3")
+my.pch <- c(1, 19)
+plot(x = customer$store.spend, y = customer$online.spend,
+     cex=0.7, col=my.col[customer$email], pch=my.pch[customer$email],
+     main="Customers as of June 2014", 
+     xlab="Prior 12 months in-store sales ($)", 
+     ylab="Prior 12 months online sales ($)")
+legend(x="topright", legend=paste("email on file:", levels(customer$email)), col=my.col, pch=my.pch)
+```
+
+# CRM system data
+
+-   **Scatterplots: the base R way**
+
+\tiny
+
+```{r out.width = '50%', fig.align='center'}
+#| echo: true
+my.col <- c("black", "green3")
+my.pch <- c(1, 19)
+plot(x = customer$store.spend + 1, y = customer$online.spend + 1,
+     cex=0.7, col=my.col[customer$email], pch=my.pch[customer$email],
+     log ="xy",
+     main="Customers as of June 2014", 
+     xlab="Prior 12 months in-store sales ($)", 
+     ylab="Prior 12 months online sales ($)")
+legend(x="topright", legend=paste("email on file:", levels(customer$email)), col=my.col, pch=my.pch)
+```
+
+# CRM system data
+
+-   **Scatterplots: the tidyverse way**
+
+\tiny
+
+```{r out.width = '50%', fig.align='center'}
+#| echo: true
+customer |> ggplot() +
+  geom_point(aes(x = store.spend, y = online.spend, color = email))
+```
+
+# CRM system data
+
+-   **Scatterplots: the tidyverse way**
+
+\tiny
+
+```{r out.width = '50%', fig.align='center'}
+#| echo: true
+customer |> ggplot() +
+  geom_point(aes(x = store.spend, y = online.spend, color = email, shape = email)) +
+  scale_color_manual(values = c("black", "green3"), labels = c("email on file: no", "email on file: yes")) +
+  scale_shape_manual(values = c(1, 19), labels = c("email on file: no", "email on file: yes"))
+```
+
+# CRM system data
+
+-   **Scatterplots: the tidyverse way**
+
+\tiny
+
+```{r out.width = '50%', fig.align='center'}
+#| echo: true
+customer |> ggplot() +
+  geom_point(aes(x = store.spend, y = online.spend, color = email, shape = email)) +
+  scale_color_manual(values = c("black", "green3"), labels = c("email on file: no", "email on file: yes")) +
+  scale_shape_manual(values = c(1, 19), labels = c("email on file: no", "email on file: yes")) +
+  scale_x_continuous(trans = "log1p", breaks = c(1, 2, 5, 10, 20, 50, 100, 500)) + 
+  scale_y_continuous(trans = "log1p", breaks = c(1, 5, 50, 500))
+```
+
+# CRM system data
+
+-   **Scatterplots: the tidyverse way**
+
+\tiny
+
+```{r out.width = '50%', fig.align='center'}
+#| echo: true
+customer |> ggplot() +
+  geom_point(aes(x = store.spend, y = online.spend, color = email, shape = email)) +
+  scale_color_manual(values = c("black", "green3"), labels = c("email on file: no", "email on file: yes")) +
+  scale_shape_manual(values = c(1, 19), labels = c("email on file: no", "email on file: yes")) +
+  scale_x_continuous(trans = "log1p", breaks = c(1, 2, 5, 10, 20, 50, 100, 500)) + 
+  scale_y_continuous(trans = "log1p", breaks = c(1, 5, 50, 500)) +
+  labs(x = "Prior 12 months in-store sales ($)", y = "Prior 12 months online sales ($)",
+       title = "Customers as of June 2014")
+```
+
+# CRM system data
+
+-   **Correlation Coefficients**
+
+    -   Pearson correlation coefficient for a sample
+
+\small
+
+$$r_{xy} = \frac{\sum_{i=1}^n (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_{i=1}^n (x_i - \bar{x})^2}\sqrt{\sum_{i=1}^n (y_i - \bar{y})^2}}$$ Where $n$ is the sample size, we must have paired numeric data $\{ (x_1, y_1), ..., (x_n, y_n) \}$, $\bar{x} = \sum_{i=1}^n x_i$ and $\bar{y} = \sum_{i=1}^n y_i$
+
+-   This is a "nasty" formula but we can brake it down in smaller chunks
+
+# CRM system data
+
+-   **Correlation Coefficients**
+
+    -   Pearson correlation coefficient for a sample
+
+\tiny
+
+```{r}
+#| echo: true
+age_mean <- mean(customer$age)
+age_credit.score <- mean(customer$credit.score)
+numerator <- sum((customer$age - age_mean) * (customer$credit.score - age_credit.score)) 
+denominator <- sqrt(sum((customer$age - age_mean)^2)) * sqrt(sum(((customer$credit.score - age_credit.score)^2)))
+pearson_corr <- numerator / denominator
+pearson_corr
+```
+
+\small
+
+-   **But don't worry be happy!!!: Use `cor`**
+
+\tiny
+
+```{r}
+#| echo: true
+cor(customer$age, customer$credit.score, method = 'pearson')
+```
+
+# CRM system data
+
+-   **Correlation matrices**
+
+    -   Pearson correlation coefficients for samples in a tibble
+
+\tiny
+
+```{r}
+#| echo: true
+library(corrr) # Remember to install the package if it is not installed
+correlation_matrix <- customer |> 
+  select(where(is.numeric)) |> 
+  correlate(use = "pairwise.complete.obs", # There are NA values
+            method = "pearson",
+            diagonal = NA)
+correlation_matrix # Ups!!! The tibble is wide. Check out the tibble in your console
+```
+
+# CRM system data
+
+-   **Correlation matrices**
+
+    -   Pearson correlation coefficients for samples in a tibble
+
+\tiny
+
+```{r out.width = '50%', fig.align='center'}
+#| echo: true
+correlation_matrix |> autoplot(triangular = "lower")
+```
+
+# CRM system data
+
+-   **Transforming variables**
+
+\tiny
+
+```{r}
+#| echo: true
+cor(customer$store.spend, customer$distance.to.store)
+```
+
+```{r out.width = '50%', fig.align='center'}
+#| echo: true
+customer |> ggplot() +
+  geom_point(aes(x = distance.to.store, y = store.spend))
+```
+
+# CRM system data
+
+-   **Transforming variables**
+
+\tiny
+
+```{r}
+#| echo: true
+cor(customer$store.spend, 1 / sqrt(customer$distance.to.store))
+```
+
+```{r out.width = '50%', fig.align='center'}
+#| echo: true
+customer |>
+  mutate(distance.to.store_trans = 1 / sqrt(distance.to.store)) |>
+  ggplot() +
+  geom_point(aes(x = distance.to.store_trans, y = store.spend))
+```
+
+# CRM system data
+
+-   **Transforming variables**
+
+    -   Understanding the logic behind inverse square root distance
+
+\tiny
+
+```{r out.width = '50%', fig.align='center'}
+#| echo: true
+ggplot() +
+  geom_function(fun = function(x) {1 / sqrt(x)}) +
+  labs(x = "Distance",
+       y = "Inverse square root distance")
+```
+
+# CRM system data
+
+-   **Visualizing categorical variables**
+
+    -   **Scatterplots: the base R way**
+
+\tiny
+
+```{r out.width = '50%', fig.align='center'}
+#| echo: true
+plot(as.integer(customer$sat.service), as.integer(customer$sat.selection),
+     xlab = "Customer Satisfaction with Service",
+     ylab = "Customer Satisfaction with Selection",
+     main = "Customer as of June 2014")
+```
+
+# CRM system data
+
+-   **Visualizing categorical variables**
+
+    -   **Scatterplots: the base R way**
+
+\tiny
+
+```{r out.width = '50%', fig.align='center'}
+#| echo: true
+plot(jitter(as.integer(customer$sat.service)), jitter(as.integer(customer$sat.selection)),
+     xlab = "Customer Satisfaction with Service",
+     ylab = "Customer Satisfaction with Selection",
+     main = "Customer as of June 2014")
+```
+
+# CRM system data
+
+-   **Visualizing categorical variables**
+
+    -   **Scatterplots: the tidyverse way**
+
+\tiny
+
+```{r out.width = '50%', fig.align='center'}
+#| echo: true
+customer |> 
+  ggplot() +
+  geom_point(aes(x = sat.service, y = sat.selection)) +
+  labs(x = "Customer Satisfaction with Service",
+       y = "Customer Satisfaction with Selection",
+       title = "Customer as of June 2014")
+```
+
+# CRM system data
+
+-   **Visualizing categorical variables**
+
+    -   **Scatterplots: the tidyverse way**
+
+\tiny
+
+```{r out.width = '50%', fig.align='center'}
+#| echo: true
+customer |> 
+  ggplot() +
+  geom_point(aes(x = sat.service, y = sat.selection), 
+             position = position_jitter(width = 0.2, height = 0.2)) +
+  labs(x = "Customer Satisfaction with Service",
+       y = "Customer Satisfaction with Selection",
+       title = "Customer as of June 2014")
+```
+
+# Acknowledgments
+
+-   To my family that supports me
+
+-   To the taxpayers of Colombia and the [**UMNG students**](https://www.umng.edu.co/estudiante) who pay my salary
+
+-   To the [**Business Science**](https://www.business-science.io/) and [**R4DS Online Learning**](https://www.rfordatasci.com/) communities where I learn [**R**](https://www.r-project.org/about.html)
+
+-   To the [**R Core Team**](https://www.r-project.org/contributors.html), the creators of [**RStudio IDE**](https://posit.co/products/open-source/rstudio/), [**Quarto**](https://quarto.org/) and the authors and maintainers of the packages [**tidyverse**](https://CRAN.R-project.org/package=tidyverse), [**skimr**](https://CRAN.R-project.org/package=skimr), [**corrr**](https://CRAN.R-project.org/package=corrr) and [**tinytex**](https://CRAN.R-project.org/package=tinytex) for allowing me to access these tools without paying for a license
+
+-   To the [**Linux kernel community**](https://www.kernel.org/category/about.html) for allowing me the possibility to use some [**Linux distributions**](https://static.lwn.net/Distributions/) as my main [**OS**](https://en.wikipedia.org/wiki/Operating_system) without paying for a license
+
+# References
