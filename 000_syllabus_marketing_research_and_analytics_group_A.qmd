@@ -5,7 +5,10 @@ author:
     email: luis.gomezl@unimilitar.edu.co
     affiliations:
       - name: Universidad Militar Nueva Granada
-date: 2024-01-22
+date: 2024-01-25
+execute: 
+  echo: false
+  warning: false
 format:
   html: 
     number-sections: true
@@ -14,13 +17,6 @@ format:
 bibliography: r_for_marketing_research_and_analytics.bib
 editor: visual
 ---
-
-```{r setup}
-#| include: false
-knitr::opts_chunk$set(echo    = FALSE, 
-                      warning = FALSE, 
-                      message = FALSE)
-```
 
 ```{r libraries}
 library(tidyverse)
@@ -41,7 +37,7 @@ p {
 
 -   **Communication through the virtual classroom**
 
-    -   Every Saturday between 08:00 hours and 10:00 hours:
+    -   Every Saturday between 08:00 hours and 09:45 hours:
 
         -   *Primer Corte 30% \> Virtual Meetings \> Meeting hours with students*
 
@@ -112,21 +108,6 @@ tibble(Week = c(1:9),
   as_raw_html()
 ```
 
-## Detailed schedule of virtual meetings and activities
-
-```{r}
-islands_tbl <- 
-  tibble(
-    name = names(islands),
-    size = islands
-  ) |>
-  arrange(desc(size)) |>
-  slice(1:10)
-
-islands_tbl |> 
-  gt()
-```
-
 ### Primer corte 30%
 
 -   April 1
@@ -135,170 +116,181 @@ islands_tbl |>
 
     -   **Virtual meeting Presentation Syllabus**
 
-        -   **Meeting time**: 19:00 - 19:45 hours
+        -   **Meeting time**: 20:00 - 20:45 hours
         -   **Prerequisites**:
-            -   Review the course program in advance, which can be downloaded by following the route *Primer corte 30% \> Learning Resources \> Support material \> Presentations \> 000_syllabus_intro_econ_2024_1*
+            -   Review the course program in advance, which can be downloaded by following the route \*Primer corte 30% \> Learning Resources \> Support material \> Presentations \> 000_syllabus_marketing_rearch_and_analytics
             -   Have a headset with a built-in microphone to isolate noise from the environment
 
--   January 23
+-   April 3
 
-    -   **Virtual meeting Introduction**
-        -   **Meeting time**: 19:00 - 19:45 hours
+    -   **Welcome to R**
+        -   **Meeting time**: 19:00 - 20:30 hours
         -   **Prerequisites**:
-            -   Read and review [@cardenas_introduccion_2020, Chapter 1]
+            -   Read and review [@chapman_r_2019, Chapter 1]
             -   Have a headset with a built-in microphone to isolate noise from the environment
 
--   January 29
+-   April 5
 
-    -   **Questionnaire 1 Opening**
-        -   **Opening time**: 00:00 hours
+    -   **Welcome to R**
+        -   **Meeting time**: 19:00 - 20:30 hours
         -   **Prerequisites**:
-            -   Read and review [@cardenas_introduccion_2020, Chapters 1 & 2]
-
--   January 30
-
-    -   **Virtual meeting Production and Income I**
-        -   **Meeting time**: 19:00 - 19:45 hours
-        -   **Prerequisites**:
-            -   Read and review [@cardenas_introduccion_2020, Chapter 2]
+            -   Read and review [@chapman_r_2019, Chapter 1]
             -   Have a headset with a built-in microphone to isolate noise from the environment
 
--   February 1
+-   April 10
 
-    -   **Virtual meeting Production and Income II**
-        -   **Meeting time**: 19:00 - 19:45 hours
+    -   **An overview of the R language**
+        -   **Meeting time**: 19:00 - 20:30 hours
         -   **Prerequisites**:
-            -   Read and review [@cardenas_introduccion_2020, Chapter 2]
+            -   Read and review [@chapman_r_2019, Chapter 2]
             -   Have a headset with a built-in microphone to isolate noise from the environment
 
--   February 4
+-   April 12
 
-    -   **Questionnaire 1 Closing**
-        -   **Closing time**: 22:00 hours
+    -   **An overview of the R language**
+        -   **Meeting time**: 19:00 - 20:30 hours
         -   **Prerequisites**:
-            -   Have answered the Questionnaire 1 before 22:00 hours
-
--   February 6
-
-    -   **Virtual meeting Economic Growth**
-        -   **Meeting time**: 19:00 - 19:45 hours
-        -   **Prerequisites**:
-            -   Read and review [@cardenas_introduccion_2020, Chapter 3]
+            -   Read and review [@chapman_r_2019, Chapter 2]
             -   Have a headset with a built-in microphone to isolate noise from the environment
 
--   February 10
+-   April 17
 
-    -   **Oral presentation Midterm Exam 1 Opening**
-        -   **Opening time**: 16:00 hours
-        -   **Closing time**: 18:00 hours
+    -   **Describing data**
+        -   **Meeting time**: 19:00 - 20:30 hours
         -   **Prerequisites**:
-            -   Read and review [@cardenas_introduccion_2020, Chapter 3]
+            -   Read and review [@chapman_r_2019, Chapter 3]
+            -   Have a headset with a built-in microphone to isolate noise from the environment
+
+-   April 19
+
+    -   **Describing data**
+        -   **Meeting time**: 19:00 - 20:30 hours
+        -   **Prerequisites**:
+            -   Read and review [@chapman_r_2019, Chapter 3]
+            -   Have a headset with a built-in microphone to isolate noise from the environment
+
+-   April 20
+
+    -   **Oral presentation marketing report part 1**
+        -   **Opening time**: 18:00 hours
+        -   **Closing time**: 20:05 hours
+        -   **Prerequisites**:
             -   Have a headset with a built-in microphone to isolate noise from the environment
 
 ### Segundo corte 30%
 
--   February 12
+-   April 24
 
-    -   **Questionnaire 2 Opening**
-        -   **Opening time**: 00:00 hours
+    -   **Relationship between continuous variables**
+        -   **Meeting time**: 19:00 - 20:30 hours
         -   **Prerequisites**:
-            -   Read and review [@cardenas_introduccion_2020, Chapters 4 & 5]
-
--   February 13
-
-    -   **Virtual meeting Economy and institutions**
-        -   **Meeting time**: 19:00 - 19:45 hours
-        -   **Prerequisites**:
-            -   Read and review [@cardenas_introduccion_2020, Chapter 4]
+            -   Read and review [@chapman_r_2019, Chapter 4]
             -   Have a headset with a built-in microphone to isolate noise from the environment
 
--   February 20
+-   April 26
 
-    -   **Virtual meeting External sector I**
-        -   **Meeting time**: 19:00 - 19:45 hours
+    -   **Relationship between continuous variables**
+        -   **Meeting time**: 19:00 - 20:30 hours
         -   **Prerequisites**:
-            -   Read and review [@cardenas_introduccion_2020, Chapter 5]
+            -   Read and review [@chapman_r_2019, Chapter 4]
             -   Have a headset with a built-in microphone to isolate noise from the environment
 
--   February 22
+-   May 1
 
-    -   **Virtual meeting External sector II**
-        -   **Meeting time**: 19:00 - 19:45 hours
+    -   **Comparing groups: tables and visualizations**
+        -   **Meeting time**: 19:00 - 20:30 hours
         -   **Prerequisites**:
-            -   Read and review [@cardenas_introduccion_2020, Chapter 5]
+            -   Read and review [@chapman_r_2019, Chapter 5]
             -   Have a headset with a built-in microphone to isolate noise from the environment
 
--   February 25
+-   May 3
 
-    -   **Questionnaire 2 Closing**
-        -   **Closing time**: 22:00 hours
+    -   **Comparing groups: tables and visualizations**
+        -   **Meeting time**: 19:00 - 20:30 hours
         -   **Prerequisites**:
-            -   Have answered the Questionnaire 2 before 22:00 hours
-
--   February 27
-
-    -   **Virtual meeting Public Finances**
-        -   **Meeting time**: 19:00 - 19:45 hours
-        -   **Prerequisites**:
-            -   Read and review [@cardenas_introduccion_2020, Chapter 6]
+            -   Read and review [@chapman_r_2019, Chapter 5]
             -   Have a headset with a built-in microphone to isolate noise from the environment
 
--   March 2
+-   May 8
 
-    -   **Oral presentation Midterm Exam 2 Opening**
-        -   **Opening time**: 16:00 hours
-        -   **Closing time**: 18:00 hours
+    -   **Comparing groups: statistical tests**
+        -   **Meeting time**: 19:00 - 20:30 hours
         -   **Prerequisites**:
-            -   Read and review [@cardenas_introduccion_2020, Chapter 6]
+            -   Read and review [@chapman_r_2019, Chapter 6]
+            -   Have a headset with a built-in microphone to isolate noise from the environment
+
+-   May 10
+
+    -   **Comparing groups: statistical tests**
+        -   **Meeting time**: 19:00 - 20:30 hours
+        -   **Prerequisites**:
+            -   Read and review [@chapman_r_2019, Chapter 6]
+            -   Have a headset with a built-in microphone to isolate noise from the environment
+
+-   May 11
+
+    -   **Oral presentation marketing report part 2**
+        -   **Opening time**: 18:00 hours
+        -   **Closing time**: 20:05 hours
+        -   **Prerequisites**:
             -   Have a headset with a built-in microphone to isolate noise from the environment
 
 ### Tercer corte 40%
 
--   March 4
+-   May 15
 
-    -   **Questionnaire 3 Opening**
-        -   **Opening time**: 00:00 hours
+    -   **Identifying drivers of outcomes: linear models**
+        -   **Meeting time**: 19:00 - 20:30 hours
         -   **Prerequisites**:
-            -   Read and review [@cardenas_introduccion_2020, Chapters 7 & 8]
-
--   March 5
-
-    -   **Virtual meeting Money, prices and the exchange rate**
-        -   **Meeting time**: 19:00 - 19:45 hours
-        -   **Prerequisites**:
-            -   Read and review [@cardenas_introduccion_2020, Chapter 7]
+            -   Read and review [@chapman_r_2019, Chapter 7]
             -   Have a headset with a built-in microphone to isolate noise from the environment
 
--   March 12
+-   May 17
 
-    -   **Virtual meeting Financial Market**
-        -   **Meeting time**: 19:00 - 19:45 hours
+    -   **Identifying drivers of outcomes: linear models**
+        -   **Meeting time**: 19:00 - 20:30 hours
         -   **Prerequisites**:
-            -   Read and review [@cardenas_introduccion_2020, Chapter 8]
+            -   Read and review [@chapman_r_2019, Chapter 7]
             -   Have a headset with a built-in microphone to isolate noise from the environment
 
--   March 17
+-   May 22
 
-    -   **Questionnaire 3 Closing**
-        -   **Closing time**: 22:00 hours
+    -   **Reducing data complexity**
+        -   **Meeting time**: 19:00 - 20:30 hours
         -   **Prerequisites**:
-            -   Have answered the Questionnaire 2 before 22:00 hours
+            -   Read and review [@chapman_r_2019, Chapter 8]
+            -   Have a headset with a built-in microphone to isolate noise from the environment
 
--   March 19
+-   May 24
 
-    -   **Virtual meeting Labor Market**
-        -   **Meeting time**: 19:00 - 19:45 hours
+    -   **Reducing data complexity**
+        -   **Meeting time**: 19:00 - 20:30 hours
         -   **Prerequisites**:
-            -   Read and review [@cardenas_introduccion_2020, Chapter 9]
+            -   Read and review [@chapman_r_2019, Chapter 8]
+            -   Have a headset with a built-in microphone to isolate noise from the environment
+
+-   May 29
+
+    -   **Segmentation: Clustering and Classification**
+        -   **Meeting time**: 19:00 - 20:30 hours
+        -   **Prerequisites**:
+            -   Read and review [@chapman_r_2019, Chapter 11]
+            -   Have a headset with a built-in microphone to isolate noise from the environment
+            
+-   May 31
+
+    -   **Segmentation: Clustering and Classification**
+        -   **Meeting time**: 19:00 - 20:30 hours
+        -   **Prerequisites**:
+            -   Read and review [@chapman_r_2019, Chapter 11]
             -   Have a headset with a built-in microphone to isolate noise from the environment
 
 -   June 1
 
-    -   **Oral presentation Final Exam Opening**
-        -   **Opening time**: 16:00 hours
-        -   **Closing time**: 18:00 hours
+    -   **Oral presentation marketing report part 3**
+        -   **Opening time**: 18:00 hours
+        -   **Closing time**: 20:05 hours
         -   **Prerequisites**:
-            -   Read and review [@cardenas_introduccion_2020, Chapter 9]
             -   Have a headset with a built-in microphone to isolate noise from the environment
 
 # Qualifiable activities, weights and process in case of no presentation
@@ -307,24 +299,19 @@ islands_tbl |>
 
 -   **Primer corte**: 30%
 
-    -   **Questionnaire 1**: 15%
-    -   **Oral presentation Midterm Exam 1**: 15%
+    -   **Oral presentation marketing report part 1**: 30%
 
 -   **Segundo corte**: 30%
 
-    -   **Questionnaire 2**: 15%
-    -   **Oral presentation Midterm Exam 2**: 15%
+    -   **Oral presentation marketing report part 2**: 30%
 
 -   **Tercer corte**: 40%
 
-    -   **Questionnaire 3**: 15%
-    -   **Oral presentation Final Exam**: 25 %
+    -   **Oral presentation marketing report part 3**: 40%
 
 ## Process in case of no presentation
 
--   Students who do not present a **Questionare** due to force majeure or illness, must send the respective excuse scanned through the [**luis.gomezl\@unimilitar.edu.co**](mailto:luis.gomezl@unimilitar.edu.co){.email}. If it is not sent, the note will be zero. Once the excuse has been satisfactorily received, the student should **not** present the activity and the corresponding grade will be equal to the immediately subsequent grade obtained in the **Midterm Exam 1** or **Midterm Exam 2** or **Final Exam** according to the case.
-
--   Students who do not present a **Midterm Exam 1** or **Midterm Exam 2** or the **Final Exam**, must send and email to [**admon.distancia\@unimilitar.edu.co**](mailto:admon.distancia@unimilitar.edu.co){.email} two days before or two days after the closing date of these activities. However, this request can be made only once during the course. If it is not requested under these conditions, the grade will be zero.
+-   Students who do not present an activity due to force majeure or illness, must send the respective excuse scanned through the [**luis.gomezl\@unimilitar.edu.co**](mailto:luis.gomezl@unimilitar.edu.co){.email}. If it is not sent, the note will be zero. Once the excuse has been satisfactorily received, the student should **not** present the activity and the corresponding grade will be equal to the immediately subsequent grade obtained in the next activity presented
 
 # Use of Chat GPT-3, PaLM 2 (used in BART) and its friends
 
