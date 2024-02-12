@@ -943,6 +943,8 @@ tibble(x = data_chisq_test) |>
 
 ### Test for independence[^5]
 
+[^5]: See this resources to understand the calculation of observed and expected values <https://online.stat.psu.edu/stat500/lesson/8/8.1>
+
 ```{r}
 #| echo: true
 #| message: false
@@ -959,8 +961,6 @@ $H_0: p_{11} = \frac{260}{300}\frac{159}{300} \land p_{12} = \frac{260}{300}\fra
 $H_1: p_{11} \neq \frac{260}{300}\frac{159}{300} \lor p_{12} \neq \frac{260}{300}\frac{141}{300} \lor p_{21} \neq \frac{40}{300}\frac{159}{300} \lor p_{22} \neq \frac{40}{300}\frac{141}{300}$
 
 $\chi^2 = \sum_{i=1}^n \frac{(Observed_i - Expected_i)^2}{Expected_i} = \frac{(137 - 300\frac{260}{300}\frac{159}{300})^2}{300\frac{260}{300}\frac{159}{300}} + \frac{(123 - 300\frac{260}{300}\frac{141}{300})^2}{300\frac{260}{300}\frac{141}{300}} + \frac{(22 - 300\frac{40}{300}\frac{159}{300})^2}{300\frac{40}{300}\frac{159}{300}} + \frac{(18 - 300\frac{40}{300}\frac{141}{300})^2}{300\frac{40}{300}\frac{141}{300}}$
-
-[^5]: See this resources to understand the calculation of observed and expected values [https://online.stat.psu.edu/stat500/lesson/8/8.1](https://online.stat.psu.edu/stat500/lesson/8/8.1)
 
 # Testing Observed Proportions: binom.test()
 

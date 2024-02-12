@@ -35,6 +35,8 @@ library(tidyverse)
 library(skimr)
 library(latex2exp)
 library(tidymodels)
+library(patchwork)
+library(hardhat)
 ```
 
 # Contents
@@ -737,11 +739,72 @@ mu_11 <- mu_ij$mean[1]
 mu_11
 ```
 
+```{r}
+#| echo: true
+segmentation |> 
+  select(income, Segment, ownHome) |> 
+  head(n=5)
+```
+
 # Consumer segmentation survey
 
 -   Testing Multiple Group Means: Analysis of Variance (ANOVA)
 
+```{r}
+#| echo: false
+#| out.width: 80%
+#| fig-align: center
 
+mean_Segment <- segmentation |> 
+  group_by(Segment) |> 
+  summarise(mean = mean(income)) |> 
+  ungroup()
+
+mean_ownHome <- segmentation |> 
+  group_by(ownHome) |> 
+  summarise(mean = mean(income)) |> 
+  ungroup()
+
+mean_Segment_ownHome <- segmentation |> 
+  group_by(Segment, ownHome) |> 
+  summarise(mean = mean(income)) |> 
+  ungroup()
+
+g1 <- segmentation |> 
+  ggplot(aes(x = Segment, y = income)) + 
+  geom_point(position = position_jitter(width = 0.1)) +
+  stat_summary(geom = "point", fun = 'mean',
+               size = 3,
+               shape = 21, fill = '#E31A1C', color = 'black') + 
+  geom_line(data = mean_Segment,
+            aes(x = Segment, y = mean, group = 1),
+            color = "#2C3E50")
+
+g2 <- segmentation |> 
+  ggplot(aes(x = ownHome, y = income)) + 
+  geom_point(position = position_jitter(width = 0.1)) +
+  stat_summary(geom = "point", fun = 'mean',
+               size = 3,
+               shape = 21, fill = '#E31A1C', color = 'black') + 
+  geom_line(data = mean_ownHome,
+            aes(x = ownHome, y = mean, group = 1),
+            color = "#2C3E50")
+
+g3 <- segmentation |> 
+  ggplot(aes(x = Segment, y = income, fill = ownHome, group = ownHome)) + 
+  geom_point(position = position_jitter(width = 0.1),
+             shape = 21) + 
+  geom_line(data = mean_Segment_ownHome,
+            aes(x = Segment, y = mean, color = ownHome)) +
+  stat_summary(geom = "point", fun = 'mean',
+               size = 3,
+               shape = 21, fill = '#E31A1C', color = 'black') + 
+  scale_color_manual(values = c("#18BC9C", "#CCBE93")) + 
+  scale_fill_manual(values = c("#18BC9C", "#CCBE93")) + 
+  theme(legend.position = "bottom")
+
+(g1 / g2) | g3
+```
 
 # Consumer segmentation survey
 
@@ -757,23 +820,105 @@ $$\begin{split}
   & k = 1, \ldots n_{ij} \\
   & \mu = \mu_{11} \\
   & \alpha_1 = \beta_1 = 0 \\
-  & (\alpha\beta)_{11} = (\alpha\beta)_{12} \\ 
+  & (\alpha\beta)_{11} = (\alpha\beta)_{12} = 0 \\ 
   & (\alpha\beta)_{21} = (\alpha\beta)_{31} = (\alpha\beta)_{41} = 0 \\  
   \end{split}$$
-  
+
 # Consumer segmentation survey
 
 -   Testing Multiple Group Means: Analysis of Variance (ANOVA)
+
+\footnotesize
 
 $$\begin{split}
-  \widehat{income}_{i} =  & \widehat{\beta}_0 + \widehat{\beta_1} Segment_i + \widehat{\beta}_2 ownHome_i + \widehat{\beta}_3 Segment_i ownHome_i + \epsilon_i \\ 
-  & \text{ where } i = 1, \ldots, 300
+  \widehat{income}_{ijk} =  & \widehat{\mu} + \widehat{\alpha}_i + \widehat{\beta}_j + (\widehat{\alpha\beta})_{ij} + \widehat{\epsilon}_{ijk} \\ 
+  & \text{ and } i = 1, 2, 3, 4 \\
+  & j = 1, 2 \\
+  & k = 1, \ldots n_{ij} \\
+  & \widehat{\mu} = \widehat{\mu}_{11} \\
+  & \widehat{\alpha}_1 = \widehat{\beta}_1 = 0 \\
+  & (\widehat{\alpha\beta})_{11} = (\widehat{\alpha\beta})_{12} = 0 \\ 
+  & (\widehat{\alpha\beta})_{21} = (\widehat{\alpha\beta})_{31} = (\widehat{\alpha\beta})_{41} = 0 
   \end{split}$$
 
-$$income_{i} - \widehat{income}_{i} = \widehat{\epsilon}_i \text{ where } i = 1, \ldots, 300$$
+$$income_{ijk} - \widehat{income}_{ijk} = \widehat{\epsilon}_{ijk}$$
 
 # Consumer segmentation survey
 
 -   Testing Multiple Group Means: Analysis of Variance (ANOVA)
+
+\tiny
+
+:::: {.columns}
+
+::: {.column width="40%"}
+
+```{r}
+#| echo: true
+#| fig-cap: "hello"
+segmentation |> 
+  select(income, Segment, ownHome) |> 
+  head(n=2) |> 
+  glimpse()
+```
+
+:::
+
+::: {.column width="50%"}
+
+```{r}
+#| echo: true
+framed <- model_frame(formula = income ~ 
+                                Segment + 
+                                ownHome + 
+                                Segment:ownHome,
+            data = segmentation)
+
+model_matrix(terms = framed$terms,
+             data = framed$data) |> 
+  head(n = 2) |> 
+  glimpse()
+```
+
+:::
+
+::::
+
+# Consumer segmentation survey
+
+-   Testing Multiple Group Means: Analysis of Variance (ANOVA)
+
+    -   Model
+
+\footnotesize
+
+$$\begin{bmatrix}
+  49482.81 \\
+  35546.29 \\
+  \vdots
+  \end{bmatrix} =
+  \begin{bmatrix}
+  1 & 1 & 0 & 0 & 0 & 0 & 0 & 0 \\
+  1 & 1 & 0 & 0 & 1 & 1 & 0 & 0 \\
+  \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots
+  \end{bmatrix} 
+  \begin{bmatrix}
+  \mu \\
+  \alpha_2 \\
+  \beta_2 \\
+  (\alpha\beta)_{13} \\
+  (\alpha\beta)_{14} \\
+  (\alpha\beta)_{22} \\
+  (\alpha\beta)_{32} \\
+  (\alpha\beta)_{42} \\
+  \end{bmatrix}$$
+
+\normalsize
+
+-   Coefficients to estimate using `aov`
+
+\footnotesize
+
+$$\widehat{\mu} = \widehat{\mu}_{11}, \widehat{\alpha}_2, \widehat{\beta}_2, (\widehat{\alpha\beta})_{13}, (\widehat{\alpha\beta})_{14}, (\widehat{\alpha\beta})_{22}, (\widehat{\alpha\beta})_{32}, (\widehat{\alpha\beta})_{42}$$
 
 # References
