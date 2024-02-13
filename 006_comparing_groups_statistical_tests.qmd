@@ -52,7 +52,7 @@ library(hardhat)
 
 # Purpose
 
--   
+-   Understand the use of statistical tests to identify differences between groups in data
 
 # Consumer segmentation survey
 
@@ -836,9 +836,9 @@ $$\begin{split}
   & j = 1, 2 \\
   & k = 1, \ldots n_{ij} \\
   & \widehat{\mu} = \widehat{\mu}_{11} \\
-  & \widehat{\alpha}_1 = \widehat{\beta}_1 = 0 \\
-  & (\widehat{\alpha\beta})_{11} = (\widehat{\alpha\beta})_{12} = 0 \\ 
-  & (\widehat{\alpha\beta})_{21} = (\widehat{\alpha\beta})_{31} = (\widehat{\alpha\beta})_{41} = 0 
+  & \widehat{\alpha}_2, \widehat{\alpha}_3, \widehat{\alpha}_4 \\
+  & \widehat{\beta}_2 \\ 
+  & (\widehat{\alpha\beta})_{22}, (\widehat{\alpha\beta})_{32}, (\widehat{\alpha\beta})_{42}
   \end{split}$$
 
 $$income_{ijk} - \widehat{income}_{ijk} = \widehat{\epsilon}_{ijk}$$
@@ -849,23 +849,18 @@ $$income_{ijk} - \widehat{income}_{ijk} = \widehat{\epsilon}_{ijk}$$
 
 \tiny
 
-:::: {.columns}
-
+::: columns
 ::: {.column width="40%"}
-
 ```{r}
 #| echo: true
-#| fig-cap: "hello"
 segmentation |> 
   select(income, Segment, ownHome) |> 
   head(n=2) |> 
   glimpse()
 ```
-
 :::
 
 ::: {.column width="50%"}
-
 ```{r}
 #| echo: true
 framed <- model_frame(formula = income ~ 
@@ -879,10 +874,8 @@ model_matrix(terms = framed$terms,
   head(n = 2) |> 
   glimpse()
 ```
-
 :::
-
-::::
+:::
 
 # Consumer segmentation survey
 
@@ -919,6 +912,98 @@ $$\begin{bmatrix}
 
 \footnotesize
 
-$$\widehat{\mu} = \widehat{\mu}_{11}, \widehat{\alpha}_2, \widehat{\beta}_2, (\widehat{\alpha\beta})_{13}, (\widehat{\alpha\beta})_{14}, (\widehat{\alpha\beta})_{22}, (\widehat{\alpha\beta})_{32}, (\widehat{\alpha\beta})_{42}$$
+$$\widehat{\mu} = \widehat{\mu}_{11}, \widehat{\alpha}_2, \widehat{\alpha}_3, \widehat{\alpha}_4, \widehat{\beta}_2, (\widehat{\alpha\beta})_{22}, (\widehat{\alpha\beta})_{32}, (\widehat{\alpha\beta})_{42}$$
+
+# Consumer segmentation survey
+
+-   Testing Multiple Group Means: Analysis of Variance (ANOVA)
+
+\tiny
+
+```{r}
+#| echo: true
+model_aov <- aov(formula = income ~ Segment + ownHome + Segment:ownHome,
+                 data = segmentation)
+coef(model_aov) |> enframe(name = "coef")
+```
+
+# Consumer segmentation survey
+
+-   Testing Multiple Group Means: Analysis of Variance (ANOVA)
+
+\footnotesize
+
+-   Segment
+    
+\tiny
+
+$H_0: \mu_{Moving\;up} = \mu_{Suburb\;mix} = \mu_{Travelers} = \mu_{Urban\;hip}$
+
+$H_1: \text{At least one group mean is different from the rest}$
+
+\footnotesize
+
+-   ownHome
+
+\tiny
+
+$H_0: \mu_{ownNo} = \mu_{ownYes}$
+
+$H_1: \text{At least one group mean is different from the rest}$
+
+\footnotesize
+
+-   Segment, ownHome
+    
+\tiny
+
+$H_0: \mu_{Moving\;up,\;ownNo} - \mu_{Moving\;up,\;ownYes} = \mu_{Suburb\;mix,\;ownNo} - \mu_{Suburb\;mix,\;ownYes} =$
+
+$\;\;\;\;\;\;\;\;\;\mu_{Travelers,\;ownNo} - \mu_{Travelers,\;ownYes} = \mu_{Urban\;hip,\;ownNo} - \mu_{Urban\;hip,\;ownYes}$
+
+$H_1: \text{At least one difference group mean is different from the rest}$
+
+# Consumer segmentation survey
+
+-   Testing Multiple Group Means: Analysis of Variance (ANOVA)
+
+\tiny
+
+```{r}
+#| echo: true
+model_aov |> 
+  anova()
+```
+
+# Consumer segmentation survey
+
+-   Testing Multiple Group Means: Analysis of Variance (ANOVA)
+
+\tiny
+
+```{r}
+#| echo: true
+model_aov <- lm(formula = income ~ -1 + Segment,
+                 data = segmentation) |> 
+  tidy(conf.int = TRUE)
+```
+
+```{r}
+#| echo: false
+#| out.width: 70%
+#| fig-align: center
+model_aov  |> 
+  mutate(term = as_factor(term) |> fct_rev()) |> 
+  ggplot() +
+  geom_segment(aes(x = conf.low, xend = conf.high,  
+                   y = term, yend = term)) +
+  geom_point(aes(x = estimate, y = term),
+             shape = 21, 
+             color = "black", fill = "#E31A1C") +
+  labs(x="Income",
+       y=NULL,
+       title="Average income by segment",
+       subtitle = "95% confidence interval")
+```
 
 # References
