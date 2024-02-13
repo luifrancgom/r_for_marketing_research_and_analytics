@@ -50,14 +50,18 @@ library(tidymodels)
 
 # Purpose
 
+-   
+
+# Amusement park survey
+
 -   **weekend**: whether the visit was on a weekend
 -   **num.child**: number of children in the visit
 -   **distance**: how far the customer traveled to the park in miles
--   **rides**: satisfaction with rides
--   **games**: satisfaction with games
--   **wait**: satisfaction with waiting times
--   **clean**: satisfaction with cleanliness
--   **overall**: overall satisfaction rating
+-   **rides**: satisfaction with rides using a scale [0, 100]
+-   **games**: satisfaction with games using a scale [0, 100]
+-   **wait**: satisfaction with waiting times using a scale [0, 100]
+-   **clean**: satisfaction with cleanliness using a scale [0, 100]
+-   **overall**: overall satisfaction rating using a scale [0, 100]
 
 # Amusement park survey
 
@@ -96,7 +100,7 @@ amusement_park |> head(n = 5)
     -   Ups the table is really big!!! Try it in your console to see the complete table
 
 \tiny
-    
+
 ```{r}
 #| echo: true
 amusement_park |> skim()
@@ -112,6 +116,7 @@ amusement_park |> skim()
 
 ```{r}
 #| echo: true
+#| out-width: 80%
 correlation_matrix <- amusement_park |> 
   select(num.child, rides:logdist) |>
   corrr::correlate()
@@ -128,7 +133,7 @@ correlation_matrix
 
 ```{r}
 #| echo: true
-#| out-width: 65%
+#| out-width: 50%
 #| fig-align: center
 correlation_matrix |> autoplot(triangular = "lower")
 ```
@@ -202,9 +207,7 @@ augment(x = toy_model) |>
 
 -   Linear Model with a Single Predictor
 
-$$overall_{i} = \beta_0 + \beta_1 rides_i + \epsilon_i \text{ where } \epsilon_i \sim \mathcal{N}(0, \sigma^2) \text{ and } i = 1, \ldots, 500$$
-$$\widehat{overall}_{i} = \widehat{\beta}_0 + \widehat{\beta}_1 rides_i \text{ and } \widehat{\sigma}^2 \text{ where } i = 1, \ldots, 500$$
-$$overall_{i} - \widehat{overall}_{i} = \widehat{\epsilon}_i \text{ where } i = 1, \ldots, 500$$
+$$overall_{i} = \beta_0 + \beta_1 rides_i + \epsilon_i \text{ where } \epsilon_i \sim \mathcal{N}(0, \sigma^2) \text{ and } i = 1, \ldots, 500$$ $$\widehat{overall}_{i} = \widehat{\beta}_0 + \widehat{\beta}_1 rides_i \text{ and } \widehat{\sigma}^2 \text{ where } i = 1, \ldots, 500$$ $$overall_{i} - \widehat{overall}_{i} = \widehat{\epsilon}_i \text{ where } i = 1, \ldots, 500$$
 
 \tiny
 
@@ -288,19 +291,19 @@ par(mfrow=c(1,1))
 -   Linear Model with a Single Predictor
 
     -   **Linearity**: plot $(1,1)$
-    
-        -   Reference line should be flat and horizontal   
+
+        -   Reference line should be flat and horizontal
 
     -   **Normality of residuals**: plot $(1,2)$
-    
+
         -   Dots should fall along the line
-        
+
     -   **Homogeneity of variance**: plot $(2,1)$
-    
+
         -   Reference line should be flat and horizontal
-        
+
     -   **Influential observations**: plot $(2,2)$
-    
+
         -   Points should be inside the contour lines
 
 # Amusement park survey
@@ -471,11 +474,104 @@ coefplot(model = model2,
 
 ```{r}
 #| echo: true
+#| out-width: 50%
+#| fig-align: center
 summary(model1)$r.squared
 summary(model2)$r.squared
 summary(model1)$adj.r.squared
 summary(model2)$adj.r.squared
 ```
 
+# Amusement park survey
+
+-   Comparing models
+
+    -   **Base R way**
+
+\tiny
+
+```{r}
+#| echo: true
+#| out-width: 50%
+#| fig-align: center
+plot(x = amusement_park$overall, y = fitted(model1),
+     col = "red", xlim = c(0,100), ylim = c(0,100),
+     xlab = "Actual Overall Satisfaction", 
+     ylab = "Fitted Overall Satisfaction")
+points(x = amusement_park$overall, y = fitted(model2),
+       col = "blue")
+legend(x = "topleft", legend = c("Model 1", "Model 2"), col = c("red", "blue"), pch = 1)
+```
+
+# Amusement park survey
+
+-   Comparing models
+
+    -   **Tidymodels and tidyverse way**: Prepare data
+
+\tiny
+        
+```{r}
+#| echo: true
+model1_augment <- augment(x = model1) |> mutate(model = "Model 1")
+model2_augment <- augment(x = model2) |> mutate(model = "Model 2")
+models_performance <- model1_augment |> bind_rows(model2_augment)
+
+models_performance |> glimpse()
+```
+
+# Amusement park survey
+
+-   Comparing models
+
+    -   **Tidymodels and tidyverse way**: Visualize
+    
+\tiny
+
+```{r}
+#| echo: true
+#| out-width: 50%
+#| fig-align: center
+models_performance |> 
+  ggplot() +
+  geom_point(aes(x = overall, y = .fitted,
+                 color = model)) +
+  labs(x = "Actual Overall Satisfaction",
+       y = "Fitted Overall Satisfaction")
+```
+
+# Amusement park survey
+
+-   Predictions
+
+$$\begin{split}
+   overall_{j} & = \widehat{\beta}_0 + \widehat{\beta}_1 rides_j + \widehat{\beta}_2 games_j \\
+   & + \widehat{\beta}_3 wait_j + \widehat{\beta}_3 clean_j
+   \end{split}$$
+
+\tiny
+
+```{r}
+#| echo: true
+coef(model2) |> enframe(name = "coef")
+```
+
+# Amusement park survey
+
+-   Predictions
+
+    -   Manual   
+
+\tiny
+
+```{r}
+#| echo: true
+(coef(model2)["(Intercept)"] + 
+    coef(model2)["rides"]*30 + 
+    coef(model2)["games"]*10 + 
+    coef(model2)["wait"]*57 + 
+    coef(model2)["clean"])*90 |>
+  unname()
+```
 
 # References
