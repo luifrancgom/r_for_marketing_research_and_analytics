@@ -57,11 +57,11 @@ library(tidymodels)
 -   **weekend**: whether the visit was on a weekend
 -   **num.child**: number of children in the visit
 -   **distance**: how far the customer traveled to the park in miles
--   **rides**: satisfaction with rides using a scale [0, 100]
--   **games**: satisfaction with games using a scale [0, 100]
--   **wait**: satisfaction with waiting times using a scale [0, 100]
--   **clean**: satisfaction with cleanliness using a scale [0, 100]
--   **overall**: overall satisfaction rating using a scale [0, 100]
+-   **rides**: satisfaction with rides using a scale \[0, 100\]
+-   **games**: satisfaction with games using a scale \[0, 100\]
+-   **wait**: satisfaction with waiting times using a scale \[0, 100\]
+-   **clean**: satisfaction with cleanliness using a scale \[0, 100\]
+-   **overall**: overall satisfaction rating using a scale \[0, 100\]
 
 # Amusement park survey
 
@@ -312,7 +312,7 @@ par(mfrow=c(1,1))
 
 $$\begin{split}
    overall_{i} & = \beta_0 + \beta_1 rides_i + \beta_2 games_i \\
-   & + \beta_3 wait_i + \beta_3 clean_i + \epsilon_i \\
+   & + \beta_3 wait_i + \beta_4 clean_i + \epsilon_i \\
    & \text{ where } \epsilon_i \sim \mathcal{N}(0, \sigma^2) \text{ and } i = 1, \ldots, 500
    \end{split}$$
 
@@ -355,11 +355,11 @@ summary(model2)
 
 -   Linear Model with Multiple Predictors
 
-$H_0: \beta_{rides} = 0$
+$H_0: \beta_1 = 0$
 
-$H_1: \beta_{rides} \neq 0$
+$H_1: \beta_1 \neq 0$
 
-$t_{rides} = \frac{\hat{\beta}_{rides} - \beta_{rides}}{\widehat{Var(\hat{\beta}_{rides})}} = \frac{0.529078 - 0}{0.14207176} = 3.724019$
+$t_{rides} = \frac{\hat{\beta}_1 - \beta_1}{\widehat{Var(\hat{\beta}_1)}} = \frac{0.529078 - 0}{0.14207176} = 3.724019$
 
 \tiny
 
@@ -510,7 +510,7 @@ legend(x = "topleft", legend = c("Model 1", "Model 2"), col = c("red", "blue"), 
     -   **Tidymodels and tidyverse way**: Prepare data
 
 \tiny
-        
+
 ```{r}
 #| echo: true
 model1_augment <- augment(x = model1) |> mutate(model = "Model 1")
@@ -525,7 +525,7 @@ models_performance |> glimpse()
 -   Comparing models
 
     -   **Tidymodels and tidyverse way**: Visualize
-    
+
 \tiny
 
 ```{r}
@@ -542,11 +542,92 @@ models_performance |>
 
 # Amusement park survey
 
+-   Comparing models
+
+    -   Analysis of variance (`anova`) for nested models[^1]
+
+[^1]: This statistical analysis only make sense for nested models that are fitted with the same data where the convention is to include the models from smallest to largest. See `?anova.lm`
+
+\tiny
+
+```{r}
+#| echo: true
+anova_lm <- anova(model1, model2, test = "F")
+anova_lm
+```
+
+# Amusement park survey
+
+-   Comparing models
+
+\tiny
+
+$H_0: \beta_0 = \beta_1 = \beta_2 = \beta_3 = \beta_4 = 0$
+
+$H_1: \text{At least one } \beta_j \neq 0 \text{ for } j = 0, 1, 2, 3, 4$
+
+$F = \frac{\frac{RSS_1 - RSS_2}{p_2 - p_1}}{\frac{RSS_2}{n - p_2}} = \frac{\frac{82611.81 - 55531.53}{5 - 2}}{\frac{55531.53}{500 - 5}} = 80.46323$
+
+```{r}
+#| echo: false
+#| out-width: 55%
+#| fig-align: center
+
+df1 <- 3
+df2 <- 495
+f_statistic <- anova_lm |> 
+  tidy() |>
+  select(statistic) |> 
+  pull(1) |> 
+  _[2]
+
+ggplot() + 
+  geom_function(fun=df, args=list(df1=df1, df2=df2, log=FALSE),
+                xlim=c(0,90),
+                color='#2C3E50') +
+  geom_ribbon(data = tibble(x = seq.int(from = qf(p = 0.05,
+                                                  df1 = df1,
+                                                  df2 = df2,
+                                                  lower.tail = FALSE),
+                                        to = 90,
+                                        by = 0.01),
+                            y = df(x = x, df1 = df1, df2 = df2)),
+              aes(x = x, ymin = 0, ymax = y),
+              fill='#E31A1C',
+              alpha=0.1) +
+  geom_vline(xintercept = qf(p = 0.05, df1=df1, df2=df2, lower.tail = FALSE),
+             color="#E31A1C") +
+  geom_vline(xintercept = f_statistic,
+             color="#18BC9C") +
+               scale_x_continuous(breaks = c(qf(p = 0.05, df1 = df1, df2=df2, lower.tail = FALSE),
+                                             f_statistic,
+                                             90),
+                                             labels = scales::label_number(accuracy = 0.1)) +
+                                    labs(x=NULL,
+                                         y=NULL,
+                                         color=NULL,
+                                         title = 'F-squared distribution function',
+                                         subtitle = str_glue('df1={df1},
+                           df2={df2},
+                           Critical value: {qf(p = 0.05, df1=3, df2=495, lower.tail = FALSE) |> round(digits=2)}
+                           F statistic: {f_statistic |> round(digits=2)}')) +
+                                    theme(panel.border      = element_rect(fill = NA, color = "black"),
+                                          plot.background   = element_rect(fill = "#f3fcfc"),
+                                          panel.background  = element_rect(fill = "#f3f7fc"),
+                                          plot.title        = element_text(face = "bold"),
+                                          axis.title        = element_text(face = "bold"),
+                                          legend.title      = element_text(face = "bold"),
+                                          legend.position   = 'bottom',
+                                          axis.text         = element_text(face = "bold"))
+```
+
+# Amusement park survey
+
 -   Predictions
 
 $$\begin{split}
    overall_{j} & = \widehat{\beta}_0 + \widehat{\beta}_1 rides_j + \widehat{\beta}_2 games_j \\
-   & + \widehat{\beta}_3 wait_j + \widehat{\beta}_3 clean_j
+   & + \widehat{\beta}_3 wait_j + \widehat{\beta}_4 clean_j
    \end{split}$$
 
 \tiny
@@ -560,18 +641,83 @@ coef(model2) |> enframe(name = "coef")
 
 -   Predictions
 
-    -   Manual   
+    -   Manual
 
 \tiny
 
 ```{r}
 #| echo: true
-(coef(model2)["(Intercept)"] + 
-    coef(model2)["rides"]*30 + 
-    coef(model2)["games"]*10 + 
-    coef(model2)["wait"]*57 + 
-    coef(model2)["clean"])*90 |>
+(coef(model2)["(Intercept)"]*1 + coef(model2)["rides"]*30 + coef(model2)["games"]*10 + 
+    coef(model2)["wait"]*57 +  coef(model2)["clean"]*90) |>
   unname()
 ```
+
+-   Predictions
+
+    -   Matrix multiplication
+
+```{r}
+#| echo: true
+coef(model2) %*% c(1, 30, 10, 57, 90)
+```
+
+# Amusement park survey
+
+-   Predictions
+
+    -   `predict`
+
+\tiny
+
+```{r}
+#| echo: true
+# New data
+new_data <- tibble(rides = c(30, 70),
+                   games = c(10, 80),
+                   wait =  c(57, 60),
+                   clean = c(90, 93))
+# Result
+predict(object = model2, newdata = new_data) |> 
+  enframe(name = "observation", value = "overall_pred") |>
+  bind_cols(new_data)
+```
+
+# Amusement park survey
+
+-   Standardizing the predictors
+
+    -   Compare the effect that different predictor variables have on a response variable
+    -   It must be interpreted in terms of standard deviations
+        -   One standard deviation in $x$ variable is associated with a standard deviation increase of decrease depending on the value of the estimated parameter 
+
+\tiny
+
+```{r}
+#| echo: true
+amusement_park_std <- amusement_park |> 
+  select(-distance) |> 
+  mutate(across(rides:logdist, 
+                .fns = ~ scale(x = .x, 
+                               center = TRUE, 
+                               scale = TRUE)[,1]))
+amusement_park_std |> head()
+```
+
+# Amusement park survey
+
+-   Standardizing the predictors
+
+\tiny
+
+```{r}
+#| echo: true
+model2_std <- lm(formula = overall ~ rides + games + wait + clean, 
+             data = amusement_park_std)
+summary(model2_std)
+```
+
+# Amusement park survey
+
+-   Using factors as predictors
 
 # References
