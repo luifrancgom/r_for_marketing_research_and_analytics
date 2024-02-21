@@ -35,6 +35,8 @@ bibliography: r_for_marketing_research_and_analytics.bib
 library(tidyverse)
 library(skimr)
 library(tidymodels)
+library(dotwhisker)
+library(kableExtra)
 ```
 
 # Contents
@@ -50,7 +52,7 @@ library(tidymodels)
 
 # Purpose
 
--   
+-   Apply linear modeling to understand a response variable and make predictions of forecasts
 
 # Amusement park survey
 
@@ -719,5 +721,163 @@ summary(model2_std)
 # Amusement park survey
 
 -   Using factors as predictors
+
+\tiny
+
+```{r}
+#| echo: true
+model3 <- lm(formula = overall ~ rides + games + wait + clean + weekend + logdist + num.child,
+             data = amusement_park_std)
+tidy(model3)
+```
+
+```{r}
+#| echo: true
+glance(model3)
+```
+
+# Amusement park survey
+
+-   Using factors as predictors
+
+    -   Overall satisfaction is about the same regardless the number of children
+
+\tiny
+
+```{r}
+#| echo: true
+amusement_park_std <- amusement_park_std |> 
+  mutate(num.child.factor = factor(num.child))
+model4 <- lm(formula = overall ~ rides + games + wait + clean + weekend + logdist + num.child.factor,
+             data = amusement_park_std)
+tidy(model4) |> slice(1, 2, 8:12)
+```
+
+```{r}
+#| echo: true
+glance(model4)
+```
+
+# Amusement park survey
+
+-   Using factors as predictors
+
+    -   Preparing data
+
+\tiny
+
+```{r}
+#| echo: true
+amusement_park_std <- amusement_park_std |>
+  mutate(has.child = factor(x = num.child > 0, labels = c("No", "Yes")))
+model5 <- lm(formula = overall ~ rides + games + wait + clean + logdist + has.child,
+             data = amusement_park_std)
+tidy(model5) |> slice(1, 2, 7)
+```
+
+```{r}
+#| echo: true
+glance(model5)
+```
+
+# Amusement park survey
+
+-   Using factors as predictors
+
+    -   Maybe having children and the visits on weekends are important for the scores so an interaction will be useful
+
+\tiny
+
+```{r}
+#| echo: true
+model6 <- lm(formula = overall ~ rides + games + wait + clean + weekend + logdist + 
+                                 has.child + rides:has.child + games:has.child + wait:has.child + 
+                                 clean:has.child + rides:weekend + games:weekend + wait:weekend + 
+                                 clean:weekend, data = amusement_park_std)
+tidy(model6) |> slice(9:16)
+glance(model6)
+```
+
+# Amusement park survey
+
+-   Using factors as predictors
+
+    -   Only an interaction was significant
+
+\tiny
+
+```{r}
+#| echo: true
+model7 <- lm(formula = overall ~ rides + games + wait + clean + logdist + has.child +
+                       wait:has.child, data = amusement_park_std)
+tidy(model7)
+glance(model7)
+```
+
+# Amusement park survey
+
+-   Using factors as predictors
+
+    -   Final model
+
+\tiny
+
+```{r}
+#| echo: true
+#| out-width: 50%
+#| fig-align: center
+library(dotwhisker)  # Remember to install the package if it is not installed
+tidy(model7) |> 
+  dwplot(ci = 0.95,
+         dot_args = list(size = 2, color = "black"), whisker_args = list(color = "red"),
+         vline = geom_vline(xintercept = 0, color = "black", linetype = 2)) + 
+  labs(x = "Association with Overall Satisfaction", y = "Rating of Feature")
+```
+
+# Amusement park survey
+
+-   Formula syntax
+
+```{r}
+tibble(formula = c("y $\\sim$ x",
+                   "y $\\sim$ -1 + x",
+                   "y $\\sim$ x + z",
+                   "y $\\sim$ x + z + x:z",
+                   "y $\\sim$ x*z",
+                   "y $\\sim$ (x + z + w)$\\^{}$2",
+                   "y $\\sim$ (x + z + w)$\\^{}$2 - x:z",
+                   "y $\\sim$ x + I(x$^2$)"),
+       model = c("$y_i = \\beta_0 + \\beta_1x_i + \\varepsilon_i$",
+                 "$y_i = \\beta_1 x_i + \\varepsilon_i$",
+                 "$y_i = \\beta_0 + \\beta_1 x_i + \\beta_2 z_i + \\varepsilon_i$",
+                 "$y_i = \\beta_0 + \\beta_1 x_i + \\beta_2 z_i + \\beta_3 x_i z_i + \\varepsilon_i$",
+                 "$y_i = \\beta_0 + \\beta_1 x_i + \\beta_2 z_i + \\beta_3 x_i z_i + \\varepsilon_i$",
+                 "$y_i = \\beta_0 + \\beta_1 x_i + \\beta_2 z_i + \\beta_3 w_i + \\beta_4 x_i z_i + \\beta_5 x_i w_i + \\beta_6 w_i z_i + \\varepsilon_i$",
+                 "$y_i = \\beta_0 + \\beta_1 x_i + \\beta_2 z_i + \\beta_3 w_i + \\beta_4 x_i w_i + \\beta_5 w_i z_i + \\varepsilon_i$",
+                 "$y_i = \\beta_0 + \\beta_1x_i + \\beta_1x_i^2 + \\varepsilon_i$")) |> 
+  kbl(format = "latex", 
+      escape = FALSE, booktabs = TRUE, 
+      col.names = c("Formula in R", "Statistical Model"),
+      linesep = "") |> 
+  kable_styling(position = "center", font_size = 7)
+```
+
+- Try the following models using `tidy`:
+
+\tiny
+
+```{r}
+#| echo: true
+#| eval: false
+lm(formula = overall ~ rides, data = amusement_park_std) |> tidy()
+lm(formula = overall ~ -1 + rides, data = amusement_park_std) |> tidy()
+lm(formula = overall ~ rides + has.child, data = amusement_park_std) |> tidy()
+lm(formula = overall ~ rides + has.child + has.child, data = amusement_park_std) |> tidy()
+lm(formula = overall ~ (rides + has.child + weekend)^2, 
+   data = amusement_park_std) |> tidy()
+lm(formula = overall ~ (rides + has.child + weekend)^2 - rides:has.child, 
+   data = amusement_park_std) |> tidy()
+lm(formula = overall ~ rides + I(rides^2) - rides:has.child, data = amusement_park_std) |> tidy()
+```
 
 # References
