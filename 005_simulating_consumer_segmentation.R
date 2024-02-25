@@ -1,4 +1,4 @@
-# Code for: R for Marketing Research and Analytics, 2nd ed: Chapter 4
+# Code for: R for Marketing Research and Analytics, 2nd ed: Chapter 5
 
 # Libraries ----
 library(package = tidyverse)
