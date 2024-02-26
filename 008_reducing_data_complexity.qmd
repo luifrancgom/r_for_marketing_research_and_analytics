@@ -1,0 +1,204 @@
+---
+title: "Reducing Data Complexity"
+author: Luis Francisco Gomez Lopez
+institute: FAEDIS
+date: 2024-02-25 11:43:13
+format:
+  beamer:
+    colortheme: dolphin
+    fonttheme: structurebold
+    theme: AnnArbor
+    urlcolor: blue
+    include-in-header:
+      - text: |
+          \usepackage{booktabs}
+          \usepackage{longtable}
+          \usepackage{array}
+          \usepackage{multirow}
+          \usepackage{wrapfig}
+          \usepackage{float}
+          \usepackage{colortbl}
+          \usepackage{pdflscape}
+          \usepackage{tabu}
+          \usepackage{threeparttable}
+          \usepackage{threeparttablex}
+          \usepackage[normalem]{ulem}
+          \usepackage{makecell}
+          \usepackage{xcolor}
+editor: visual
+bibliography: r_for_marketing_research_and_analytics.bib
+---
+
+```{r}
+#| echo: false
+#| message: false
+library(tidyverse)
+library(skimr)
+library(corrr)
+```
+
+# Contents
+
+-   Please Read Me
+-   Purpose
+-   Consumer brand perception survey
+-   References
+
+# Please Read Me
+
+-   This presentation is based on [@chapman_r_2019, Chapter 8]
+
+# Purpose
+
+-   
+
+# Consumer brand perception survey
+
+-   On a scale from 1 to 10, where 1 is least and 10 is most, how `<perceptual adjective>` is `<brand>`?
+
+-   100 respondents rate 10 brands on 9 perceptual adjectives
+
+    -   **perform**: has strong performance $(1, 2, \ldots, 10)$ 
+    -   **leader**: is a leader in the field $(1, 2, \ldots, 10)$ 
+    -   **latest**: has the latest products $(1, 2, \ldots, 10)$ 
+    -   **fun**: is fun $(1, 2, \ldots, 10)$ 
+    -   **serious**: is serious $(1, 2, \ldots, 10)$ 
+    -   **bargain**: products are a bargain $(1, 2, \ldots, 10)$ 
+    -   **value**: products are a good value $(1, 2, \ldots, 10)$ 
+    -   **trendy**: is trendy $(1, 2, \ldots, 10)$ 
+    -   **rebuy**: I would buy from `<brand>` again $(1, 2, \ldots, 10)$
+    -   **brand**: coffee brand rated by a consumer $(a, b, \ldots, j)$
+
+# Consumer brand perception survey
+
+-   Import data
+
+\tiny
+
+```{r}
+#| echo: true
+consumer_brand <- read_csv("http://goo.gl/IQl8nc")
+consumer_brand |> head(n = 5)
+```
+
+# Consumer brand perception survey
+
+-   Transform data
+
+\tiny
+
+```{r}
+#| echo: true
+consumer_brand_scale <- consumer_brand |> 
+  mutate(across(perform:rebuy, 
+                .fns = ~ scale(x = .x,
+                               center = TRUE,
+                               scale = TRUE)[,1]))
+consumer_brand_scale |> head()
+```
+
+# Consumer brand perception survey
+
+-   Summarize data
+
+    -   Ups the table is really big!!! Try it in your console to see the complete table
+
+\tiny
+
+```{r}
+#| echo: true
+consumer_brand_scale |> skim()
+```
+
+# Consumer brand perception survey
+
+-   Correlation matrices
+
+    -   Pearson correlation coefficients for samples in a tibble
+
+\tiny
+
+```{r}
+#| echo: true
+correlation_matrix <- consumer_brand_scale |> 
+  select(perform:rebuy) |> 
+  correlate(use = "pairwise.complete.obs", # There are NA values
+            method = "pearson",
+            diagonal = NA)
+correlation_matrix # Ups!!! The tibble is wide. Check out the tibble in your console
+```
+
+# Consumer brand perception survey
+
+-   Correlation matrices
+
+    -   Pearson correlation coefficients for samples in a tibble
+
+\tiny
+
+```{r}
+#| echo: true
+#| out-width: 50%
+#| fig-align: center
+correlation_matrix |> 
+  autoplot(method = "HC", # Hierarchical clustering: More details in Chapter 11 
+           triangular = "lower")
+```
+
+# Consumer brand perception survey
+
+-   Mean ratings by brand
+
+\tiny
+
+```{r}
+#| echo: true
+brand_mean <- consumer_brand_scale |> 
+  group_by(brand) |> 
+  summarise(across(everything(), .fns = mean))
+brand_mean
+```
+
+# Consumer brand perception survey
+
+-   Mean ratings by brand
+
+\tiny
+
+```{r}
+#| echo: true
+brand_mean_longer <- brand_mean |> 
+  pivot_longer(cols = perform:rebuy,
+               names_to = "perceptual_adjectives",
+               values_to = "value_mean") |> 
+  mutate(brand = fct_reorder(.f = brand, .x = value_mean),
+         perceptual_adjectives = fct_reorder(.f = perceptual_adjectives, .x = value_mean))
+brand_mean_longer
+```
+
+# Consumer brand perception survey
+
+-   Heat map mean ratings by brand
+
+\tiny
+
+```{r}
+#| echo: true
+#| out-width: 55%
+#| fig-align: center
+brand_mean_longer |> 
+  ggplot(aes(x = perceptual_adjectives, y = brand)) +
+  geom_tile(aes(fill = value_mean), 
+            color = "black") +
+  geom_text(aes(label = round(value_mean, digits = 2)),
+            size = 3) +
+  scale_fill_gradient2()
+```
+
+# Consumer brand perception survey
+
+-   Principal component analysis (PCA) and perceptual maps
+
+
+
+# References
