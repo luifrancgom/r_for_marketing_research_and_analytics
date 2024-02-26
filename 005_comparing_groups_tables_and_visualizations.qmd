@@ -51,7 +51,7 @@ library(tidymodels)
 
 # Purpose
 
--   
+-   Use descriptive summaries by groups and visualize them to investigate differences between groups
 
 # Consumer segmentation survey
 
