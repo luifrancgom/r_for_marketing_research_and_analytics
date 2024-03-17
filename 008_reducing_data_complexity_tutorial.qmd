@@ -1,0 +1,476 @@
+---
+title: "Reducing data complexity"
+format: 
+  pdf:
+    toc: true
+    toc-depth: 4
+    number-sections: true
+    number-depth: 4
+    include-in-header:
+      - text: |
+          \usepackage{amsmath}
+editor: visual
+bibliography: r_for_marketing_research_and_analytics.bib
+---
+
+```{r}
+#| echo: true
+#| message: false
+library(tidyverse)
+library(ade4)
+library(tidymodels)
+library(latex2exp)
+library(imager)
+library(LearnPCA)
+```
+
+# Principal component analysis
+
+This document is a reproduction using the `tidyverse` and `tidymodels` of the `LearnPCA`[^1] package vignettes and adding or deleting information.
+
+[^1]: https://CRAN.R-project.org/package=LearnPCA
+
+## Sources
+
+-   Statquest:
+
+    -   StatQuest: Principal Component Analysis (PCA), Step-by-Step: 
+        -   https://youtu.be/FgakZw6K1QQ?feature=shared
+    -   Principal Components Analysis in R: Step-by-Step Example: 
+        -   https://www.statology.org/principal-components-analysis-in-r/
+    -   PCA in tidyverse framework:       
+        -   https://cmdlinetips.com/2022/12/pca-with-tidyverse/
+    -   Making sense of principal component analysis, eigenvectors & eigenvalues:
+        -   https://stats.stackexchange.com/questions/2691/making-sense-of-principal-component-analysis-eigenvectors-eigenvalues/140579
+        
+    -   Relationship between SVD and PCA. How to use SVD to perform PCA?:
+    
+        -   https://stats.stackexchange.com/questions/134282/relationship-between-svd-and-pca-how-to-use-svd-to-perform-pca
+        
+    -   PCA and UMAP with tidymodels and #TidyTuesday cocktail recipes:
+    
+        -   https://juliasilge.com/blog/cocktail-recipes-umap/
+    
+    -   `LearnPCA`
+    
+        -   https://CRAN.R-project.org/package=LearnPCA
+
+## Data for PCA
+
+-   Samples organized by rows
+-   Variables organized in columns, which are measure for each sample
+
+## Purpose of PCA
+
+-   Data reduction
+
+    -   Identify variables that are not informative
+    -   Collapsing correlating variables
+    
+## What I get from PCA
+
+    -   Indication of how many principal components (PC) are needed to describe the data
+    
+        -   Summary in scree plot (In `broom` we use matrix `d`)
+        
+    -   Scores
+    
+        -   In `broom` matrix `u` 
+        -   Relationships between samples
+        
+    -   Loadings
+    
+        -   In `broom` matrix `v`
+        -   Contributions of the different variables
+
+## Data for the tutorial
+
+```{r}
+data(tintoodiel)
+TO <- tintoodiel$tab |> 
+  as_tibble(rownames = "sites")
+FeCu <- TO |> 
+  select(Fe2O3, Cu) |> 
+  slice(28:43)
+FeCu
+```
+
+### Raw data visualization
+
+```{r}
+#| label: fig-FeCu
+#| fig-cap: The relationship between the raw data values in `FeCu`
+#| fig-align: center 
+FeCu |> 
+  ggplot(aes(x = Fe2O3, y = Cu)) + 
+  geom_point() +
+  labs(x = TeX(r'($Fe_2O_3$ (percent))'),
+       y = TeX(r'($Cu$ (ppm))'))
+```
+
+### Centering the data
+        
+```{r}
+FeCu_centered <- FeCu |> 
+  mutate(across(Fe2O3:Cu, .fns = ~ scale(x = .x, 
+                                         center = TRUE,
+                                         scale = FALSE)[,1]))
+FeCu_centered
+```
+
+### Scaling the data
+
+```{r}
+FeCu_centered_scaled <- FeCu_centered |>
+  mutate(across(Fe2O3:Cu, .fns = ~ scale(x = .x, 
+                                         center = FALSE,
+                                         scale = TRUE)[,1]))
+FeCu_centered_scaled
+```
+
+### Data reduction
+
+#### Using `prcomp`
+
+```{r}
+pca_FeCu <- FeCu_centered_scaled |>
+  prcomp(center = FALSE, scale. = FALSE)
+str(pca_FeCu)
+```
+
+If you compare @fig-FeCu to @fig-scores, it looks broadly similar, but the points are rotated and the scales are
+different.
+
+```{r}
+#| label: fig-scores
+#| fig-cap: Scores
+#| fig-align: center
+
+scores_FeCu <- pca_FeCu |> 
+  tidy(matrix = "u") |> 
+  pivot_wider(id_cols = row, 
+              names_from = PC, 
+              values_from = value,
+              names_glue = "pc_{PC}")
+
+scores_FeCu |> 
+  ggplot(aes(x = pc_1, y = pc_2)) +
+  geom_point() + 
+  labs(x = "PC1", 
+       y = "PC2")
+```
+
+#### Using all the data
+
+```{r}
+pca_TO <- prcomp(select(TO, -sites),
+                 retx = TRUE,
+                 center = TRUE, scale. = TRUE)
+str(pca_TO)
+```
+
+A similar plot of the raw data is not possible, because it is
+not two-dimensional: there are 16 dimensions corresponding to the 16 variables. @fig-scores-total shows the first two principal component scores:
+
+```{r}
+#| label: fig-scores-total
+#| fig-cap: Score plot using all the data
+#| fig-align: center
+
+scores_TO <- pca_TO |> 
+  tidy(matrix = "u") |> 
+  pivot_wider(id_cols = row, 
+              names_from = PC, 
+              values_from = value,
+              names_glue = "pc_{PC}")
+
+scores_TO |> 
+  ggplot(aes(x = pc_1, y = pc_2)) +
+  geom_point() + 
+  labs(x = "PC1", 
+       y = "PC2")
+```
+
+#### What Else is in the PCA Results?
+
+##### `prcomp`
+
+-   `pca_TO$sdev`: standard deviations of the principal components
+-   `pca_TO$rotation`: loadings
+-   `pca_TO$x`: scores
+-   `pca_TO$center`: values used for centering
+-   `pca_TO$scale`: values used for scaling
+
+##### `broom::tidy`
+
+-   `tidy(pca_TO, matrix = "u")`: scores
+-   `tidy(pca_TO, matrix = "v")`: loadings
+-   `tidy(pca_TO, matrix = "d")`: standard deviations of the principal components
+
+#### Scree plot
+
+To obtain the eingevalues you need to extract the `pca_TO$sdev` values and square them to generate @fig-scree-plot.  
+
+```{r}
+#| label: fig-scree-plot
+#| fig-cap: Scree plot
+#| fig-align: center
+eing_TO <- pca_TO |> 
+  tidy(matrix = "d") 
+
+eing_TO |> 
+  mutate(var = std.dev^2) |>  
+  ggplot(aes(x = PC, y = var)) + 
+  geom_col(color = "black") +
+  scale_x_continuous(breaks = eing_TO$PC) + 
+  labs(x = "Principal component",
+       y = "Variance")
+```
+
+#### Loading plot
+
+To generate the plot you choose the first principal component and arrange it as is shown in @fig-loading-plot.
+
+```{r}
+#| label: fig-loading-plot
+#| fig-cap: Plot of the loadings on PC1
+#| fig-align: center
+loading_TO_pc_1 <- pca_TO |> 
+  tidy(matrix = "v") |> 
+  filter(PC == 1) |>
+  arrange(desc(value)) |> 
+  mutate(column = fct_reorder(column, .x = value) |> 
+           fct_rev())
+
+loading_TO_pc_1 |> 
+  ggplot(aes(x = column, y = value)) + 
+  geom_col(color = "black") + 
+  labs(x = NULL,
+       y = NULL) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5))
+```
+
+## Undoing the Scaling
+
+### Perfect reconstruction
+
+```{r}
+#| message: false
+scores <- pca_TO |> 
+  tidy(matrix = "u") |> 
+  pivot_wider(id_cols = row, 
+              names_from = PC,
+              values_from = value,
+              names_glue = "pc_{PC}") |> 
+  select(-row)
+
+loading <- pca_TO |> 
+  tidy(matrix = "v") |> 
+  pivot_wider(id_cols = column,
+              names_from = PC,
+              values_from = value,
+              names_glue = "pc_{PC}") |> 
+  select(-column)
+
+TOhat <- (as.matrix(scores) %*% t(as.matrix(loading))) |> 
+  scale(center = FALSE, scale = 1 / pca_TO$scale) |> 
+  scale(center = -pca_TO$center, scale = FALSE) |> 
+  as_tibble(.name_repair = "unique") |> 
+  set_names(colnames(TO)[-1]) |> 
+  add_column(sites = TO$sites, .before = "SiO2")
+
+mean(as.matrix(select(TO, -sites)) - as.matrix(select(TOhat, -sites)))
+```
+
+## Partial reconstruction
+
+### Example with 3 components
+
+```{r}
+ncomp <- 3
+### Calculate Xhat
+Xhat <- pca_TO$x[, 1:ncomp] %*% t(pca_TO$rotation[, 1:ncomp]) 
+### Undoing the scaling
+Xhat <- scale(x = Xhat, center = FALSE, scale = 1/pca_TO$scale)
+### Undoing the centering
+Xhat <- scale(x = Xhat, center = -pca_TO$center, scale = FALSE)
+### Calculating the original data
+X <- TO |> 
+  select(-sites) |> 
+  as.matrix()
+## Compare original data vs reconstruction
+error <- X - Xhat
+dim(X)
+### Root Mean Squared Deviation (RMSD)
+rmsd <- sqrt(sum(error^2) / length(error))
+rmsd
+```
+
+### Visualizing the Root Mean Squared Deviation (RMSD) by adding components
+
+```{r}
+#| label: fig-rmsd-plot
+#| fig-cap: Reduction of error as the number of components included in the reconstruction increases
+#| fig-align: center
+
+rmsd_tbl <- 1:ncol(X) |> 
+  map(.f = ~ XtoPCAtoXhat(X, .x, sd)) |> 
+  map(.f = ~ .x - X) |> 
+  map(.f = ~ sqrt(sum(.x^2)/length(.x))) |> 
+  enframe(name = "pc", value = "rmsd") |> 
+  unnest(cols = rmsd)
+
+rmsd_tbl |> 
+  ggplot(aes(x = pc, y = rmsd)) + 
+  geom_point(shape = 21, color = "black", 
+             fill = "#E31A1C", size = 3) +
+  geom_line() +
+  scale_x_continuous(breaks = 1:16) +
+  scale_y_continuous(breaks = seq.int(from = 0, 
+                                      to = max(rmsd_tbl$rmsd) |> ceiling(),
+                                      by = 20)) +
+  labs(x = "Principal Component",
+       y = "Root Mean Squared Deviation (RMSD)")
+```
+
+## Image reconstruction
+
+-   Reconstructing Images Using PCA
+
+    -   [https://www.r-bloggers.com/2019/10/reconstructing-images-using-pca/](https://www.r-bloggers.com/2019/10/reconstructing-images-using-pca/)
+    -   [https://kieranhealy.org/blog/archives/2019/10/27/reconstructing-images-using-pca/](https://kieranhealy.org/blog/archives/2019/10/27/reconstructing-images-using-pca/)
+    
+### Sources for images
+
+-   The USC-SIPI Image Database:
+
+    -    	https://sipi.usc.edu/database/ > Miscellaneous
+    
+### Import image
+
+```{r}
+boat_gray <- load.image(file = "images/008_boat_gray_512_x_512.tiff")
+dim(boat_gray)
+str(boat_gray)
+class(boat_gray)
+```
+
+### Express image as data
+
+```{r}
+boat_gray_long <- boat_gray |> 
+  as.data.frame() |> 
+  as_tibble()
+boat_gray_long
+```
+
+### Visualize image
+
+```{r}
+#| fig-align: center
+boat_gray_long |> 
+  ggplot(aes(x = x, y = y)) + 
+  geom_raster(aes(fill = value)) +
+  # We need this part because imager uses 
+  # the following coordinate system
+  ## Top-left origin (0, 0)
+  ## Positive x-coordinates increase rightwards
+  ## Positive y-coordinates increase downwards
+  # However ggplot used the following coordinate
+  # system
+  ## Bottom-left origin (0, 0)
+  ## Positive x-coordinates increase rightwards
+  ## Positive y-coordinates increase upwards
+  scale_y_reverse() +
+  scale_fill_gradient(low = "black", high = "white") +
+  theme(legend.position = "none",
+        aspect.ratio = 1)
+```
+
+### Reconstruction using components
+
+#### Prepare data
+
+```{r}
+boat_gray_wider <- boat_gray_long |>
+  pivot_wider(id_cols = x, 
+              names_from = y, 
+              values_from = value)
+boat_gray_wider
+```
+
+#### Principal component analysis
+
+```{r}
+boat_gray_wider_pca <- boat_gray_wider |> 
+  select(-x) |> 
+  prcomp(retx = TRUE, center = TRUE, scale. = TRUE)
+```
+
+#### Variance explained
+
+```{r}
+boat_gray_pca_variance <- boat_gray_wider_pca |> 
+  tidy(matrix = "d")
+boat_gray_pca_variance
+```
+
+```{r}
+#| fig-align: center
+boat_gray_pca_variance |> 
+  ggplot() + 
+  geom_line(aes(x = PC, y = percent)) + 
+  labs(x = "Principal components",
+       y = "Percentage of variance explained")
+```
+
+#### Result of reconstruction using different number of components
+
+\small
+
+```{r}
+#| fig-align: center
+
+n_pc <- c(1, 5, 10, 50, 100, 500)
+  
+pca_tidy_reconstruction <- tibble(pc = n_pc) |> 
+  mutate(x_hat = map(.x = n_pc, 
+                     .f = ~ boat_gray_wider_pca$x[, 1:.x] %*% 
+                            t(boat_gray_wider_pca$rotation[, 1:.x])),
+         x_hat = map(.x = x_hat,
+                     .f = ~ scale(x = .x, 
+                                  center = FALSE, 
+                                  scale = 1/boat_gray_wider_pca$scale)),
+         x_hat = map(.x = x_hat,
+                     .f = ~ scale(x = .x, 
+                                  center = -boat_gray_wider_pca$center, 
+                                  scale = FALSE)),
+         x_hat = map(.x = x_hat, 
+                     .f = ~ as_tibble(.x)),
+         x_hat = map(.x = x_hat, 
+                     .f = ~ bind_cols(select(boat_gray_wider, x), .x)),
+         x_hat = map(.x = x_hat, 
+                     .f = ~ pivot_longer(.x, 
+                                         cols = -x,
+                                         names_to = "y",
+                                         values_to = "value",
+                                         names_transform = list(y = as.integer)))) |> 
+  mutate(pc_label = str_glue("Number of components: {pc}"),
+         .after = pc) |>
+  mutate(pc_label = fct_reorder(.f = pc_label, .x = pc)) |>  
+  unnest(x_hat)
+
+pca_tidy_reconstruction |> 
+  ggplot(aes(x = x, y = y)) + 
+  geom_raster(aes(fill = value)) +
+  scale_y_reverse() +
+  scale_fill_gradient(low = "black", high = "white") +
+  facet_wrap(facets = vars(pc), 
+             nrow = 2, ncol = 3) +
+  theme(legend.position = "none",
+        aspect.ratio = 1)
+```
+
+# The math behind pca
+
+## Singular value decomposition
