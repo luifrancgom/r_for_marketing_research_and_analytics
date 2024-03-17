@@ -1,0 +1,103 @@
+---
+title: "Segmentation: Clustering"
+author: Luis Francisco Gomez Lopez
+institute: FAEDIS
+date: 2024-03-16 23:06:47
+format:
+  beamer:
+    colortheme: dolphin
+    fonttheme: structurebold
+    theme: AnnArbor
+    link-citations: true
+    linkcolor: blue
+    include-in-header:
+      - text: |
+          \usepackage{booktabs}
+          \usepackage{longtable}
+          \usepackage{array}
+          \usepackage{multirow}
+          \usepackage{wrapfig}
+          \usepackage{float}
+          \usepackage{colortbl}
+          \usepackage{pdflscape}
+          \usepackage{tabu}
+          \usepackage{threeparttable}
+          \usepackage{threeparttablex}
+          \usepackage[normalem]{ulem}
+          \usepackage{makecell}
+          \usepackage{xcolor}
+editor: visual
+bibliography: r_for_marketing_research_and_analytics.bib
+---
+
+```{r}
+#| echo: false
+#| message: false
+library(tidyverse)
+library(skimr)
+```
+
+# Contents
+
+-   Please Read Me
+-   Purpose
+-   Consumer segmentation survey
+-   
+-   References
+
+# Please Read Me
+
+-   This presentation is based on [@chapman_r_2019, Chapter 11]
+
+# Purpose
+
+-   
+
+# Consumer segmentation survey
+
+-   **age**: age of the consumer in years
+-   **gender**: if the consumer is male of female
+-   **income**: yearly disposable income of the consumer
+-   **kids**: number of children of the consumer
+-   **ownHome**: if the consumer owns a home
+-   **subscribe**: if the consumer is subscribed or not
+
+# Consumer segmentation survey
+
+-   **Import data**
+
+\tiny
+
+```{r}
+#| echo: true
+segmentation <- read_csv(file = "http://goo.gl/qw303p") |> 
+  select(-Segment)
+segmentation |> head(n = 5)
+```
+
+# Consumer segmentation survey
+
+-   **Inspect data**
+
+\tiny
+
+```{r}
+#| echo: true
+segmentation |> glimpse()
+```
+
+# Consumer segmentation survey
+
+-   **Summarize data**
+
+    -   Ups the table is really big!!! Try it in your console to see the complete table
+
+\tiny
+
+```{r}
+#| echo: true
+segmentation |> skim()
+```
+
+# References
+
