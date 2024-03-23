@@ -41,15 +41,15 @@ p {
 
         -   *Communication channels \> Link Virtual meetings*
 
-    -   Doubts and concerns of the topics of the course, please use the *Forum: Questions or concerns* that can be accessed at the top of the platform
+    -   For doubts and concerns of the topics of the course you have 2 options:
 
-        -   Talk about `reprex` and **minimal reproducible example**: [**Pending**]{style="color: red;"}
+        -   *GitHub*:
 
-            -   Check this: <https://matthewrocklin.com/minimal-bug-reports.html>
+            -   <https://github.com/luifrancgom/marketing_research_and_analytics> \> Issues \> New Issue
 
-            -   Check this: https://stackoverflow.com/help/minimal-reproducible-example
+            -   You need to create a GitHub account if you don't have it: <https://github.com/> \> Sign up \> *Follow the instructions to create your personal account*
 
-        -   [**Pending**]{style="color: red;"}: In this way, doubts can be shared with all students and all course participants can contribute to the learning process
+        -   *Forum: Questions or concerns* that can be accessed at the top of the platform
 
     -   Complaints regarding grades, please send an email to [**luis.gomezl\@unimilitar.edu.co**](mailto:luis.gomezl@unimilitar.edu.co){.email}
 
@@ -331,6 +331,32 @@ tibble(Week = c(1:9),
 
 -   Students who do not present an activity due to force majeure or illness, must send the respective excuse scanned through the [**luis.gomezl\@unimilitar.edu.co**](mailto:luis.gomezl@unimilitar.edu.co){.email}. If it is not sent, the note will be zero. Once the excuse has been satisfactorily received, the student should **not** present the activity and the corresponding grade will be equal to the immediately subsequent grade obtained in the next activity presented
 
+# Software
+
+## Install locally
+
+-   R (programming language)
+
+    -   <https://cloud.r-project.org/> \> Download and Install R \> *Choose your operating system and follow the instructions*
+
+-   RStudio IDE (integrated development environment)
+
+    -   Free desktop edition
+
+        -   <https://posit.co/download/rstudio-desktop/> \> *Choose your operating system and follow the instructions*
+
+-   Quarto (open-source scientific and technical publishing system)
+
+    -   <https://quarto.org/docs/download/> \> Pre-release vX.X.X[^1] \> *Choose your operating system and follow the instructions*
+
+[^1]: Quarto is constantly changing, so vX.X.X means the pre-release version that is available at the time of download 
+
+## Using a cloud-based solution
+
+-   <https://posit.cloud/> \> Get Started \> Cloud Free \> Learn more \> Sign Up
+
+    -   If you use this option after opening the account check out <https://posit.cloud/learn/guide> for getting started and using it
+
 # Use of Chat GPT-3, GPT-4, Gemini 1.5, LLaMA 2 and its friends
 
 You can use any artificial intelligence tool and in particular any Large Language Model where this practice is encourage when learning R or another programming language like Python or Julia. However, please use them in a responsible way by taking into account its capabilities and limitations and always pointing out to the professor and your colleges that you have use them.
@@ -344,7 +370,7 @@ Or you can run a Large Language Model locally, like CodeLlama 7B, using:
 
 -   <https://lmstudio.ai/>
 
-If you use the last option remember that you are using your personal computer so depending on the specifications of your machine you will be able to use the chosen model
+If you use the last option remember that you are using your personal computer so depending on the specifications of your machine you will or not will be able to use the chosen model
 
 # Study material
 
@@ -354,7 +380,7 @@ If you use the last option remember that you are using your personal computer so
 
     -   Complete route:
 
-        -   <https://www.umng.edu.co/inicio> \> Biblioteca \> Bases virtuales y libros electrónicos \> S \> Springer Link \> Ingresar usuario y contraseña [^1] \> Search "R For Marketing Research and Analytics" \> R For Marketing Research and Analytics Book 2019 [^2]
+        -   <https://www.umng.edu.co/inicio> \> Biblioteca \> Bases virtuales y libros electrónicos \> S \> Springer Link \> Ingresar usuario y contraseña [^2] \> Search "R For Marketing Research and Analytics" \> R For Marketing Research and Analytics Book 2019 [^3]
 
     -   Direct link:
 
@@ -368,17 +394,15 @@ If you use the last option remember that you are using your personal computer so
             -   Data: <https://r-marketing.r-forge.r-project.org/data.html>
             -   Exercices and solutions: <https://r-marketing.r-forge.r-project.org/exercises/index.html>
 
-[^1]: Remember that the user and password to access and read the e-book are the same that you use to check your grades
+[^2]: Remember that the user and password to access and read the e-book are the same that you use to check your grades
 
-[^2]: Download the book in your preferred format from the available options
+[^3]: Download the book in your preferred format from the available options
 
 ## Support material
 
 -   Quarto
 
     -   <https://quarto.org/>
-
-        -   Download: <https://quarto.org/docs/download/index.html> \> Pre-release vX.X.X
 
         -   Get started with Rstudio: <https://quarto.org/docs/get-started/hello/rstudio.html>
 
@@ -404,4 +428,4 @@ If you use the last option remember that you are using your personal computer so
 
 *"Hacer plagio en cualquier tipo de documento o desplegar alguna conducta dolosa que viole el régimen de propiedad intelectual de la Universidad."*
 
-# Study material references
+# References
