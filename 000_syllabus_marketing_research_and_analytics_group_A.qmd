@@ -20,7 +20,7 @@ editor: visual
 
 ```{r libraries}
 library(tidyverse)
-library(gt)
+library(kableExtra)
 ```
 
 ```{css}
@@ -39,13 +39,15 @@ p {
 
     -   Every Saturday between 08:00 hours and 09:45 hours:
 
-        -   *Primer Corte 30% \> Virtual Meetings \> Meeting hours with students*
+        -   *Communication channels \> Link Virtual meetings*
 
     -   Doubts and concerns of the topics of the course, please use the *Forum: Questions or concerns* that can be accessed at the top of the platform
 
         -   Talk about `reprex` and **minimal reproducible example**: [**Pending**]{style="color: red;"}
 
             -   Check this: <https://matthewrocklin.com/minimal-bug-reports.html>
+
+            -   Check this: https://stackoverflow.com/help/minimal-reproducible-example
 
         -   [**Pending**]{style="color: red;"}: In this way, doubts can be shared with all students and all course participants can contribute to the learning process
 
@@ -100,12 +102,28 @@ Develop skills in programming, statistics, and data analysis to solve business p
 # Generate a section for the exercises
 # See https://github.com/quarto-dev/quarto-cli/issues/3340
 tibble(Week = c(1:9),
-       Material       = c(rep("[@chapman_r_2019]", 
-                              times = 9)),
-       `Chapter`        = c("1", "2", "3", "4", "5", "6", "7", "8", "11")) |> 
-  gt() |> 
-  fmt_markdown() |> 
-  as_raw_html()
+       Material = rep("[@chapman_r_2019]", 
+                      times = 9),
+       Chapter = c(1:8, 11),
+       Pages = c("1-12", 
+                 "13-37, 41-43, 44-45",
+                 "49-60, 62-69, 71-73, 75-77",
+                 "79-101, 103-104, 106-109",
+                 "111-132",
+                 "133-145, 153-155",
+                 "157-183, 185-189",
+                 "193-206, 217-220",
+                 "299-313, 336, 338-339"),
+       Exercises = c("", 
+                     "1-8",
+                     "1-10",
+                     "1-10, 12-15",
+                     "1-7",
+                     "1-9",
+                     "1-12",
+                     "1-7",
+                     "1-5")) |> 
+  kable()
 ```
 
 ### Primer corte 30%
@@ -276,7 +294,7 @@ tibble(Week = c(1:9),
         -   **Prerequisites**:
             -   Read and review [@chapman_r_2019, Chapter 11]
             -   Have a headset with a built-in microphone to isolate noise from the environment
-            
+
 -   May 31
 
     -   **Segmentation: Clustering and Classification**
@@ -313,11 +331,24 @@ tibble(Week = c(1:9),
 
 -   Students who do not present an activity due to force majeure or illness, must send the respective excuse scanned through the [**luis.gomezl\@unimilitar.edu.co**](mailto:luis.gomezl@unimilitar.edu.co){.email}. If it is not sent, the note will be zero. Once the excuse has been satisfactorily received, the student should **not** present the activity and the corresponding grade will be equal to the immediately subsequent grade obtained in the next activity presented
 
-# Use of Chat GPT-3, PaLM 2 (used in BART) and its friends
+# Use of Chat GPT-3, GPT-4, Gemini 1.5, LLaMA 2 and its friends
 
-You can use any artificial intelligence tool and in particular any Large Language Model but please use them in a responsible way by taking into account its capabilities and limitations and always pointing out to the professor and your colleges that you have use them
+You can use any artificial intelligence tool and in particular any Large Language Model where this practice is encourage when learning R or another programming language like Python or Julia. However, please use them in a responsible way by taking into account its capabilities and limitations and always pointing out to the professor and your colleges that you have use them.
+
+If you have not used any Large Language Model you can try opening an account, for example in:
+
+-   <https://chat.openai.com>
+-   <https://gemini.google.com/>
+
+Or you can run a Large Language Model locally, like CodeLlama 7B, using:
+
+-   <https://lmstudio.ai/>
+
+If you use the last option remember that you are using your personal computer so depending on the specifications of your machine you will be able to use the chosen model
 
 # Study material
+
+## Principal material
 
 -   [@chapman_r_2019, Chapters 1-8, 11]
 
@@ -329,14 +360,39 @@ You can use any artificial intelligence tool and in particular any Large Languag
 
         -   <https://doi-org.ezproxy.umng.edu.co/10.1007/978-3-030-14316-9>
 
+    -   Book companion website:
+
+        -   <https://r-marketing.r-forge.r-project.org/>
+
+            -   Code: <https://r-marketing.r-forge.r-project.org/code.html>
+            -   Data: <https://r-marketing.r-forge.r-project.org/data.html>
+            -   Exercices and solutions: <https://r-marketing.r-forge.r-project.org/exercises/index.html>
+
 [^1]: Remember that the user and password to access and read the e-book are the same that you use to check your grades
 
 [^2]: Download the book in your preferred format from the available options
 
-```{r}
-# include the part about the site of the book
-# https://r-marketing.r-forge.r-project.org/index.html
-```
+## Support material
+
+-   Quarto
+
+    -   <https://quarto.org/>
+
+        -   Download: <https://quarto.org/docs/download/index.html> \> Pre-release vX.X.X
+
+        -   Get started with Rstudio: <https://quarto.org/docs/get-started/hello/rstudio.html>
+
+        -   Guide: <https://quarto.org/docs/guide/> \> Documents \> HTML
+
+        -   Reference: <https://quarto.org/docs/reference/> \> Documents \> HTML
+
+-   StatQuest with Josh Starmer
+
+    -   [https://www.youtube.com/\@statquest](https://www.youtube.com/@statquest){.uri}
+
+        -   Video index
+
+            -   <https://statquest.org/> \> Video Index
 
 # About plagiarism
 
