@@ -50,6 +50,7 @@ rsconnect/
 
 # Quarto files
 /.quarto/
+**/.quarto/
 
 # Files related to the course
 000_book/
