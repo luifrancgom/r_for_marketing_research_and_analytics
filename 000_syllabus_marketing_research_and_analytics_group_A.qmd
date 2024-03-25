@@ -289,7 +289,7 @@ tibble(Week = c(1:9),
 
 -   May 29
 
-    -   **Segmentation: Clustering and Classification**
+    -   **Segmentation: Clustering**
         -   **Meeting time**: 19:00 - 20:30 hours
         -   **Prerequisites**:
             -   Read and review [@chapman_r_2019, Chapter 11]
@@ -297,7 +297,7 @@ tibble(Week = c(1:9),
 
 -   May 31
 
-    -   **Segmentation: Clustering and Classification**
+    -   **Segmentation: Clustering**
         -   **Meeting time**: 19:00 - 20:30 hours
         -   **Prerequisites**:
             -   Read and review [@chapman_r_2019, Chapter 11]
@@ -349,7 +349,7 @@ tibble(Week = c(1:9),
 
     -   <https://quarto.org/docs/download/> \> Pre-release vX.X.X[^1] \> *Choose your operating system and follow the instructions*
 
-[^1]: Quarto is constantly changing, so vX.X.X means the pre-release version that is available at the time of download 
+[^1]: Quarto is constantly changing, so vX.X.X means the pre-release version that is available at the time of download
 
 ## Using a cloud-based solution
 
