@@ -63,6 +63,7 @@ rsconnect/
 000_syllabus/
 000_contacts.txt
 000_items_about_R.txt
+000_files_course/
 
 005_sentiment_analysis/
 005_for_loop_if_block.R

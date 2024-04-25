@@ -75,8 +75,8 @@ library(skimr)
         -   Extremely satisfied: 5
         -   Very satisfied: 4
         -   Moderately satisfied: 3
-        -   Very satisfied: 2
-        -   Extremely satisfied: 1
+        -   Very unsatisfied: 2
+        -   Extremely unsatisfied: 1
         -   NA: customer did not response the survey
 
 # CRM system data
