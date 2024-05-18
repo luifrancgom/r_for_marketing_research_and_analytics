@@ -361,7 +361,7 @@ $H_0: \beta_1 = 0$
 
 $H_1: \beta_1 \neq 0$
 
-$t_{rides} = \frac{\hat{\beta}_1 - \beta_1}{\widehat{Var(\hat{\beta}_1)}} = \frac{0.529078 - 0}{0.14207176} = 3.724019$
+$t_{rides} = \frac{\hat{\beta}_1 - \beta_1}{\sqrt{\widehat{Var(\hat{\beta}_1)}}} = \frac{0.529078 - 0}{0.14207176} = 3.724019$
 
 \tiny
 
@@ -628,7 +628,7 @@ ggplot() +
 -   Predictions
 
 $$\begin{split}
-   overall_{j} & = \widehat{\beta}_0 + \widehat{\beta}_1 rides_j + \widehat{\beta}_2 games_j \\
+   \widehat{overall}_{j} & = \widehat{\beta}_0 + \widehat{\beta}_1 rides_j + \widehat{\beta}_2 games_j \\
    & + \widehat{\beta}_3 wait_j + \widehat{\beta}_4 clean_j
    \end{split}$$
 
@@ -690,7 +690,7 @@ predict(object = model2, newdata = new_data) |>
 
     -   Compare the effect that different predictor variables have on a response variable
     -   It must be interpreted in terms of standard deviations
-        -   One standard deviation in $x$ variable is associated with a standard deviation increase of decrease depending on the value of the estimated parameter 
+        -   One standard deviation in $x$ variable is associated with a standard deviation increase of decrease depending on the value of the estimated parameter
 
 \tiny
 
@@ -862,7 +862,7 @@ tibble(formula = c("y $\\sim$ x",
   kable_styling(position = "center", font_size = 7)
 ```
 
-- Try the following models using `tidy`:
+-   Try the following models using `tidy`:
 
 \tiny
 
