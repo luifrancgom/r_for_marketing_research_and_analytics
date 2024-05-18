@@ -35,6 +35,8 @@ bibliography: r_for_marketing_research_and_analytics.bib
 #| message: false
 library(tidyverse)
 library(skimr)
+library(latex2exp)
+library(kableExtra)
 ```
 
 # Contents
@@ -42,7 +44,6 @@ library(skimr)
 -   Please Read Me
 -   Purpose
 -   Consumer segmentation survey
--   
 -   References
 
 # Please Read Me
@@ -51,7 +52,7 @@ library(skimr)
 
 # Purpose
 
--   
+-   Find groups of customers that differ in different dimensions to engage in more effective promotion
 
 # Consumer segmentation survey
 
@@ -71,7 +72,7 @@ library(skimr)
 ```{r}
 #| echo: true
 segmentation <- read_csv(file = "http://goo.gl/qw303p") |> 
-  select(-Segment)
+  select(-Segment) # Remove Segment column to understand how it was build
 segmentation |> head(n = 5)
 ```
 
@@ -88,6 +89,23 @@ segmentation |> glimpse()
 
 # Consumer segmentation survey
 
+-   Transform data
+
+\tiny
+
+```{r}
+#| echo: true
+segmentation <- segmentation |>
+  mutate(gender = factor(gender, ordered = FALSE),
+         kids = as.integer(kids),
+         ownHome = factor(ownHome, ordered = FALSE),
+         subscribe = factor(subscribe, ordered = FALSE))
+
+segmentation |> head(n = 5)
+```
+
+# Consumer segmentation survey
+
 -   **Summarize data**
 
     -   Ups the table is really big!!! Try it in your console to see the complete table
@@ -99,5 +117,546 @@ segmentation |> glimpse()
 segmentation |> skim()
 ```
 
-# References
+# Consumer segmentation survey
 
+**Segmentation**
+
+-   Classification (**We will not cover this topic**)
+
+    -   Supervised learning
+
+        -   Dependent variable is known and the goal is to predict the dependent variable from the independent variables
+
+        -   Naive bayes, Random Forest
+
+-   Classification (**This topic will be covered**)
+
+    -   Unsupervised learning
+
+        -   Dependent variable is unknown and the goal is to discover it from the independent variables
+
+        -   Model-based clustering, (**We will not cover these methods**)
+
+        -   Hierarchical clustering, k-means (**These methods will be covered**)
+
+# Consumer segmentation survey
+
+-   Clustering
+
+    -   Grouping a set of observations in such a way that observations in the same group (cluster) are more similar to each other than to those in other groups (clusters).
+
+    -   A notation of how **"close"** 2 observations is necessary to group objects where this is formalized using the concept of **distance** (know as metric[^1] in mathematics)
+
+        -   There are many notations of distance [@deza_encyclopedia_2016] where in this chapter the **Euclidean** and the **Gower** distance will be used
+
+[^1]: <https://en.wikipedia.org/wiki/Metric_space>
+
+# Consumer segmentation survey
+
+-   **Euclidean distance**: it can only be used for numerical data
+
+    -   $x = (x_1, x_2, \ldots, x_n)$
+    -   $y = (y_1, y_2, \ldots, y_n)$
+
+$$\begin{split}
+  d(x,y) & = \sqrt{(x_1 - y_1)^2 + (x_2 - y_2)^2 + \ldots + (x_n - y_n)^2} \\
+  & = \sqrt{ \sum_{k = 1}^n (x_k - y_k)^2 }
+  \end{split}$$
+
+-   An example:
+
+    -   2 customers characteristic by age and income
+
+        -   $a = (45, 3500)$
+        -   $b = (23, 1500)$
+
+# Consumer segmentation survey
+
+-   Manual calculation
+
+    -   $d(a,b) = \sqrt{(45 - 23)^2 + (3500 - 1500)^2} = 2000.121$
+
+```{r}
+#| out-width: 60%
+#| fig-align: center
+
+customers <- tibble(Age = c(45, 23),
+                    Income = c(3500, 1500),
+                    Customer = c("a", "b"))
+
+customers |> 
+  ggplot(aes(x = Age, y = Income)) + 
+  geom_point(aes(fill = Customer),
+             shape = 21, color = "black",
+             size = 3) + 
+  annotate(geom = "segment",
+           x = 23, xend = 45,
+           y = 1500, yend = 1500,
+           color = "#2C3E50",
+           linetype = "dashed") + 
+  annotate(geom = "segment",
+           x = 45, xend = 45,
+           y = 1500, yend = 3500,
+           color = "#2C3E50",
+           linetype = "dashed") + 
+  annotate(geom = "segment",
+           x = 23, xend = 45,
+           y = 1500, yend = 3500,
+           color = "#E31A1C") + 
+  annotate(geom = "text",
+           x = 35, y = 2500,
+           label = TeX(r'($\sqrt{(45 - 23)^2 + (3500 - 1500)^2}$)'),
+           vjust = -2,
+           angle = 37) + 
+  scale_x_continuous(breaks = customers$Age) +
+  scale_y_continuous(breaks = customers$Income) + 
+  labs(title = "Euclidean distance")
+```
+
+# Consumer segmentation survey
+
+-   Using R
+
+\tiny
+
+```{r}
+#| echo: true
+customers <- tibble(Customer = c("a", "b"),
+                    Age = c(45, 23),
+                    Income = c(3500, 1500))
+customers
+```
+
+```{r}
+#| echo: true
+library(cluster)
+customers |> 
+  select(-Customer) |> 
+  daisy(metric = "euclidean")
+```
+
+# Consumer segmentation survey
+
+-   **Gower distance**: it can be used for categorical, numerical data and missing values
+
+    -   $x = (x_1, x_2, \ldots, x_n)$
+    -   $y = (y_1, y_2, \ldots, y_n)$
+
+\tiny
+
+$$\begin{split}
+  d(x,y) & = \left[ \frac{w_1\delta_{x_1y_1}^k}{\sum_{k=1}^n w_k\delta_{x_iy_i}^k}\right] d_{x_1y_1}^1 + \left[ \frac{w_2\delta_{x_2y_2}^k}{\sum_{k=1}^n w_k\delta_{x_iy_i}^k} \right] d_{x_2y_2}^2 + \ldots + \left[ \frac{w_n\delta_{x_ny_n}^k}{\sum_{k=1}^n w_k\delta_{x_iy_i}^k} \right] d_{x_ny_n}^n \\ 
+  & = \frac{\sum_{k=1}^n w_k \delta_{x_iy_i}^kd_{x_iy_i}^k}{\sum_{k=1}^n w_k\delta_{x_iy_i}^k}
+  \end{split}$$
+
+\scriptsize
+
+Where:
+
+\footnotesize
+
+$$w_k \in \mathbb{R} \text{ for } k = 1, 2, \ldots, n$$
+
+$$\sum_{k=1}^n w_k\delta_{x_iy_i}^k = w_1\delta_{x_1y_1}^1 + w_2\delta_{x_2y_2}^2 + \ldots + w_n\delta_{x_ny_n}^n$$
+
+# Consumer segmentation survey
+
+-   **Gower distance**: it can be used for categorical, numerical data and missing values
+
+    -   $x = (x_1, x_2, \ldots, x_n)$
+    -   $y = (y_1, y_2, \ldots, y_n)$
+
+$$d(x,y) = \frac{\sum_{k=1}^n w_k \delta_{x_ky_k}^kd_{x_ky_k}^k}{\sum_{k=1}^n w_k\delta_{x_ky_k}^k}$$
+
+\scriptsize
+
+Where[^2]:
+
+[^2]: See [@kaufman_finding_1990, pp. 25-27] for a definition of **asymmetric binary variable**
+
+\footnotesize
+
+$$\delta_{x_ky_k}^k = 
+  \begin{cases}
+   0 & \text{if } x_k \text{ or } y_k \text{ is a missing value}\\
+   0 & \text{if } x_k, y_k \text{ represent an  asymmetric binary variable and } x_k = y_k = 0 \\
+   1 & \text{otherwise}
+  \end{cases}$$
+
+# Consumer segmentation survey
+
+-   **Gower distance**: it can be used for categorical, numerical data and missing values
+
+    -   $x = (x_1, x_2, \ldots, x_n)$
+    -   $y = (y_1, y_2, \ldots, y_n)$
+
+$$d(x,y) = \frac{\sum_{k=1}^n w_k \delta_{x_ky_k}^kd_{x_ky_k}^k}{\sum_{k=1}^n w_k\delta_{x_ky_k}^k}$$
+
+\scriptsize
+
+Where:
+
+\tiny
+
+$$d_{x_ky_k}^k = 
+  \begin{cases}
+   0 & \text{if } x_k, y_k \text{ represent a nominal or binary variable and } x_k = y_k \\
+   1 & \text{if } x_k, y_k \text{ represent a nominal or binary variable and } x_k \neq y_k \\
+   \frac{\left| x_k - y_k \right|}{max(x_k, y_k) - min(x_k, y_k)} & \text{otherwise}
+  \end{cases}$$
+
+\scriptsize
+
+If $x_k, y_k$ represent an ordinal variable they are replaced by their integer codes. For example if $x_k \precsim y_k$ then $1$ is assigned to $x_k$ and $2$ is assigned to $y_k$
+
+# Consumer segmentation survey
+
+-   An example:
+
+    -   2 customers characteristic by sex (nominal), income (numerical), satisfaction (ordinal with levels $Low \precsim Medium \precsim High$) and age (with a missing value $(NA)$)
+
+        -   $a = (Female, 3500, Medium, 45)$
+        -   $b = (Male, 1500, High, NA)$
+
+-   Manual calculation:
+
+    -   In R $w_k = 1$ for every $k$ as a default value where in this example $k = 1, 2, 3, 4$
+
+    -   $\sum_{k=1}^4 w_k\delta_{x_ky_k}^k = 1*1 + 1*1 + 1*1 + 1*0 = 1 + 1 + 1 + 0 = 3$
+
+    -   $\sum_{k=1}^4 w_k \delta_{x_ky_k}^kd_{x_ky_k}^k = 1*1 + 1*\frac{\left| 3500 - 1500 \right|}{3500 - 1500} + 1*\frac{\left| 2 - 3 \right|}{3 - 2} + 0 = 3$
+
+    -   $d(x,y) = \frac{\sum_{k=1}^4 w_k \delta_{x_ky_k}^kd_{x_ky_k}^k}{\sum_{k=1}^4 w_k\delta_{x_ky_k}^k} = \frac{3}{3} = 1$
+
+# Consumer segmentation survey
+
+-   **Gower distance** range:
+
+    -   $d(x,y) \in [0,1]$
+    -   If $d(x,y) \longrightarrow 0$ is more similar
+    -   If $d(x,y) \longrightarrow 1$ is more dissimilar
+
+-   Using R
+
+\tiny
+
+```{r}
+#| echo: true
+customers2 <- tibble(Customer = c("a", "b"),
+                     Sex = c("Female", "Male"),
+                     Income = c(3500, 1500),
+                     Satisfaction = c("Medium", "High"),
+                     Age = c(45, NA)) |> 
+  mutate(Sex = factor(x = Sex, 
+                      ordered = FALSE),
+         Satisfaction = factor(x = Satisfaction, 
+                               levels = c("Low", "Medium", "High"),
+                               ordered = TRUE))
+customers2
+```
+
+# Consumer segmentation survey
+
+-   Using R
+
+\tiny
+
+```{r}
+#| echo: true
+customers2 |>
+  select(-Customer) |>
+  daisy(metric = "gower")
+```
+
+\normalsize
+
+-   In this case:
+
+    -   `Metric: mixed` because it includes categorical and numerical data
+
+    -   For `Types = N, I, O, I` check out `?cluster::dissimilarity.object`[^3]
+
+        -   `N`: Nominal (factor)
+        -   `I`: Interval scaled (numeric)
+        -   `O`: Ordinal (ordered factor)
+
+[^3]: See [@stevens_theory_1946] and [Level of measurement](https://en.wikipedia.org/wiki/Level_of_measurement)
+
+# Consumer segmentation survey
+
+-   Using R
+
+\tiny
+
+```{r}
+#| echo: true
+customers2 |>
+  select(-Customer) |>
+  daisy(metric = "gower")
+```
+
+\normalsize
+
+-   In this case:
+
+    -   `Number of objects : 2`
+
+        -   There are 2 observations that correspond to customers **a** and **b**: $a = (Female, 3500, Medium, 45)$ and $b = (Male, 1500, High, NA)$
+
+# Consumer segmentation survey
+
+-   The original dissimilarity matrix is of dimension $300 \times 300$
+
+    -   Showing only the relation between the first $5$ observations
+
+    -   The position $(i,j)$ means the dissimilarity between the observations $i$ and $j$
+
+        -   For example $(4, 3)$, which is equal to $0.425$, is the dissimilarity between the observations $4$ and $3$
+
+\tiny
+
+```{r}
+#| echo: true
+segmentation_dist <- segmentation |> 
+  daisy(metric = "gower")
+
+segmentation_dist |> 
+  as.matrix() |> 
+  as_tibble() |> 
+  select(`1`:`5`) |> 
+  slice(1:5)
+```
+
+# Consumer segmentation survey
+
+\tiny
+
+```{r}
+#| echo: true
+customers3 <- tibble(Customer = c("a", "b", "c", "d", "e"),
+                     Sex = c("Female", "Male", "Female", "Female", "Male"),
+                     Income = c(3500, 1500, 200, 450, 5000),
+                     Satisfaction = c("Medium", "High", "Low", "Low", "Medium"),
+                     Age = c(45, NA, 34, 23, 55)) |> 
+  mutate(Sex = factor(x = Sex, 
+                      ordered = FALSE),
+         Satisfaction = factor(x = Satisfaction, 
+                               levels = c("Low", "Medium", "High"),
+                               ordered = TRUE))
+
+customers3
+```
+
+# Consumer segmentation survey
+
+-   Hierarchical clustering
+
+    -   **Method**: Complete Linkage Clustering
+
+\tiny
+
+```{r}
+#| echo: true
+customers3_dist <- daisy(x = select(customers3, -Customer),
+                        metric = "gower")
+
+customers3_dist
+
+customers3_hc <- hclust(d = customers3_dist, 
+                        method = "complete")
+
+customers3_hc
+```
+
+# Consumer segmentation survey
+
+-   Hierarchical clustering
+
+    -   **Method**: Complete Linkage Clustering
+
+\tiny
+
+```{r}
+#| echo: true
+#| out-width: 65%
+#| fig-align: center
+
+plot(customers3_hc)
+```
+
+# Consumer segmentation survey
+
+-   Compare each observation and find the pair that is more similar
+
+```{r}
+data_frame <- customers3_dist |> 
+  as.matrix() |> 
+  as.data.frame() |> 
+  mutate(` ` = 1:5, .before = `1`) |> 
+  mutate(across(.cols = `1`:`5`, 
+                .fns = ~ round(x = .x,
+                               digits = 8)))
+
+data_frame[4, 4] <- cell_spec(data_frame[4, 4],
+                              background = "#2C3E50",
+                              color = "white")
+
+data_frame |> 
+  kbl(booktabs = TRUE, 
+      escape = FALSE, align = "r") |> 
+  kable_styling()
+```
+
+# Consumer segmentation survey
+
+-   Now we have the first cluster that includes the observations $3$ and $4$: $C(3,4)$
+
+-   Then we need to create clusters with observations $1$, $2$ and $5$ and the cluster $C(3,4)$
+
+    -   How we compare a cluster with an observation
+    
+        -   **Complete Linkage Clustering**: Use the maximum distance between an observation and an observation that belongs to the cluster
+        
+# Consumer segmentation survey
+
+-   Compare each observation, including the clusters build, and find the pair that is more similar
+
+    -   In our case $1$, $2$, $5$ and $C(3,4)$
+    
+        -   The distance between $1$ and $C(3,4)$ is $0.45572917$  
+        -   The distance between $2$ and $C(3,4)$ is $0.7569444$
+        -   The distance between $5$ and $C(3,4)$ is $0.8619792$
+    
+```{r}
+data_frame[5, 2] <- cell_spec(data_frame[5, 2],
+                              background = "#E31A1C",
+                              color = "white")
+
+data_frame |> 
+  kbl(booktabs = TRUE, 
+      escape = FALSE, align = "r") |> 
+  kable_styling()
+```
+
+# Consumer segmentation survey
+
+-   Now we have the second cluster that includes the observations $1$ and $5$: $C(1,5)$
+
+-   Then we need to create clusters with observation $2$ and clusters $C(3,4)$ and $C(1,5)$
+
+    -   How we compare a cluster with another cluster
+    
+        -   **Complete Linkage Clustering**: Use the maximum distance between an observation that belongs to the first cluster and an observation that belongs to the second cluster
+
+# Consumer segmentation survey
+
+-   Compare each observation, including the clusters build, and find the pair that is more similar
+
+    -   In our case $2$, $C(3,4)$ and $C(1,5)$
+    
+        -   The distance between $2$ and $C(3,4)$ is $0.7569444$  
+        -   The distance between $2$ and $C(1,5)$ is $0.6388889$
+
+```{r}
+data_frame[2, 2] <- cell_spec(data_frame[2, 2],
+                              background = "#18BC9C",
+                              color = "white")
+
+data_frame |> 
+  kbl(booktabs = TRUE, 
+      escape = FALSE, align = "r") |> 
+  kable_styling()
+```
+
+# Consumer segmentation survey
+
+-   Now we have the third cluster that includes the observation $2$ and the cluster $C(1,5)$: $C(2, C(1,5))$
+
+-   Then we need to create clusters with cluster $C(2, C(1,5))$ and cluster $C(3,4)$
+
+    -   This is the cluster that includes all the observations
+
+# Consumer segmentation survey
+
+-   Compare each observation, including the clusters build, and find the pair that is more similar
+
+    -   In our case $C(3,4)$ and $C(2, C(1,5))$
+
+        -   The distance between $C(3,4)$ and $C(2, C(1,5))$ is $0.86197917$
+        
+```{r}
+data_frame[5, 5] <- cell_spec(data_frame[5, 5],
+                              background = "#CCBE93",
+                              color = "white")
+
+data_frame |> 
+  kbl(booktabs = TRUE, 
+      escape = FALSE, align = "r") |> 
+  kable_styling()
+```
+
+-   The heights of the **Cluster Dendrogram** are: $0.09895833$, $0.40625$, $0.63888889$ and $0.86197917$
+
+# Consumer segmentation survey
+
+-   Select a number of clusters, for example: $2$ clusters
+
+\tiny
+
+```{r}
+#| echo: true
+#| out-width: 65%
+#| fig-align: center
+
+plot(customers3_hc)
+rect.hclust(customers3_hc, k = 2, border = "red")
+```
+
+# Consumer segmentation survey
+
+-   Extract clusters and assign them to observations
+
+\tiny
+
+```{r}
+#| echo: true
+customers3_hc_clusters <- cutree(customers3_hc, k = 2)
+customers3 |> 
+  mutate(cluster = customers3_hc_clusters)
+```
+
+# Consumer segmentation survey
+
+-   Select a number of clusters, using `segmentation`, for example: $4$ clusters
+
+\tiny
+
+```{r}
+#| echo: true
+#| out-width: 60%
+#| fig-align: center
+
+segmentation_hc <- hclust(d = segmentation_dist,
+                          method = "complete")
+plot(segmentation_hc)
+rect.hclust(segmentation_hc, k = 4, border = "red")
+```
+
+# Consumer segmentation survey
+
+-   Extract clusters and assign them to observations, using `segmentation`
+
+\tiny
+
+```{r}
+#| echo: true
+segmentation_hc_clusters <- cutree(segmentation_hc, k = 4)
+segmentation |> 
+  mutate(cluster = segmentation_hc_clusters)
+```
+
+# Consumer segmentation survey
+
+
+
+# References
