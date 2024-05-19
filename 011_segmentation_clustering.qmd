@@ -33,10 +33,12 @@ bibliography: r_for_marketing_research_and_analytics.bib
 ```{r}
 #| echo: false
 #| message: false
+
 library(tidyverse)
 library(skimr)
 library(latex2exp)
 library(kableExtra)
+library(ggforce)
 ```
 
 # Contents
@@ -514,19 +516,19 @@ data_frame |>
 -   Then we need to create clusters with observations $1$, $2$ and $5$ and the cluster $C(3,4)$
 
     -   How we compare a cluster with an observation
-    
+
         -   **Complete Linkage Clustering**: Use the maximum distance between an observation and an observation that belongs to the cluster
-        
+
 # Consumer segmentation survey
 
 -   Compare each observation, including the clusters build, and find the pair that is more similar
 
     -   In our case $1$, $2$, $5$ and $C(3,4)$
-    
-        -   The distance between $1$ and $C(3,4)$ is $0.45572917$  
+
+        -   The distance between $1$ and $C(3,4)$ is $0.45572917$\
         -   The distance between $2$ and $C(3,4)$ is $0.7569444$
         -   The distance between $5$ and $C(3,4)$ is $0.8619792$
-    
+
 ```{r}
 data_frame[5, 2] <- cell_spec(data_frame[5, 2],
                               background = "#E31A1C",
@@ -545,7 +547,7 @@ data_frame |>
 -   Then we need to create clusters with observation $2$ and clusters $C(3,4)$ and $C(1,5)$
 
     -   How we compare a cluster with another cluster
-    
+
         -   **Complete Linkage Clustering**: Use the maximum distance between an observation that belongs to the first cluster and an observation that belongs to the second cluster
 
 # Consumer segmentation survey
@@ -553,8 +555,8 @@ data_frame |>
 -   Compare each observation, including the clusters build, and find the pair that is more similar
 
     -   In our case $2$, $C(3,4)$ and $C(1,5)$
-    
-        -   The distance between $2$ and $C(3,4)$ is $0.7569444$  
+
+        -   The distance between $2$ and $C(3,4)$ is $0.7569444$\
         -   The distance between $2$ and $C(1,5)$ is $0.6388889$
 
 ```{r}
@@ -583,7 +585,7 @@ data_frame |>
     -   In our case $C(3,4)$ and $C(2, C(1,5))$
 
         -   The distance between $C(3,4)$ and $C(2, C(1,5))$ is $0.86197917$
-        
+
 ```{r}
 data_frame[5, 5] <- cell_spec(data_frame[5, 5],
                               background = "#CCBE93",
@@ -657,6 +659,371 @@ segmentation |>
 
 # Consumer segmentation survey
 
+-   K-means clustering example [@kaufman_finding_1990, pp. 5]
 
+\tiny
+
+```{r}
+#| echo: true
+
+kaufman_example <- tibble(name = c("Ilan", "Jacqueline", "Kim", "Lieve", "Leon", "Peter", "Talia", "Tina"),
+                          weight_kg = c(15, 49, 13, 45, 85, 66, 12, 10),
+                          height_cm = c(95, 156, 95, 160, 178, 176, 90, 78))
+
+kaufman_example
+```
+
+
+# Consumer segmentation survey
+
+-   K-means clustering example [@kaufman_finding_1990, pp. 5]
+
+\tiny
+
+```{r}
+#| echo: true
+#| out-width: 60%
+#| fig-align: center
+
+kaufman_example |> 
+  ggplot() + 
+  geom_point(aes(x = weight_kg, y = height_cm))
+```
+
+# Consumer segmentation survey
+
+-   K-means clustering example [@kaufman_finding_1990, pp. 5]
+
+    -   Applying the **[Lloyd's algorithm](https://en.wikipedia.org/wiki/K-means_clustering)**
+    
+        -   Choose $k$ centers or the computer will choose $k$ centers at random, in our case we choose $k = 2$
+    
+```{r}
+#| echo: false
+#| out-width: 60%
+#| fig-align: center
+
+centers_named <- matrix(data = c(40, 150, 80, 150), 
+                        nrow = 2, byrow = TRUE,
+                        dimnames = list(1:2,
+                                        c("weight_kg", "height_cm"))) |> 
+  as_tibble() |> 
+  mutate(Center = factor(x = 1:2, ordered = FALSE))
+
+kaufman_example |> 
+  ggplot() + 
+  geom_point(aes(x = weight_kg, y = height_cm)) + 
+  geom_point(data = centers_named,
+             aes(x = weight_kg, y = height_cm,
+                 fill = Center), 
+                 size = 6, shape = 21, color = "black")
+```
+
+# Consumer segmentation survey
+
+-   K-means clustering example [@kaufman_finding_1990, pp. 5]
+
+    -   Applying the **[Lloyd's algorithm](https://en.wikipedia.org/wiki/K-means_clustering)**
+    
+        -   Calculate the squared euclidean distance for each point to the $k$ centers and assign each point to the nearest center
+        
+        -   For example for the point $Ilan = (15, 95)$ the distance to $Center_1 = (40, 150)$ is $(15 - 40)^2 + (95 - 150)^2 = 3650$ and the distance to $Center_2 = (80, 150)$ is $(15 - 80)^2 + (95 - 150)^2 = 7250$
+        
+        -   Therefore $Ilan = (15, 95)$ is assigned to $Center_1$
+
+# Consumer segmentation survey
+
+-   K-means clustering example [@kaufman_finding_1990, pp. 5]
+
+    -   Applying the **[Lloyd's algorithm](https://en.wikipedia.org/wiki/K-means_clustering)**
+        
+```{r}
+#| echo: false
+#| out-width: 60%
+#| fig-align: center
+
+kaufman_example <- kaufman_example |> 
+  mutate(x_center1 = 40,
+         y_center1 = 150,
+         x_center2 = 80,
+         y_center2 = 150,
+         dist_center1 = (weight_kg - x_center1)^2 + ( height_cm - y_center1)^2,
+         dist_center2 = (weight_kg - x_center2)^2 + ( height_cm - y_center2)^2,
+         Center = if_else(condition = dist_center1 < dist_center2,
+                          true = 1, false = 2) |> factor(ordered = FALSE)) |>
+  select(-c(dist_center1:dist_center2))
+
+kaufman_example |> 
+  ggplot() + 
+  geom_point(aes(x = weight_kg, y = height_cm,
+                 color = Center)) + 
+  geom_point(data = centers_named,
+             aes(x = weight_kg, y = height_cm,
+                 fill = Center), 
+             size = 6, shape = 21, color = "black")
+```
+
+# Consumer segmentation survey
+
+-   K-means clustering example [@kaufman_finding_1990, pp. 5]
+
+    -   Applying the **[Lloyd's algorithm](https://en.wikipedia.org/wiki/K-means_clustering)**
+    
+        -   Now calculate new centers using the assigned points by using the mean
+        
+        -   For example for the new $Center_1$ the new position will be $x = \frac{15 + 49 + 13 + 45 + 12 + 10}{6} = 24$ and $y = \frac{95 + 156 + 95 + 160 + 90 + 78}{6} \approx 112.33$
+        
+        -   Therefore we update as $Center_1 \approx (24, 112.33)$
+
+# Consumer segmentation survey
+
+-   K-means clustering example [@kaufman_finding_1990, pp. 5]
+
+    -   Applying the **[Lloyd's algorithm](https://en.wikipedia.org/wiki/K-means_clustering)**
+        
+```{r}
+#| echo: false
+#| out-width: 60%
+#| fig-align: center
+
+kaufman_example <- kaufman_example |> 
+  mutate(x_center1 = 
+           mean(x = kaufman_example$weight_kg[kaufman_example$Center == 1]),
+         y_center1 = mean(kaufman_example$height_cm[kaufman_example$Center == 1]),
+         x_center2 = mean(x = kaufman_example$weight_kg[kaufman_example$Center == 2]),
+         y_center2 = mean(kaufman_example$height_cm[kaufman_example$Center == 2])) |> 
+  select(weight_kg:y_center2)
+
+centers_named <- matrix(data = c(unique(kaufman_example$x_center1),
+                                 unique(kaufman_example$y_center1),
+                                 unique(kaufman_example$x_center2),
+                                 unique(kaufman_example$y_center2)),
+                        nrow = 2, byrow = TRUE,
+                        dimnames = list(1:2,
+                                        c("weight_kg", "height_cm"))) |>
+  as_tibble() |>
+  mutate(Center = factor(x = 1:2, ordered = FALSE))
+
+kaufman_example |>
+  ggplot() +
+  geom_point(aes(x = weight_kg, y = height_cm)) +
+  geom_point(data = centers_named,
+             aes(x = weight_kg, y = height_cm,
+                 fill = Center),
+             size = 6, shape = 21, color = "black")
+```
+
+# Consumer segmentation survey
+
+-   K-means clustering example [@kaufman_finding_1990, pp. 5]
+
+    -   Applying the **[Lloyd's algorithm](https://en.wikipedia.org/wiki/K-means_clustering)**
+    
+    -   Repeat the process by calculating the squared euclidean distance for each point to the new $k$ centers and assign each point to the nearest center
+
+```{r}
+#| echo: false
+#| out-width: 55%
+#| fig-align: center
+
+kaufman_example <- kaufman_example |> 
+  mutate(dist_center1 = (weight_kg - x_center1)^2 + ( height_cm - y_center1)^2,
+         dist_center2 = (weight_kg - x_center2)^2 + ( height_cm - y_center2)^2,
+         Center = if_else(condition = dist_center1 < dist_center2,
+                          true = 1, false = 2) |> factor(ordered = FALSE)) |>
+  select(-c(dist_center1:dist_center2))
+
+kaufman_example |> 
+  ggplot() + 
+  geom_point(aes(x = weight_kg, y = height_cm,
+                 color = Center)) + 
+  geom_point(data = centers_named,
+             aes(x = weight_kg, y = height_cm,
+                 fill = Center), 
+             size = 6, shape = 21, color = "black")
+```
+
+# Consumer segmentation survey
+
+-   K-means clustering example [@kaufman_finding_1990, pp. 5]
+
+    -   Applying the **[Lloyd's algorithm](https://en.wikipedia.org/wiki/K-means_clustering)**
+    
+    -   Repeat the process until the $k$ centers don't change and assign each point to the nearest final center
+
+```{r}
+#| echo: false
+#| out-width: 60%
+#| fig-align: center
+
+kaufman_example <- kaufman_example |> 
+  mutate(x_center1 = 
+           mean(x = kaufman_example$weight_kg[kaufman_example$Center == 1]),
+         y_center1 = mean(kaufman_example$height_cm[kaufman_example$Center == 1]),
+         x_center2 = mean(x = kaufman_example$weight_kg[kaufman_example$Center == 2]),
+         y_center2 = mean(kaufman_example$height_cm[kaufman_example$Center == 2])) |> 
+  select(weight_kg:y_center2) |> 
+  mutate(dist_center1 = (weight_kg - x_center1)^2 + ( height_cm - y_center1)^2,
+         dist_center2 = (weight_kg - x_center2)^2 + ( height_cm - y_center2)^2,
+         Center = if_else(condition = dist_center1 < dist_center2,
+                          true = 1, false = 2) |> factor(ordered = FALSE)) |>
+  select(-c(dist_center1:dist_center2))
+
+centers_named <- matrix(data = c(unique(kaufman_example$x_center1),
+                                 unique(kaufman_example$y_center1),
+                                 unique(kaufman_example$x_center2),
+                                 unique(kaufman_example$y_center2)),
+                        nrow = 2, byrow = TRUE,
+                        dimnames = list(1:2,
+                                        c("weight_kg", "height_cm"))) |>
+  as_tibble() |>
+  mutate(Center = factor(x = 1:2, ordered = FALSE))
+
+kaufman_example |> 
+  ggplot() + 
+  geom_point(aes(x = weight_kg, y = height_cm,
+                 color = Center),
+             show.legend = FALSE) + 
+  geom_point(data = centers_named,
+             aes(x = weight_kg, y = height_cm,
+                 fill = Center), 
+             size = 6, shape = 21, color = "black",
+             alpha = 0.5) +
+  geom_mark_rect(aes(x = weight_kg, y = height_cm,
+                     color = Center),
+                 expand = unit(2, "mm"),
+                 show.legend = FALSE)
+```
+
+# Consumer segmentation survey
+
+-   K-means clustering example [@kaufman_finding_1990, pp. 5]
+
+    -   Applying the **[Hartigan-Wong algorithm](https://en.wikipedia.org/wiki/K-means_clustering)**
+    
+\tiny
+
+```{r}
+#| echo: true
+
+kaufman_example_kmeans <- kaufman_example |> 
+  select(weight_kg, height_cm) |> 
+  kmeans(centers = 2, 
+         algorithm = "Hartigan-Wong") # R uses this algorithm by default
+
+kaufman_example_kmeans
+```
+
+# Consumer segmentation survey
+
+-   Extract clusters and assign them to observations
+
+\tiny
+
+```{r}
+#| echo: false
+
+kaufman_example <- tibble(name = c("Ilan", "Jacqueline", "Kim", "Lieve", "Leon", "Peter", "Talia", "Tina"),
+                          weight_kg = c(15, 49, 13, 45, 85, 66, 12, 10),
+                          height_cm = c(95, 156, 95, 160, 178, 176, 90, 78))
+```
+
+```{r}
+#| echo: true
+
+kaufman_example_kmeans_clusters <- kaufman_example |> 
+  mutate(cluster = kaufman_example_kmeans$cluster)
+kaufman_example_kmeans_clusters
+```
+
+# Consumer segmentation survey
+
+-   Select a number of clusters, using `segmentation`, for example: 4 clusters
+
+    -   k-means only work with numerical data
+    
+    -   A possible solution is to transform categorical data into numerical data
+    
+        -   If a variable is nominal only works if you have 2 categories
+        -   If a variable is ordinal you assume that the notion of distance between them is constant or you need to specify integers to determine what distance is appropiate
+        -   Also you need to scale the variables taking into account that you are mixing categorical and numerical variables
+        
+# Consumer segmentation survey
+
+-   Convert binary nominal data to numerical data
+
+    -   Only make sense when you have 2 categories
+
+\tiny
+
+```{r}
+#| echo: true
+
+segmentation_numeric <- segmentation |> 
+  mutate(gender = as.integer(gender),
+         ownHome = as.integer(ownHome),
+         subscribe = as.integer(subscribe))
+
+segmentation_numeric
+```
+
+# Consumer segmentation survey
+
+-   Scale data to map each variable to a common scale
+
+    -   We are going to scale each variable to $[0,1]$
+    
+        -   Use `across` and `rescale`
+
+\tiny
+
+```{r}
+#| echo: true
+
+segmentation_numeric_scale <- segmentation_numeric |> 
+  mutate(across(.cols = age:subscribe,
+                # scales is a package that is 
+                # installed with the tidyverse
+                # but it is not loaded automatically
+                # You can use a particular function of a package using the notation
+                ## <package>::<function>
+                .fns = scales::rescale))
+
+segmentation_numeric_scale |> head()
+```
+
+# Consumer segmentation survey
+
+-   Apply k-means with $k = 4$ and **[Hartigan-Wong algorithm](https://en.wikipedia.org/wiki/K-means_clustering)**
+
+    -   k-means start with $k = 4$ random centers so you need to fix this initial decision using `set.seed` if the clusters tend to change
+
+\tiny
+
+```{r}
+#| echo: true
+set.seed(seed = 1234)
+
+segmentation_numeric_scale_kmeans <- segmentation_numeric_scale |> 
+  kmeans(centers = 4, 
+         algorithm = "Hartigan-Wong")
+
+segmentation_numeric_scale_kmeans |> str()
+```
+
+# Consumer segmentation survey
+
+-   Extract clusters and assign them to observations
+
+\tiny
+
+```{r}
+#| echo: true
+
+segmentation_kmeans_clusters <- segmentation |> 
+  mutate(cluster = segmentation_numeric_scale_kmeans$cluster)
+
+segmentation_kmeans_clusters
+```
 
 # References
