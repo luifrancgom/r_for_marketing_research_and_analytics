@@ -149,7 +149,7 @@ segmentation |> skim()
 
     -   A notation of how **"close"** 2 observations is necessary to group objects where this is formalized using the concept of **distance** (know as metric[^1] in mathematics)
 
-        -   There are many notations of distance [@deza_encyclopedia_2016] where in this chapter the **Euclidean** and the **Gower** distance will be used
+        -   There are many notions of distance [@deza_encyclopedia_2016] where in this chapter the **Euclidean** and the **Gower** distance will be used
 
 [^1]: <https://en.wikipedia.org/wiki/Metric_space>
 
@@ -673,7 +673,6 @@ kaufman_example <- tibble(name = c("Ilan", "Jacqueline", "Kim", "Lieve", "Leon",
 kaufman_example
 ```
 
-
 # Consumer segmentation survey
 
 -   K-means clustering example [@kaufman_finding_1990, pp. 5]
@@ -694,10 +693,10 @@ kaufman_example |>
 
 -   K-means clustering example [@kaufman_finding_1990, pp. 5]
 
-    -   Applying the **[Lloyd's algorithm](https://en.wikipedia.org/wiki/K-means_clustering)**
-    
+    -   Applying the [**Lloyd's algorithm**](https://en.wikipedia.org/wiki/K-means_clustering)
+
         -   Choose $k$ centers or the computer will choose $k$ centers at random, in our case we choose $k = 2$
-    
+
 ```{r}
 #| echo: false
 #| out-width: 60%
@@ -723,20 +722,20 @@ kaufman_example |>
 
 -   K-means clustering example [@kaufman_finding_1990, pp. 5]
 
-    -   Applying the **[Lloyd's algorithm](https://en.wikipedia.org/wiki/K-means_clustering)**
-    
+    -   Applying the [**Lloyd's algorithm**](https://en.wikipedia.org/wiki/K-means_clustering)
+
         -   Calculate the squared euclidean distance for each point to the $k$ centers and assign each point to the nearest center
-        
+
         -   For example for the point $Ilan = (15, 95)$ the distance to $Center_1 = (40, 150)$ is $(15 - 40)^2 + (95 - 150)^2 = 3650$ and the distance to $Center_2 = (80, 150)$ is $(15 - 80)^2 + (95 - 150)^2 = 7250$
-        
+
         -   Therefore $Ilan = (15, 95)$ is assigned to $Center_1$
 
 # Consumer segmentation survey
 
 -   K-means clustering example [@kaufman_finding_1990, pp. 5]
 
-    -   Applying the **[Lloyd's algorithm](https://en.wikipedia.org/wiki/K-means_clustering)**
-        
+    -   Applying the [**Lloyd's algorithm**](https://en.wikipedia.org/wiki/K-means_clustering)
+
 ```{r}
 #| echo: false
 #| out-width: 60%
@@ -767,20 +766,20 @@ kaufman_example |>
 
 -   K-means clustering example [@kaufman_finding_1990, pp. 5]
 
-    -   Applying the **[Lloyd's algorithm](https://en.wikipedia.org/wiki/K-means_clustering)**
-    
+    -   Applying the [**Lloyd's algorithm**](https://en.wikipedia.org/wiki/K-means_clustering)
+
         -   Now calculate new centers using the assigned points by using the mean
-        
+
         -   For example for the new $Center_1$ the new position will be $x = \frac{15 + 49 + 13 + 45 + 12 + 10}{6} = 24$ and $y = \frac{95 + 156 + 95 + 160 + 90 + 78}{6} \approx 112.33$
-        
+
         -   Therefore we update as $Center_1 \approx (24, 112.33)$
 
 # Consumer segmentation survey
 
 -   K-means clustering example [@kaufman_finding_1990, pp. 5]
 
-    -   Applying the **[Lloyd's algorithm](https://en.wikipedia.org/wiki/K-means_clustering)**
-        
+    -   Applying the [**Lloyd's algorithm**](https://en.wikipedia.org/wiki/K-means_clustering)
+
 ```{r}
 #| echo: false
 #| out-width: 60%
@@ -817,8 +816,8 @@ kaufman_example |>
 
 -   K-means clustering example [@kaufman_finding_1990, pp. 5]
 
-    -   Applying the **[Lloyd's algorithm](https://en.wikipedia.org/wiki/K-means_clustering)**
-    
+    -   Applying the [**Lloyd's algorithm**](https://en.wikipedia.org/wiki/K-means_clustering)
+
     -   Repeat the process by calculating the squared euclidean distance for each point to the new $k$ centers and assign each point to the nearest center
 
 ```{r}
@@ -847,8 +846,8 @@ kaufman_example |>
 
 -   K-means clustering example [@kaufman_finding_1990, pp. 5]
 
-    -   Applying the **[Lloyd's algorithm](https://en.wikipedia.org/wiki/K-means_clustering)**
-    
+    -   Applying the [**Lloyd's algorithm**](https://en.wikipedia.org/wiki/K-means_clustering)
+
     -   Repeat the process until the $k$ centers don't change and assign each point to the nearest final center
 
 ```{r}
@@ -899,8 +898,8 @@ kaufman_example |>
 
 -   K-means clustering example [@kaufman_finding_1990, pp. 5]
 
-    -   Applying the **[Hartigan-Wong algorithm](https://en.wikipedia.org/wiki/K-means_clustering)**
-    
+    -   Applying the [**Hartigan-Wong algorithm**](https://en.wikipedia.org/wiki/K-means_clustering)
+
 \tiny
 
 ```{r}
@@ -941,13 +940,13 @@ kaufman_example_kmeans_clusters
 -   Select a number of clusters, using `segmentation`, for example: 4 clusters
 
     -   k-means only work with numerical data
-    
+
     -   A possible solution is to transform categorical data into numerical data
-    
+
         -   If a variable is nominal only works if you have 2 categories
         -   If a variable is ordinal you assume that the notion of distance between them is constant or you need to specify integers to determine what distance is appropiate
         -   Also you need to scale the variables taking into account that you are mixing categorical and numerical variables
-        
+
 # Consumer segmentation survey
 
 -   Convert binary nominal data to numerical data
@@ -972,7 +971,7 @@ segmentation_numeric
 -   Scale data to map each variable to a common scale
 
     -   We are going to scale each variable to $[0,1]$
-    
+
         -   Use `across` and `rescale`
 
 \tiny
@@ -994,7 +993,7 @@ segmentation_numeric_scale |> head()
 
 # Consumer segmentation survey
 
--   Apply k-means with $k = 4$ and **[Hartigan-Wong algorithm](https://en.wikipedia.org/wiki/K-means_clustering)**
+-   Apply k-means with $k = 4$ and [**Hartigan-Wong algorithm**](https://en.wikipedia.org/wiki/K-means_clustering)
 
     -   k-means start with $k = 4$ random centers so you need to fix this initial decision using `set.seed` if the clusters tend to change
 
