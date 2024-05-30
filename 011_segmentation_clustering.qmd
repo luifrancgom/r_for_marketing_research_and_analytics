@@ -131,13 +131,13 @@ segmentation |> skim()
 
         -   Naive bayes, Random Forest
 
--   Classification (**This topic will be covered**)
+-   Clustering (**This topic will be covered**)
 
     -   Unsupervised learning
 
         -   Dependent variable is unknown and the goal is to discover it from the independent variables
 
-        -   Model-based clustering, (**We will not cover these methods**)
+        -   Model-based clustering, Latent Class Analysis (**We will not cover these methods**)
 
         -   Hierarchical clustering, k-means (**These methods will be covered**)
 
@@ -147,7 +147,7 @@ segmentation |> skim()
 
     -   Grouping a set of observations in such a way that observations in the same group (cluster) are more similar to each other than to those in other groups (clusters).
 
-    -   A notation of how **"close"** 2 observations is necessary to group objects where this is formalized using the concept of **distance** (know as metric[^1] in mathematics)
+    -   A notion of how **"close"** 2 observations is necessary to group objects where this is formalized using the concept of **distance** (known as metric[^1] in mathematics)
 
         -   There are many notions of distance [@deza_encyclopedia_2016] where in this chapter the **Euclidean** and the **Gower** distance will be used
 
