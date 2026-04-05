@@ -51,28 +51,3 @@ rsconnect/
 # Quarto files
 /.quarto/
 **/.quarto/
-
-# Files related to the course
-000_book/
-000_comites_umng/
-000_learning_plan/
-000_papers/
-000_prerrequisitos_umng/
-000_promocion_electiva/
-000_resources/
-000_syllabus/
-000_contacts.txt
-000_items_about_R.txt
-000_files_course/
-
-005_sentiment_analysis/
-005_for_loop_if_block.R
-007_notas_clase_jhonier_sebastian_rangel_gutierrez/
-006_about_the_binomial_cumulative_distribution_function.txt
-006_anova.txt
-006_change_of_variable_in_a_probability_density_function.txt
-006_cumulative_distribution_function_student_distribution.txt
-006_f_distribution.txt
-006_p_value_definition.txt
-006_toy_data_anova.csv
-006_understanding_two_way_anova.R
