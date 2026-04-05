@@ -25,26 +25,6 @@ Your team is assigned to complete 2 tasks:
 
 -   Support the marketing team in the creation of a marketing segmentation clustering model by using data collected from to the bicycle shops to offer more personalized products and messaging them.
 
-# Packages
-
-You will need to install a set of packages that are going to be used along the course to extend the functionality of R. You can find the packages that are going to be used in 2 locations. Choose the option of your preference:
-
--   <https://github.com/luifrancgom/marketing_research_and_analytics/> \> 000_packages_for_the_course \> 001_script_install_packages.R
-
--   Primer Corte 30% \> Learning Resources \> Support material \> Packages for the course \> 001_script_install_packages.R
-
-Run the full script using RStudio IDE to install the packages. If you get the following message: **Do you want to install from source the packages which need compilation?**, just say no and keep going.
-
--   If you are curious about this message check out this [post](https://forum.posit.co/t/meaning-of-common-message-when-install-a-package-there-are-binary-versions-available-but-the-source-versions-are-later/2431) and the answer by Jenny Bryan
-
--   If you understand what is the meaning of **built from source locally** and you want to do this just install the following tools:
-
-    -   For **Windows Users**: <https://cran.r-project.org/bin/windows/Rtools/> \> *Choose the RTools version according to your R version* (type `R.version` in the RStudio console if you don't remember the R version you have installed)
-
-    -   For **Mac Users**: <https://mac.r-project.org/tools/> \> Tools \> Mandatory tools \> *Install the tools that are pointed out in this page*
-
-    -   For **Linux Users**: probably you know what you are doing where with high probability you will need to always **built from source locally**. If you need help I can assist you if you have installed Ubuntu and are stuck
-
 # Data
 
 The data collected by the corporation is available in the `sweep` package
@@ -62,8 +42,8 @@ library(DT)
 
 dim(bike_sales)
 
-bike_sales |> 
-  head() |> 
+bike_sales |>
+  head() |>
   datatable()
 ```
 
@@ -72,12 +52,17 @@ Each observation corresponds to a closed order. A closed order is a completed tr
 For example, the first 2 rows corresponds to a closed order where a bike shop named **Ithaca Mountain Climbers** bought 2 models: **Jekyll Carbon 2** and **Trigger Carbon 2**. The `order.id` is identify as `1` and the `order.line` variable has a value of `1` and `2` taking into account that `1` (see the `quantity` variable) **Jekyll Carbon 2** and `1` (see the `quantity` variable) **Trigger Carbon 2** model were acquired at a price of `6070` and `5970`.
 
 ```{r}
-bike_sales |> 
-  select(order.date, 
-         order.id, order.line, 
-         quantity, price,
-         customer.id, bikeshop.name,
-         model) |> 
+bike_sales |>
+  select(
+    order.date,
+    order.id,
+    order.line,
+    quantity,
+    price,
+    customer.id,
+    bikeshop.name,
+    model
+  ) |>
   datatable()
 ```
 
@@ -85,7 +70,7 @@ You can use the following command inside RStudio IDE to inspect all the columns 
 
 ```{r}
 #| eval: false
-bike_sales |> 
+bike_sales |>
   View()
 ```
 
