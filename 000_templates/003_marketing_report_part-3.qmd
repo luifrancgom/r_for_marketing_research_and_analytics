@@ -23,9 +23,9 @@ editor: source
 # Check out https://quarto.org/docs/reference/formats/html.html
 ## to examine all the possible options for html documents
 
-# You can control the execution options of each code 
+# You can control the execution options of each code
 # chunk
-## For more information check out 
+## For more information check out
 ### https://quarto.org/docs/computations/execution-options.html
 # You can include the libraries you are going to use here
 library(sweep)
@@ -64,19 +64,19 @@ Brake the process in 2 steps:
 
 ## You can proceed in the following way
 ### This is only a template you can modify the code
-### if you want to add or apply another way to 
+### if you want to add or apply another way to
 ### prepare the data
 #### Remember to load the tidyverse library: library(tidyverse)
 
-# total_sales_by_model_second_category_frame <- bike_sales |> 
-#   select(model, category.secondary, frame, price.ext) |> 
-#   group_by(model, category.secondary, frame) |> 
-#   summarise(total_revenue = sum(price.ext)) |> 
-#   ungroup() |> 
-#   arrange(desc(total_revenue)) |> 
+# total_sales_by_model_second_category_frame <- bike_sales |>
+#   select(model, category.secondary, frame, price.ext) |>
+#   group_by(model, category.secondary, frame) |>
+#   summarise(total_revenue = sum(price.ext)) |>
+#   ungroup() |>
+#   arrange(desc(total_revenue)) |>
 #   mutate(category.secondary = fct_reorder(.f = category.secondary,
 #                                           .x = total_revenue))
-# 
+#
 # total_sales_by_model_second_category_frame
 ```
 
@@ -91,20 +91,20 @@ Using `facet_wrap` you can identify which combinations between `category.seconda
 Also check out the combinations that you reported in the first marketing report to verify that your plot is reflecting this aspect
 
 ```{r}
-# You can visualize the product gap by generating 
+# You can visualize the product gap by generating
 # group visualizations by category.secondary
 # when inspecting the relation between frame and
 # total revenue
 
 ## You can proceed in the following way
 ### This is only a template you can modify the code
-### if you want to add or apply another way to 
+### if you want to add or apply another way to
 ### visualize the data or personalize the plot
 
-# total_sales_by_model_second_category_frame |> 
-#   ggplot() + 
-#   geom_point(aes(x = frame, y = total_revenue), 
-#              position = position_jitter(width = 0.2, 
+# total_sales_by_model_second_category_frame |>
+#   ggplot() +
+#   geom_point(aes(x = frame, y = total_revenue),
+#              position = position_jitter(width = 0.2,
 #                                         height = 0.2)) +
 #   scale_y_continuous(labels = scales::label_currency()) +
 #   facet_wrap(facets = vars(category.secondary))
@@ -153,13 +153,13 @@ One you have choose the model, fit it using the function `lm` and explore the re
 
 ```{r}
 # For example if you choose the model
-# price ~ category.secondary*frame*bikeshop.state 
+# price ~ category.secondary*frame*bikeshop.state
 # you will fit the following model
-## Remember to load the tidymodels library: library(tidymodels) 
+## Remember to load the tidymodels library: library(tidymodels)
 
 # model <- lm(formula = price ~ category.secondary*frame*bikeshop.state,
 #             data = bike_sales)
-# 
+#
 # model |> tidy()
 ```
 
@@ -177,14 +177,14 @@ In this part you can use the functions `predict`, `enframe` and `bind_cols` to p
 # and the new product to develop as Cyclocross Aluminium
 # you proceed in the following way
 
-## In this case because the model 
+## In this case because the model
 ## price ~ category.secondary*frame*bikeshop.state
-## include the bikeshop.state you need to select at least 
+## include the bikeshop.state you need to select at least
 ## one state to make predictions
 
 ### Lets predict the price for 3 states and the combination
-### Triathalon Aluminum: 
-#### "AZ": Arizona 
+### Triathalon Aluminum:
+#### "AZ": Arizona
 #### "CA": California
 #### "CO": Colorado
 #### category.secondary = "Triathalon"
@@ -193,20 +193,20 @@ In this part you can use the functions `predict`, `enframe` and `bind_cols` to p
 # new_data <- tibble(category.secondary = c("Triathalon", "Triathalon", "Triathalon"),
 #                    frame = c("Aluminum", "Aluminum", "Aluminum"),
 #                    bikeshop.state = c("AZ", "CA", "CO"))
-# 
+#
 # predict(object = model, newdata = new_data) |>
 #   enframe(name = "observation", value = "price_prediction") |>
 #   bind_cols(new_data)
 
 ### If you check this example you will get
 #   observation price_prediction category.secondary frame    bikeshop.state
-#   <chr>                  <dbl> <chr>              <chr>    <chr>         
-# 1 1                     -705.  Triathalon         Aluminum AZ            
-# 2 2                       95.8 Triathalon         Aluminum CA            
+#   <chr>                  <dbl> <chr>              <chr>    <chr>
+# 1 1                     -705.  Triathalon         Aluminum AZ
+# 2 2                       95.8 Triathalon         Aluminum CA
 # 3 3                    -1157.  Triathalon         Aluminum CO
 
 #### In this case it only make sense to offer this product in California (CA)
-#### In the remaining states, the product is not worth offering. In such cases 
+#### In the remaining states, the product is not worth offering. In such cases
 #### you would have to give it free to the public.
 ```
 
@@ -227,10 +227,10 @@ In this section the objective is to group and aggregate data to calculate the to
 ```{r}
 # In this part you can use the functions
 # select, group_by and summarise
-## You can use at the end ungroup of 
-## the argument .groups = "drop" to 
+## You can use at the end ungroup of
+## the argument .groups = "drop" to
 ## ungroup the data
-### If you name the variable as total_revenue the first 5 rows 
+### If you name the variable as total_revenue the first 5 rows
 ### and the first and last column of the  final data will be:
 
 # # A tibble: 5 × 2
@@ -259,9 +259,9 @@ The objective of this part is to:
 ```{r}
 # Follow this template to normalize the data
 
-# bike_sales_total_revenue_pct <- bike_sales_total_revenue |> 
-#   group_by(bikeshop.name) |> 
-#   mutate(total_revenue_pct = total_revenue / sum(total_revenue)) |> 
+# bike_sales_total_revenue_pct <- bike_sales_total_revenue |>
+#   group_by(bikeshop.name) |>
+#   mutate(total_revenue_pct = total_revenue / sum(total_revenue)) |>
 #   ungroup()
 
 ## You can check the data using
@@ -277,26 +277,26 @@ Also check out the argument `values_fill` from this function and try this functi
 ```{r}
 # Follow this template to create a customer-product table
 
-# customer_product_table <- bike_sales_total_revenue_pct |> 
+# customer_product_table <- bike_sales_total_revenue_pct |>
 #   select(bikeshop.name,
 #          model,
-#          total_revenue_pct) |> 
-#   pivot_wider(id_cols = bikeshop.name, 
-#               names_from = model, 
-#               values_from = total_revenue_pct, 
+#          total_revenue_pct) |>
+#   pivot_wider(id_cols = bikeshop.name,
+#               names_from = model,
+#               values_from = total_revenue_pct,
 #               values_fill = 0)
 
 ## You can check the data using
 ### bike_sales_total_revenue_pct |> glimpse()
 
-#### A particular cell of the data will correspond to 
-#### the percentage revenue generated by a model and a 
+#### A particular cell of the data will correspond to
+#### the percentage revenue generated by a model and a
 #### bike shop
 #### For example if the row and the column corresponds to
 ##### bikeshop.name = Albuquerque Cycles
 ##### `Bad Habit 1` = 0.00571
-#### It will mean that this model has a participation 
-#### in the total revenue generated by Albuquerque 
+#### It will mean that this model has a participation
+#### in the total revenue generated by Albuquerque
 #### Cycles of 0.571 %
 ```
 
@@ -311,19 +311,19 @@ The objective of this section is to apply the k-means clustering technique by gr
 
 # library(parameters)
 
-# n_clusters_customer_product_table <- customer_product_table |> 
-#   select(-bikeshop.name) |> 
+# n_clusters_customer_product_table <- customer_product_table |>
+#   select(-bikeshop.name) |>
 #   n_clusters(standardize = FALSE,
 #              nbclust_method = "kmeans")
 
 # n_clusters_customer_product_table
 
-# If you want, you can check the 
-# criteria or methods used to select 
+# If you want, you can check the
+# criteria or methods used to select
 # the number of clusters to use in kmeans
 # This part is optional
 
-# n_clusters_customer_product_table |> 
+# n_clusters_customer_product_table |>
 #   as_tibble()
 ```
 
@@ -343,8 +343,8 @@ Use the `kmeans` function with the argument `centers` equal to the number of clu
 # to the customer-product table
 
 # set.seed(seed = 1234)
-# kmeans_object <- customer_product_table |> 
-#   select(-bikeshop.name) |> 
+# kmeans_object <- customer_product_table |>
+#   select(-bikeshop.name) |>
 #   kmeans(centers = 4)
 ```
 
@@ -358,8 +358,8 @@ You are going to use the `glance` function from the `tidymodels` library to extr
 # Follow this template to obtain the relevant information
 # required by the marketing team
 
-# clusters <- kmeans_object |> 
-#   augment(data = customer_product_table) |> 
+# clusters <- kmeans_object |>
+#   augment(data = customer_product_table) |>
 #   select(bikeshop.name, .cluster)
 
 ## You can check the data using
@@ -387,8 +387,8 @@ Use the `prcomp` function with the argument `center = TRUE` and applying it to t
 # Follow this template to apply the principal component analysis technique
 
 # pca_object <- customer_product_table |>
-#   select(-bikeshop.name) |> 
-#   prcomp(center = TRUE, 
+#   select(-bikeshop.name) |>
+#   prcomp(center = TRUE,
 #          scale. = FALSE)
 ```
 
@@ -397,11 +397,11 @@ Use the `prcomp` function with the argument `center = TRUE` and applying it to t
 In this section you are going to extract the first 2 principal components so you can use them to visualize the clusters in a 2 dimensional plot
 
 ```{r}
-# Follow this template to obtain the first 2 
+# Follow this template to obtain the first 2
 # principal components
 
-# pca_1_2 <- pca_object$x |> 
-#   as_tibble() |> 
+# pca_1_2 <- pca_object$x |>
+#   as_tibble() |>
 #   select(PC1, PC2)
 
 ## Name this object as pca_1_2 so you will remember
@@ -418,16 +418,27 @@ Using the information about the cluster assignment and the 2 principal component
 ```{r}
 # Follow this template to visualize the fill clusters
 
-# clusters_pca_1_2 <- pca_1_2 |> 
+# clusters_pca_1_2 <- pca_1_2 |>
 #   bind_cols(clusters)
 
-# clusters_pca_1_2 |> 
-#   ggplot() + 
-#   geom_point(aes(x = PC1, 
+# clusters_pca_1_2 |>
+#   ggplot() +
+#   geom_point(aes(x = PC1,
 #                  y = PC2,
 #                  color = .cluster))
 
-## Improve the plot by adding labels to the x, y axis 
+## Improve the plot by adding labels to the x, y axis
 ## and a title to explain the visualization to the
 ## marketing team
 ```
+
+# Ai use disclaimer
+
+In this section specify in a clear and explicit way if any artificial intelligence tools where used. 
+
+In case any artificial intelligency tools where used point out how they were use according to the following authorized uses (uncheck the uses that doesn't apply):
+
+- [x] Assistance in text writing
+- [x] Assistance in image creation
+- [x] Assistance in developing ideas and exploring arguments
+- [x] Assistance with computer programming
