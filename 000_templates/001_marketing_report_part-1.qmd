@@ -23,9 +23,9 @@ editor: source
 # Check out https://quarto.org/docs/reference/formats/html.html
 ## to examine all the possible options for html documents
 
-# You can control the execution options of each code 
+# You can control the execution options of each code
 # chunk
-## For more information check out 
+## For more information check out
 ### https://quarto.org/docs/computations/execution-options.html
 # You can include the libraries you are going to use here
 library(sweep)
@@ -55,9 +55,9 @@ Add some text related to inspecting the data.
 Use the available functions from base R or the `tidyverse` to inspect the data
 
 ```{r}
-# You can use str from base R 
+# You can use str from base R
 # or glimpse from the tidyverse
-## If you use glimpse remember to load the 
+## If you use glimpse remember to load the
 ## the library in the first code chunk: library(tidyverse)
 ### For example glimpse(bike_sales)
 ```
@@ -72,8 +72,8 @@ In this section calculate some summary statistics using base R or the `skimr` pa
 
 ```{r}
 # You can use summary from base R
-# or skim from the skimr package 
-## If you use skim remember to load the 
+# or skim from the skimr package
+## If you use skim remember to load the
 ## the library in the first code chunk: library(skimr)
 ### Try the 2 options: skim(bike_sales) or summary(bike_sales)
 ### and select the one you prefer
@@ -112,7 +112,7 @@ Also remember that you want to support the marketing team in the creation of a m
 
 # Explore the argument sort in the count function
 ## You can check the documentation using ?count or
-## checking it online 
+## checking it online
 ### https://dplyr.tidyverse.org/reference/count.html
 bike_sales |>
   count(bikeshop.name)
@@ -134,7 +134,7 @@ Check the distribution of the variables `quantity` and `price` to understand its
 # If you use the tidyverse check out the geom_histogram
 # documentation
 ## ?geom_histogram
-### Also you can check out the online documentation in the 
+### Also you can check out the online documentation in the
 ### case of the tidyverse
 #### https://ggplot2.tidyverse.org/reference/geom_histogram.html
 ```
@@ -142,7 +142,7 @@ Check the distribution of the variables `quantity` and `price` to understand its
 #### Price behavior
 
 ```{r}
-# Check out the comments pointed out in the 
+# Check out the comments pointed out in the
 # Quantity behavior code chunk section
 ```
 
@@ -156,9 +156,9 @@ In this section generate 2 boxplots to explore the following items and point out
 
 ```{r}
 # You can use the function boxplot, ?boxplot,from base R
-# or the function geom_boxplot, ?geom_boxplot,from the 
+# or the function geom_boxplot, ?geom_boxplot,from the
 # tidyverse
-## If you use the tidyverse check out the 
+## If you use the tidyverse check out the
 ## online documentation in
 ### https://ggplot2.tidyverse.org/reference/geom_boxplot.html
 ```
@@ -183,14 +183,24 @@ You can use the following example as a guidance where the variable `bikeshop.cit
 #| eval: false
 
 # Prepare data
-bike_sales_total_revenue_by_city <- bike_sales |> 
-  group_by(bikeshop.city) |> 
-  summarise(total_revenue = sum(price.ext)) |> 
-  mutate(bikeshop.city = fct_reorder(.f = bikeshop.city,
-                                     .x = total_revenue)) 
+bike_sales_total_revenue_by_city <- bike_sales |>
+  group_by(bikeshop.city) |>
+  summarise(total_revenue = sum(price.ext)) |>
+  mutate(bikeshop.city = fct_reorder(.f = bikeshop.city, .x = total_revenue))
 
 # Visualize data
-bike_sales_total_revenue_by_city |> 
-  ggplot(aes(x = total_revenue, y = bikeshop.city)) + 
+bike_sales_total_revenue_by_city |>
+  ggplot(aes(x = total_revenue, y = bikeshop.city)) +
   geom_col()
 ```
+
+# Ai use disclaimer
+
+In this section specify in a clear and explicit way if any artificial intelligence tools where used. 
+
+In case any artificial intelligency tools where used point out how they were use according to the following authorized uses (uncheck the uses that doesn't apply):
+
+- [x] Assistance in text writing
+- [x] Assistance in image creation
+- [x] Assistance in developing ideas and exploring arguments
+- [x] Assistance with computer programming
