@@ -1,8 +1,4 @@
-# Notes and presentations (R for marketing research and analytics)
+# Course marketing research and analytics
 
-- Include
+Repository associated to the course **Marketing research and analytics** in the Business Administration academic program from the Distance Learning Faculty - Universidad Militar Nueva Granada 
 
-  -  Syllabus
-  -  Presentations
-  - Data
-  - References
