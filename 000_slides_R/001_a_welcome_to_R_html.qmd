@@ -35,7 +35,6 @@ editor: source
 ```{r}
 #| label: libraries
 
-
 ```
 
 ```{r}
@@ -84,18 +83,35 @@ umng_palette <- c(
 
 ![Practicing and forgetting curves](../000_images/002_forgetting_curves_practice.png){.nostretch #fig-practicing-and-forgetting-curves width=70% fig-align="center"}
 
-# Installing R, RStudio IDE and Quarto
+# Data Science
+
+##
+
+![The data science venn diagram [@conway_data_2013]](../000_images/002_data_science_venn_diagram.png){.nostretch #fig-data-science-venn-diagram width=50%}
+
+# Posit Workbench
+
+##
+
+Unites the most popular Integrated Development Environments - IDE for data science in one secure environment:
+
+- Positron
+- RStudio
+- Visual Studio Code
+- Jupyter (NoteBook and Lab)
+
+# R, Positron Pro and Quarto
 
 ## 
 
--   **What are R and RStudio IDE?** [@ismay_statistical_2025, Chapter 1]
+-   **What are R and Positron Pro?** [@ismay_statistical_2025, Chapter 1]
 
 ::: {#fig-r_vs_rstudio_ide_1 layout-ncol="2"}
 ![R: Engine](../000_images/002_car_engine.jpg){#fig-r-1 width=100%}
 
-![RStudio IDE: Dashboard](../000_images/002_dashboard_car.jpg){#fig-rstudio-ide-1 width=100%}
+![Positron Pro: Dashboard](../000_images/002_dashboard_car.jpg){#fig-positron-pro-1 width=100%}
 
-Analogy of difference between R and RStudio
+Analogy of difference between R and Positron Pro
 :::
 
 ## 
@@ -103,54 +119,27 @@ Analogy of difference between R and RStudio
 -   **What is Quarto?**
 
     -   Open-source scientific and technical publishing system
-    -   It is possible to integrate prose, code and results via Rstudio IDE [@wickham_r_2023, Chapter 29]
+    -   It is possible to integrate prose, code and results via Positron Pro [@wickham_r_2023, Chapter 29]
 
 ![Quarto workflow](../000_images/002_quarto_flow.png){.nostretch #fig-quarto width=100% fig-align="center"}
 
 ## {.smaller} 
 
--   **Download and install R**: <https://cloud.r-project.org/>
+-   **Using R and Quarto via Positron Pro** [@ismay_statistical_2020, Chapter 1]
 
-    -   Download R for Linux (Debian, Fedora/Redhat, Ubuntu)
-    -   Download R for macOS
-    -   Download R for Windows
+    -   Don't worry about Quarto because it will be embedded in Positron Pro
 
--   **Download and install RStudio IDE**: <https://posit.co/download/rstudio-desktop/>
+::: {#fig-r_vs_positron_pro_2 layout-ncol="2"}
+![R](../000_images/002_R_logo.png){#fig-r-2 width=70%}
 
-    -   Windows 10/11
-    -   macOS 11+
-    -   Ubuntu 18/Debian 10, Ubuntu 20/Debian 11, Ubuntu 22, Fedora 19/Red Hat 7, OpenSUSE 15, Fedora 34/Red Hat 8, Fedora 36/Red Hat 9
+![Positron Pro](../000_images/002_positron_logo.png){#fig-rstudio-ide-2 width=55%}
 
-## 
-
--   **Download and install Quarto**: <https://quarto.org/docs/get-started/>
-
-    -   Ubuntu 18+/Debian 10+, Linux Arm64
-    -   Mac OS
-    -   Windows
-
--   **Nothing works help me!!!**
-
-    -   Don't worry posit get you cover!!!
-
-    -   Use posit Cloud: <https://posit.cloud/>
-
-        -   Sign Up \> Cloud Free \> Sign Up
-
-## {.smaller} 
-
--   **Using R and Quarto via RStudio IDE** [@ismay_statistical_2020, Chapter 1]
-
-    -   Don't worry about Quarto because it will be embedded in RStudio IDE
-        -   If you are using posit Cloud don't worry about anything!!!
-
-::: {#fig-r_vs_rstudio_ide_2 layout-ncol="2"}
-![R: Do not open this](../000_images/002_R_logo.png){#fig-r-2 width=70%}
-
-![RStudio IDE: Open this](../000_images/002_RStudio_ide_logo.png){#fig-rstudio-ide-2 width=55%}
-
-R versus RStudio IDE icons on your computer
+R versus Positron Pro
 :::
+
+##
+
+![Positron Layout](../000_images/002_positron_layout_outline.png){#fig-positron-layout width=55%}
 
 # R packages
 
@@ -170,7 +159,7 @@ Analogy of R vs R packages
 
 -   **Installing the tidyverse as an example**
 
-    -   Copy and paste this code in the console. If you have already installed the tidyverse nothing will happen but if you don't have installed the tidyverse then the package is going to be installed
+    -   Copy and paste this code in the console. The tidyverse package is already installed in your session so nothing will happen but if you don't have installed the tidyverse then the package is going to be installed
 
     -   Installing a package is like downloading an app from a store where you need to do it only once
 
@@ -229,9 +218,9 @@ sqrt(-9)
 ```{r}
 #| message: true
 #| echo: true
-packages<-c("tidyverse")
-for(package in packages) {
-  if(!(package %in% rownames(installed.packages()))) {
+packages <- c("tidyverse")
+for (package in packages) {
+  if (!(package %in% rownames(installed.packages()))) {
     install.packages(package)
   }
 }
@@ -260,6 +249,6 @@ library(tidyverse)
 
 -   To the [**Business Science**](https://www.business-science.io/) and [**R4DS Online Learning**](https://www.rfordatasci.com/) communities where I learn [**R**](https://www.r-project.org/about.html) and [**$\pi$-thon**](https://www.python.org/about/)
 
--   To the [**R Core Team**](https://www.r-project.org/contributors.html), the creators of [**RStudio IDE**](https://posit.co/products/open-source/rstudio/), [**Quarto**](https://quarto.org/) and the authors and maintainers of the packages [**tidyverse**](https://CRAN.R-project.org/package=tidyverse) and [**tinytex**](https://CRAN.R-project.org/package=tinytex) for allowing me to access these tools without paying for a license
+-   To the [**R Core Team**](https://www.r-project.org/contributors.html), the creators of [**Positron**](https://positron.posit.co/), [**Quarto**](https://quarto.org/) and the authors and maintainers of the packages [**tidyverse**](https://CRAN.R-project.org/package=tidyverse) and [**tinytex**](https://CRAN.R-project.org/package=tinytex) for allowing me to access these tools without paying for a license
 
 # References {.allowframebreaks}
