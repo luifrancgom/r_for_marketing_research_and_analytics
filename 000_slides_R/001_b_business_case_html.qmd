@@ -121,23 +121,20 @@ flowchart LR
 #| echo: false
 #| include: false
 
-map_usa_states <- states() |> 
+map_usa_states <- states() |>
   as_tibble() |>
-  clean_names() |> 
-  select(stusps, name, geometry) |> 
-  filter(!(stusps %in% c("AK", "HI", 
-                         "VI", "MP", "GU", "AS",
-                         "PR")))
+  clean_names() |>
+  select(stusps, name, geometry) |>
+  filter(!(stusps %in% c("AK", "HI", "VI", "MP", "GU", "AS", "PR")))
 
 bike_sales <- bike_sales
 
-bike_shops <- bike_sales |> 
-  distinct(pick(bikeshop.name:longitude)) |> 
+bike_shops <- bike_sales |>
+  distinct(pick(bikeshop.name:longitude)) |>
   clean_names()
 
-bike_shops_map <- map_usa_states |> 
-  left_join(y = bike_shops,
-            by = join_by(stusps == bikeshop_state)) |> 
+bike_shops_map <- map_usa_states |>
+  left_join(y = bike_shops, by = join_by(stusps == bikeshop_state)) |>
   rename(bikeshop_state = stusps)
 ```
 
@@ -147,17 +144,24 @@ bike_shops_map <- map_usa_states |>
 #| label: fig-bike-shops-locations
 #| fig-cap: Bike shops locations
 
-bike_shops_map |> 
-  ggplot() + 
-  geom_sf(aes(geometry = geometry)) + 
-  geom_label_repel(aes(x = longitude, y = latitude,
-                       label = bikeshop_city,
-                       box.padding = 0.5, 
-                       max.overlaps = Inf,
-                       min.segment.length = 0,
-                       seed = 1234)) + 
-  geom_point(aes(x = longitude, y = latitude),
-             shape = 21, color = "black", fill = "#E31A1C") +
+bike_shops_map |>
+  ggplot() +
+  geom_sf(aes(geometry = geometry)) +
+  geom_label_repel(aes(
+    x = longitude,
+    y = latitude,
+    label = bikeshop_city,
+    box.padding = 0.5,
+    max.overlaps = Inf,
+    min.segment.length = 0,
+    seed = 1234
+  )) +
+  geom_point(
+    aes(x = longitude, y = latitude),
+    shape = 21,
+    color = "black",
+    fill = "#E31A1C"
+  ) +
   theme_void()
 ```
 
@@ -224,7 +228,7 @@ library(sweep) # Remember to load the sweep library
 bike_sales |> head(n = 8)
 ```
 
--   Only works in RStudio IDE
+-   Only works in Positron Pro
 
 ```{r}
 #| eval: false
@@ -245,19 +249,19 @@ bike_sales |> View()
 bike_sales_products <- bike_sales |>
   distinct(pick(product.id:frame))
 
-bike_sales_products |> 
+bike_sales_products |>
   slice_head(n = 5) |>
-  gt() |> 
+  gt() |>
   tab_style(
     style = cell_text(weight = "bold"),
     locations = cells_column_labels()
   ) |>
   cols_label(
-    product.id         = "Product Id",
-    model              = "Model",
-    category.primary   = "Category primary",
-    category.secondary = "Frame" 
-  ) |> 
+    product.id = "Product Id",
+    model = "Model",
+    category.primary = "Category primary",
+    category.secondary = "Frame"
+  ) |>
   tab_options(
     row.striping.include_table_body = TRUE,
     table.border.top.width = px(3),
@@ -284,21 +288,21 @@ bike_sales_products |>
 bike_sales_retailers <- bike_sales |>
   distinct(pick(customer.id:longitude))
 
-bike_sales_retailers |> 
+bike_sales_retailers |>
   slice_head(n = 5) |>
-  gt() |> 
+  gt() |>
   tab_style(
     style = cell_text(weight = "bold"),
     locations = cells_column_labels()
   ) |>
   cols_label(
-    customer.id    = "Retailer Id",
-    bikeshop.name  = "Bike shop name",
-    bikeshop.city  = "City",
+    customer.id = "Retailer Id",
+    bikeshop.name = "Bike shop name",
+    bikeshop.city = "City",
     bikeshop.state = "State",
-    latitude       = "Latitude",
-    longitude      = "Longitude"
-  ) |> 
+    latitude = "Latitude",
+    longitude = "Longitude"
+  ) |>
   tab_options(
     row.striping.include_table_body = TRUE,
     table.border.top.width = px(3),
@@ -322,26 +326,25 @@ bike_sales_retailers |>
 #| label: tbl-transactions-first
 #| tbl-cap: First 5 orders
 
-bike_sales_orders <- bike_sales |> 
-  select(order.date:price,
-         customer.id, product.id)
+bike_sales_orders <- bike_sales |>
+  select(order.date:price, customer.id, product.id)
 
-bike_sales_orders |> 
+bike_sales_orders |>
   slice_head(n = 14) |>
-  gt() |> 
+  gt() |>
   tab_style(
     style = cell_text(weight = "bold"),
     locations = cells_column_labels()
   ) |>
   cols_label(
-    order.date  = "Order date",
-    order.id    = "Order Id",
-    order.line  = "Order line",
-    quantity    = "Quantity",
-    price       = "Price",
+    order.date = "Order date",
+    order.id = "Order Id",
+    order.line = "Order line",
+    quantity = "Quantity",
+    price = "Price",
     customer.id = "Retailer Id",
-    product.id  = "Product Id" 
-  ) |> 
+    product.id = "Product Id"
+  ) |>
   tab_options(
     row.striping.include_table_body = TRUE,
     table.border.top.width = px(3),
@@ -350,8 +353,8 @@ bike_sales_orders |>
     column_labels.border.bottom.color = "black",
     table.border.bottom.width = px(3),
     table.border.bottom.color = "black",
-    table.font.size = px(14), 
-    data_row.padding =px(5) 
+    table.font.size = px(14),
+    data_row.padding = px(5)
   )
 ```
 
@@ -365,7 +368,7 @@ bike_sales_orders |>
 
 -   To the [**Business Science**](https://www.business-science.io/) and [**R4DS Online Learning**](https://www.rfordatasci.com/) communities where I learn [**R**](https://www.r-project.org/about.html) and [**$\pi$-thon**](https://www.python.org/about/)
 
--   To the [**R Core Team**](https://www.r-project.org/contributors.html), the creators of [**RStudio IDE**](https://posit.co/products/open-source/rstudio/), [**Quarto**](https://quarto.org/) and the authors and maintainers of the packages [**tidyverse**](https://CRAN.R-project.org/package=tidyverse), [**tigris**](https://CRAN.R-project.org/package=tigris), [**janitor**](https://CRAN.R-project.org/package=janitor),
+-   To the [**R Core Team**](https://www.r-project.org/contributors.html), the creators of [**Positron**](https://positron.posit.co/), [**Quarto**](https://quarto.org/) and the authors and maintainers of the packages [**tidyverse**](https://CRAN.R-project.org/package=tidyverse), [**tigris**](https://CRAN.R-project.org/package=tigris), [**janitor**](https://CRAN.R-project.org/package=janitor),
 [**ggrepel**](https://CRAN.R-project.org/package=ggrepel),
 [**sweep**](https://CRAN.R-project.org/package=sweep), [**gt**](https://CRAN.R-project.org/package=gt) and [**tinytex**](https://CRAN.R-project.org/package=tinytex) for allowing me to access these tools without paying for a license
 
