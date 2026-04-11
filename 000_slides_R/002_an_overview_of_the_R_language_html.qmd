@@ -36,7 +36,6 @@ editor: source
 #| label: libraries
 #| echo: false
 
-
 ```
 
 ```{r}
@@ -102,7 +101,7 @@ umng_palette <- c(
 
 ```{r}
 satisfaction_data <- read.csv(file = "http://goo.gl/UDv12g")
-satisfaction_data |> head(n=5)
+satisfaction_data |> head(n = 5)
 ```
 
 ##
@@ -112,7 +111,7 @@ satisfaction_data |> head(n=5)
 ```{r}
 library(tidyverse) # Remember to load the tidyverse library
 satisfaction_data <- read_csv(file = "http://goo.gl/UDv12g")
-satisfaction_data |> head(n=5)
+satisfaction_data |> head(n = 5)
 ```
 
 ##
@@ -120,8 +119,10 @@ satisfaction_data |> head(n=5)
 -   **Transform data: the base R way**
 
 ```{r}
-satisfaction_data$Segment <- factor(x = satisfaction_data$Segment, 
-                                    ordered = FALSE)
+satisfaction_data$Segment <- factor(
+  x = satisfaction_data$Segment,
+  ordered = FALSE
+)
 summary(object = satisfaction_data)
 ```
 
@@ -132,7 +133,7 @@ summary(object = satisfaction_data)
     -   Ups the table is really big!!! Try it in your console to see the complete table
 
 ```{r}
-library(skimr) # Remember to install the package if it is not installed
+library(skimr)
 satisfaction_data <- satisfaction_data |>
   mutate(Segment = factor(x = Segment, ordered = FALSE))
 ```
@@ -211,7 +212,7 @@ satisfaction_data$Segment[1:5]
 
 ```{r}
 #| echo: true
-as.data.frame(satisfaction_data) |> head(n=5)
+as.data.frame(satisfaction_data) |> head(n = 5)
 ```
 
 ##
@@ -223,7 +224,7 @@ class(satisfaction_data)
 ```
 
 ```{r}
-satisfaction_data |> head(n=5)
+satisfaction_data |> head(n = 5)
 ```
 
 ##
@@ -232,7 +233,7 @@ satisfaction_data |> head(n=5)
 
 ```{r}
 satisfaction_data$customer <- 1:nrow(satisfaction_data)
-as.data.frame(satisfaction_data) |> head(n=5)
+as.data.frame(satisfaction_data) |> head(n = 5)
 ```
 
 ##
@@ -241,8 +242,8 @@ as.data.frame(satisfaction_data) |> head(n=5)
 
 ```{r}
 satisfaction_data |>
-  mutate(customer = 1:nrow(satisfaction_data)) |> 
-  head(n=5)
+  mutate(customer = 1:nrow(satisfaction_data)) |>
+  head(n = 5)
 ```
 
 ##
@@ -250,10 +251,15 @@ satisfaction_data |>
 -   **Picks variables based on their names: the base R way**
 
 ```{r}
-as.data.frame(satisfaction_data)[c("customer", "Segment",
-                                   "iProdSAT", "iSalesSAT", 
-                                   "iProdREC", "iSalesREC")] |>
-  head(n=5)
+as.data.frame(satisfaction_data)[c(
+  "customer",
+  "Segment",
+  "iProdSAT",
+  "iSalesSAT",
+  "iProdREC",
+  "iSalesREC"
+)] |>
+  head(n = 5)
 ```
 
 ##
@@ -263,7 +269,7 @@ as.data.frame(satisfaction_data)[c("customer", "Segment",
 ```{r}
 satisfaction_data |>
   select(customer, Segment, iProdSAT, iSalesSAT, iProdREC, iSalesREC) |>
-  head(n=5)
+  head(n = 5)
 ```
 
 ##
@@ -271,8 +277,8 @@ satisfaction_data |>
 -   **Picks cases based on their values: the base R way**
 
 ```{r}
-as.data.frame(satisfaction_data)[satisfaction_data$Segment == 2, ] |> 
-  head(n=5)
+as.data.frame(satisfaction_data)[satisfaction_data$Segment == 2, ] |>
+  head(n = 5)
 ```
 
 ##
@@ -282,7 +288,7 @@ as.data.frame(satisfaction_data)[satisfaction_data$Segment == 2, ] |>
 ```{r}
 satisfaction_data |>
   filter(Segment == 2) |>
-  head(n=5)
+  head(n = 5)
 ```
 
 ##
@@ -290,8 +296,10 @@ satisfaction_data |>
 -   **Reduces multiple values to a single summary: the base R way**
 
 ```{r}
-data.frame(mean_iProdSAT = mean(satisfaction_data$iProdSAT),
-           median_iSalesSAT = median(satisfaction_data$iSalesSAT))
+data.frame(
+  mean_iProdSAT = mean(satisfaction_data$iProdSAT),
+  median_iSalesSAT = median(satisfaction_data$iSalesSAT)
+)
 ```
 
 ##
@@ -300,8 +308,10 @@ data.frame(mean_iProdSAT = mean(satisfaction_data$iProdSAT),
 
 ```{r}
 satisfaction_data |>
-  summarise(mean_iProdSAT = mean(iProdSAT), 
-            median_iSalesSAT = median(iSalesSAT))
+  summarise(
+    mean_iProdSAT = mean(iProdSAT),
+    median_iSalesSAT = median(iSalesSAT)
+  )
 ```
 
 ##
@@ -310,7 +320,7 @@ satisfaction_data |>
 
 ```{r}
 #| echo: true
-satisfaction_data[c("iProdSAT", "iSalesSAT")] |> 
+satisfaction_data[c("iProdSAT", "iSalesSAT")] |>
   aggregate(by = satisfaction_data[c("Segment")], FUN = mean) |>
   setNames(nm = c("Segment", "mean_iProdSAT", "mean_iSalesSAT"))
 ```
@@ -321,10 +331,12 @@ satisfaction_data[c("iProdSAT", "iSalesSAT")] |>
 
 ```{r}
 satisfaction_data |>
-  group_by(Segment) |> 
+  group_by(Segment) |>
   select(iProdSAT, iSalesSAT) |>
-  summarise(mean_iProdSAT = mean(iProdSAT), 
-            mean_iSalesSAT = mean(iSalesSAT))
+  summarise(
+    mean_iProdSAT = mean(iProdSAT),
+    mean_iSalesSAT = mean(iSalesSAT)
+  )
 ```
 
 # Acknowledgments
