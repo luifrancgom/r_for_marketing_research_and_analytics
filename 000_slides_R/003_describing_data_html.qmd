@@ -94,7 +94,7 @@ umng_palette <- c(
 
 ```{r}
 weekly_store <- read_csv(file = "http://goo.gl/QPDdMl")
-weekly_store |> head(n=5)
+weekly_store |> head(n = 5)
 ```
 
 ##
@@ -103,12 +103,14 @@ weekly_store |> head(n=5)
 
 ```{r}
 weekly_store <- weekly_store |>
-  mutate(storeNum = factor(storeNum, ordered = FALSE),
-         Year = factor(Year, levels = 1:2, ordered = TRUE),
-         Week = factor(Week, levels = 1:52, ordered = TRUE),
-         p1prom = as.logical(p1prom),
-         p2prom = as.logical(p2prom))
-weekly_store |> head(n=5)
+  mutate(
+    storeNum = factor(storeNum, ordered = FALSE),
+    Year = factor(Year, levels = 1:2, ordered = TRUE),
+    Week = factor(Week, levels = 1:52, ordered = TRUE),
+    p1prom = as.logical(p1prom),
+    p2prom = as.logical(p2prom)
+  )
+weekly_store |> head(n = 5)
 ```
 
 ##
@@ -181,9 +183,12 @@ weekly_store$p1sales |> hist()
 
 ```{r}
 #| fig-height: 4
-weekly_store$p1sales |> hist(main = "Product 1 Weekly Sales Frequencies, All Stores",
-                             xlab = "Product1 Sales (Units)",
-                             ylab = "Count")
+weekly_store$p1sales |>
+  hist(
+    main = "Product 1 Weekly Sales Frequencies, All Stores",
+    xlab = "Product1 Sales (Units)",
+    ylab = "Count"
+  )
 ```
 
 ##
@@ -192,11 +197,14 @@ weekly_store$p1sales |> hist(main = "Product 1 Weekly Sales Frequencies, All Sto
 
 ```{r}
 #| fig-height: 3.5
-weekly_store$p1sales |> hist(main = "Product 1 Weekly Sales Frequencies, All Stores",
-                             xlab = "Product1 Sales (Units)" ,
-                             ylab = "Count", 
-                             breaks = 30, 
-                             col =  "lightblue")
+weekly_store$p1sales |>
+  hist(
+    main = "Product 1 Weekly Sales Frequencies, All Stores",
+    xlab = "Product1 Sales (Units)",
+    ylab = "Count",
+    breaks = 30,
+    col = "lightblue"
+  )
 ```
 
 ##
@@ -206,13 +214,16 @@ weekly_store$p1sales |> hist(main = "Product 1 Weekly Sales Frequencies, All Sto
 ```{r}
 #| fig-height: 3.5
 
-weekly_store$p1sales |> hist(main = "Product 1 Weekly Sales Frequencies, All Stores",
-                             xlab = "Product1 Sales (Units)" ,
-                             ylab = "Frequency", 
-                             breaks = 30, 
-                             col =  "lightblue", 
-                             freq = FALSE,
-                             xaxt = "n")
+weekly_store$p1sales |>
+  hist(
+    main = "Product 1 Weekly Sales Frequencies, All Stores",
+    xlab = "Product1 Sales (Units)",
+    ylab = "Frequency",
+    breaks = 30,
+    col = "lightblue",
+    freq = FALSE,
+    xaxt = "n"
+  )
 ```
 
 ## {.smaller}
@@ -220,14 +231,17 @@ weekly_store$p1sales |> hist(main = "Product 1 Weekly Sales Frequencies, All Sto
 -   **Histograms: the base R way**
 
 ```{r}
-weekly_store$p1sales |> hist(main = "Product 1 Weekly Sales Frequencies, All Stores",
-                             xlab = "Product1 Sales (Units)" ,
-                             ylab = "Frequency", 
-                             breaks = 30, 
-                             col =  "lightblue", 
-                             freq = FALSE,
-                             xaxt = "n")
-axis(side=1 , at=seq(from = 60, to = 300, by = 20))
+weekly_store$p1sales |>
+  hist(
+    main = "Product 1 Weekly Sales Frequencies, All Stores",
+    xlab = "Product1 Sales (Units)",
+    ylab = "Frequency",
+    breaks = 30,
+    col = "lightblue",
+    freq = FALSE,
+    xaxt = "n"
+  )
+axis(side = 1, at = seq(from = 60, to = 300, by = 20))
 ```
 
 ## {.smaller}
@@ -235,18 +249,26 @@ axis(side=1 , at=seq(from = 60, to = 300, by = 20))
 -   **Histograms: the base R way**
 
 ```{r}
-weekly_store$p1sales |> hist(main = "Product 1 Weekly Sales Frequencies, All Stores",
-                             xlab = "Product1 Sales (Units)" ,
-                             ylab = "Frequency", 
-                             breaks = 30, 
-                             col =  "lightblue", 
-                             freq = FALSE,
-                             xaxt = "n")
-axis(side=1 , at=seq(from = 60, to = 300, by = 20))
-lines(x = density(weekly_store$p1sales, bw=10), type="l", col="darkred", lwd=2)
+weekly_store$p1sales |>
+  hist(
+    main = "Product 1 Weekly Sales Frequencies, All Stores",
+    xlab = "Product1 Sales (Units)",
+    ylab = "Frequency",
+    breaks = 30,
+    col = "lightblue",
+    freq = FALSE,
+    xaxt = "n"
+  )
+axis(side = 1, at = seq(from = 60, to = 300, by = 20))
+lines(
+  x = density(weekly_store$p1sales, bw = 10),
+  type = "l",
+  col = "darkred",
+  lwd = 2
+)
 ```
 
-##
+## 
 
 -   **Histograms: the tidyverse way**
 
@@ -263,35 +285,44 @@ weekly_store |> ggplot()
 ```{r}
 #| fig-height: 4
 
-weekly_store |> ggplot() + 
-  geom_histogram(aes(x = p1sales, y = after_stat(density)),
-                 color = "black", fill = "lightblue", bins = 30)
+weekly_store_hist <- weekly_store |>
+  ggplot() +
+  geom_histogram(
+    aes(x = p1sales, y = after_stat(density)),
+    color = "black",
+    fill = "lightblue",
+    bins = 30
+  )
+
+weekly_store_hist
 ```
 
-##
+## {.smaller}
 
 -   **Histograms: the tidyverse way**
 
 ```{r}
-weekly_store |> ggplot() + 
-  geom_histogram(aes(x = p1sales, y = after_stat(density)),
-                 color = "black", fill = "lightblue", bins = 30) +
-  geom_density(aes(x=p1sales),
-               bw=10, color="darkred",
-               linetype = "solid", linewidth = 1)
+weekly_store_hist_dens <- weekly_store_hist +
+  geom_density(
+    aes(x = p1sales),
+    bw = 10,
+    color = "darkred",
+    linetype = "solid",
+    linewidth = 1
+  )
+
+weekly_store_hist_dens
 ```
 
-##
+## {.smaller}
 
 -   **Histograms: the tidyverse way**
 
 ```{r}
-weekly_store |> ggplot() + 
-  geom_histogram(aes(x=p1sales, y = after_stat(density)),
-                 color = "black", fill = "lightblue", bins = 30) +
-  geom_density(aes(x=p1sales),
-               bw=10, color="darkred", linetype="solid", linewidth=1) + 
+weekly_store_hist_dens_scale <- weekly_store_hist_dens +
   scale_x_continuous(breaks = seq(from = 60, to = 300, by = 20))
+
+weekly_store_hist_dens_scale
 ```
 
 ## {.smaller}
@@ -299,14 +330,14 @@ weekly_store |> ggplot() +
 -   **Histograms: the tidyverse way**
 
 ```{r}
-weekly_store |> ggplot() + 
-  geom_histogram(aes(x = p1sales, y = after_stat(density)),
-                 color = "black", fill = "lightblue", bins = 30) +
-  geom_density(aes(x = p1sales),
-               bw = 10, color = "darkred", linetype = "solid", linewidth = 1) + 
-  scale_x_continuous(breaks = seq(from = 60, to = 300, by = 20)) +
-  labs(x = "Product1 Sales (Units)", y = "Frequency", 
-       title = "Product 1 Weekly Sales Frequencies, All Stores")
+weekly_store_hist_dens_scale_labs <- weekly_store_hist_dens_scale +
+  labs(
+    x = "Product1 Sales (Units)",
+    y = "Frequency",
+    title = "Product 1 Weekly Sales Frequencies, All Stores"
+  )
+
+weekly_store_hist_dens_scale_labs
 ```
 
 ## {.smaller}
@@ -316,10 +347,14 @@ weekly_store |> ggplot() +
     -   Boxplot product 2 sales by promotion
 
 ```{r}
-boxplot(weekly_store$p2sales ~ weekly_store$p2prom,
-        main = "Weekly sales of P2 with and without promotion",
-        xlab = "Weekly unit sales", ylab = "P2 promoted in store?",
-        horizontal = TRUE, las = 1)
+boxplot(
+  weekly_store$p2sales ~ weekly_store$p2prom,
+  main = "Weekly sales of P2 with and without promotion",
+  xlab = "Weekly unit sales",
+  ylab = "P2 promoted in store?",
+  horizontal = TRUE,
+  las = 1
+)
 ```
 
 ## {.smaller}
@@ -329,11 +364,16 @@ boxplot(weekly_store$p2sales ~ weekly_store$p2prom,
     -   Boxplot product 2 sales by promotion
 
 ```{r}
-boxplot(weekly_store$p2sales ~ weekly_store$p2prom,
-        main = "Weekly sales of P2 with and without promotion",
-        xlab = "Weekly unit sales", ylab = "P2 promoted in store?",
-        horizontal = TRUE, las = 1, yaxt = "n")
-axis(side = 2, at = c(1,2), labels = c("No", "Yes"))
+boxplot(
+  weekly_store$p2sales ~ weekly_store$p2prom,
+  main = "Weekly sales of P2 with and without promotion",
+  xlab = "Weekly unit sales",
+  ylab = "P2 promoted in store?",
+  horizontal = TRUE,
+  las = 1,
+  yaxt = "n"
+)
+axis(side = 2, at = c(1, 2), labels = c("No", "Yes"))
 ```
 
 ##
@@ -356,8 +396,7 @@ weekly_store |> ggplot()
 
 ```{r}
 #| fig-height: 4
-weekly_store |> ggplot() + 
-  geom_boxplot(aes(x = p2sales, y = p2prom))
+weekly_store |> ggplot() + geom_boxplot(aes(x = p2sales, y = p2prom))
 ```
 
 ##
@@ -369,8 +408,9 @@ weekly_store |> ggplot() +
 ```{r}
 #| fig-height: 3.5
 
-weekly_store |> ggplot() + 
-  geom_boxplot(aes(x = p2sales, y = p2prom)) + 
+weekly_store |>
+  ggplot() +
+  geom_boxplot(aes(x = p2sales, y = p2prom)) +
   scale_y_discrete(labels = c("No", "Yes"))
 ```
 
@@ -383,11 +423,15 @@ weekly_store |> ggplot() +
 ```{r}
 #| fig-height: 3.5
 
-weekly_store |> ggplot() + 
-  geom_boxplot(aes(x = p2sales, y = p2prom)) + 
+weekly_store |>
+  ggplot() +
+  geom_boxplot(aes(x = p2sales, y = p2prom)) +
   scale_y_discrete(labels = c("No", "Yes")) +
-  labs(x = "Weekly unit sales", y = "P2 promoted in store?", 
-       title = "Weekly sales of P2 with and without promotion")
+  labs(
+    x = "Weekly unit sales",
+    y = "P2 promoted in store?",
+    title = "Weekly sales of P2 with and without promotion"
+  )
 ```
 
 # Questions and answers with data
@@ -399,7 +443,7 @@ weekly_store |> ggplot() +
     -   Preparing the data
 
 ```{r}
-weekly_store_sales_by_country <- weekly_store |> 
+weekly_store_sales_by_country <- weekly_store |>
   group_by(country)
 weekly_store_sales_by_country
 ```
@@ -411,7 +455,7 @@ weekly_store_sales_by_country
     -   Preparing the data
 
 ```{r}
-weekly_store_sales_by_country <- weekly_store |> 
+weekly_store_sales_by_country <- weekly_store |>
   group_by(country) |>
   summarise(sum_p2sales = sum(p2sales))
 weekly_store_sales_by_country
@@ -424,7 +468,7 @@ weekly_store_sales_by_country
     -   Preparing the data
 
 ```{r}
-weekly_store_sales_by_country <- weekly_store |> 
+weekly_store_sales_by_country <- weekly_store |>
   group_by(country) |>
   summarise(sum_p2sales = sum(p2sales)) |>
   mutate(country = fct_reorder(.f = country, .x = sum_p2sales))
@@ -452,7 +496,8 @@ weekly_store_sales_by_country |> ggplot()
 ```{r}
 #| fig-height: 4
 
-weekly_store_sales_by_country |> ggplot() + 
+weekly_store_sales_by_country |>
+  ggplot() +
   geom_col(aes(x = country, y = sum_p2sales))
 ```
 
@@ -465,9 +510,13 @@ weekly_store_sales_by_country |> ggplot() +
 ```{r}
 #| fig-height: 4
 
-weekly_store_sales_by_country |> ggplot() + 
-  geom_col(aes(x = country, y = sum_p2sales, fill = country),
-           color = "black", show.legend = FALSE)
+weekly_store_sales_by_country |>
+  ggplot() +
+  geom_col(
+    aes(x = country, y = sum_p2sales, fill = country),
+    color = "black",
+    show.legend = FALSE
+  )
 ```
 
 ## {.smaller}
@@ -477,13 +526,30 @@ weekly_store_sales_by_country |> ggplot() +
     -   Visualizing data
 
 ```{r}
-#| fig-height: 4
+g_labels <- weekly_store_sales_by_country |>
+  ggplot() +
+  geom_col(
+    aes(x = country, y = sum_p2sales, fill = country),
+    color = "black",
+    show.legend = FALSE
+  ) +
+  scale_x_discrete(
+    labels = c(
+      "Australia",
+      "Japan",
+      "Brazil",
+      "Britain",
+      "Germany",
+      "China",
+      "United States"
+    )
+  )
+```
 
-weekly_store_sales_by_country |> ggplot() + 
-  geom_col(aes(x = country, y = sum_p2sales, fill = country),
-           color = "black", show.legend = FALSE) +
-  scale_x_discrete(labels = c("Australia", "Japan", "Brazil", 
-                              "Britain", "Germany", "China", "United States"))
+##
+
+```{r}
+g_labels
 ```
 
 ## {.smaller}
@@ -493,15 +559,31 @@ weekly_store_sales_by_country |> ggplot() +
     -   Visualizing data
 
 ```{r}
-#| fig-height: 3.5
+g_labels_labs <- weekly_store_sales_by_country |>
+  ggplot() +
+  geom_col(
+    aes(x = country, y = sum_p2sales, fill = country),
+    color = "black",
+    show.legend = FALSE
+  ) +
+  scale_x_discrete(
+    labels = c(
+      "Australia",
+      "Japan",
+      "Brazil",
+      "Britain",
+      "Germany",
+      "China",
+      "United States"
+    )
+  ) +
+  labs(x = NULL, y = "Sales (Units)", title = "Sales in units per country")
+```
 
-weekly_store_sales_by_country |> ggplot() + 
-  geom_col(aes(x = country, y = sum_p2sales, fill = country),
-           color = "black", show.legend = FALSE) +
-  scale_x_discrete(labels = c("Australia", "Japan", "Brazil", 
-                              "Britain", "Germany", "China", "United States")) +
-  labs(x = NULL, y = "Sales (Units)",
-       title = "Sales in units per country")
+##
+
+```{r}
+g_labels_labs
 ```
 
 # Acknowledgments
