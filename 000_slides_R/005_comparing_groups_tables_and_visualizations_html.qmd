@@ -35,14 +35,12 @@ editor: source
 ```{r}
 #| label: libraries
 #| echo: false
-
 library(tidyverse)
 ```
 
 ```{r}
 #| label: palette
 #| echo: false
-
 umng_palette <- c(
   "#043074",
   "#fdc600",
@@ -108,11 +106,13 @@ segmentation |> head(n = 5)
 
 ```{r}
 segmentation <- segmentation |>
-  mutate(gender = factor(gender, ordered = FALSE),
-         kids = as.integer(kids),
-         ownHome = factor(ownHome, ordered = FALSE),
-         subscribe = factor(subscribe, ordered = FALSE),
-         Segment = factor(Segment, ordered = FALSE))
+  mutate(
+    gender = factor(gender, ordered = FALSE),
+    kids = as.integer(kids),
+    ownHome = factor(ownHome, ordered = FALSE),
+    subscribe = factor(subscribe, ordered = FALSE),
+    Segment = factor(Segment, ordered = FALSE)
+  )
 
 segmentation |> head(n = 5)
 ```
@@ -145,8 +145,7 @@ segmentation |> head(n = 5)
     -   Split data into $n$ subsets and compute summary statistics
 
 ```{r}
-aggregate(x = income ~ Segment + ownHome, 
-          data = segmentation, FUN = mean)
+aggregate(x = income ~ Segment + ownHome, data = segmentation, FUN = mean)
 ```
 
 ##
@@ -156,8 +155,7 @@ aggregate(x = income ~ Segment + ownHome,
     -   Split data into $n$ subsets and compute summary statistics
 
 ```{r}
-aggregate(x = kids ~ Segment + ownHome, 
-          data = segmentation, FUN = sum)
+aggregate(x = kids ~ Segment + ownHome, data = segmentation, FUN = sum)
 ```
 
 ##
@@ -167,7 +165,7 @@ aggregate(x = kids ~ Segment + ownHome,
     -   Split data into $n$ subsets and compute summary statistics
 
 ```{r}
-segmentation |> 
+segmentation |>
   group_by(Segment, ownHome) |>
   summarise(mean_income = mean(income))
 ```
@@ -179,7 +177,7 @@ segmentation |>
     -   Split data into $n$ subsets and compute summary statistics
 
 ```{r}
-segmentation |> 
+segmentation |>
   group_by(Segment, ownHome) |>
   summarise(sum_kids = sum(kids))
 ```
@@ -226,7 +224,7 @@ subscriber_by_segment_home_ownership <- segmentation |>
   count(subscribe, Segment, ownHome) |>
   group_by(Segment, ownHome) |>
   mutate(n_pct = (n / sum(n)) * 100) |>
-  ungroup() |> 
+  ungroup() |>
   arrange(Segment, ownHome)
 
 subscriber_by_segment_home_ownership
@@ -238,12 +236,10 @@ subscriber_by_segment_home_ownership
 
 ```{r}
 #| fig-height: 4
-
 subscriber_by_segment_home_ownership |>
-  ggplot() + 
-  geom_col(aes(x = subscribe, y=n_pct)) + 
-  facet_wrap(facets = vars(Segment,ownHome), 
-             nrow = 2, ncol = 4)
+  ggplot() +
+  geom_col(aes(x = subscribe, y = n_pct)) +
+  facet_wrap(facets = vars(Segment, ownHome), nrow = 2, ncol = 4)
 ```
 
 ## {.smaller}
@@ -252,17 +248,18 @@ subscriber_by_segment_home_ownership |>
 
 ```{r}
 # Prepare data
-prop_table <- table(segmentation$subscribe,
-                    segmentation$Segment) |>
+prop_table <- table(segmentation$subscribe, segmentation$Segment) |>
   prop.table(margin = 2) |>
   _[2, ] # You can use _ as a placeholder. Check ?pipeOp
 ```
 
 ```{r}
 #| fig-height: 4
-
-barchart(prop_table, 
-         xlab='Subscriber proportion by Segment', col='darkolivegreen')
+barchart(
+  prop_table,
+  xlab = 'Subscriber proportion by Segment',
+  col = 'darkolivegreen'
+)
 ```
 
 ## {.smaller}
@@ -280,12 +277,10 @@ prop_table <- segmentation |>
 
 ```{r}
 #| fig-height: 3
-
-prop_table |> ggplot() + 
-  geom_col(aes(x=n_pct, y=Segment),
-           fill='darkolivegreen') +
-  labs(x='Subscriber proportion by Segment', 
-       y=NULL)
+prop_table |>
+  ggplot() +
+  geom_col(aes(x = n_pct, y = Segment), fill = 'darkolivegreen') +
+  labs(x = 'Subscriber proportion by Segment', y = NULL)
 ```
 
 ## {.smaller}
@@ -294,14 +289,21 @@ prop_table |> ggplot() +
 
 ```{r}
 # Prepare data
-seg_income_agg <- aggregate(income ~ Segment + ownHome, 
-                            data=segmentation, FUN = mean)
+seg_income_agg <- aggregate(
+  income ~ Segment + ownHome,
+  data = segmentation,
+  FUN = mean
+)
 ```
 
 ```{r}
-barchart(income ~ Segment, data = seg_income_agg,
-         groups=ownHome, auto.key=TRUE, # Add groups
-         par.settings=simpleTheme(col=terrain.colors(n = 2))) # Change default colors
+barchart(
+  income ~ Segment,
+  data = seg_income_agg,
+  groups = ownHome,
+  auto.key = TRUE, # Add groups
+  par.settings = simpleTheme(col = terrain.colors(n = 2))
+) # Change default colors
 ```
 
 ## {.smaller}
@@ -310,19 +312,22 @@ barchart(income ~ Segment, data = seg_income_agg,
 
 ```{r}
 # Prepare data
-seg_income_agg <- segmentation |> 
-  group_by(Segment, ownHome) |> 
-  summarise(mean_income = mean(income)) |> 
+seg_income_agg <- segmentation |>
+  group_by(Segment, ownHome) |>
+  summarise(mean_income = mean(income)) |>
   ungroup()
 ```
 
 ```{r}
 #| fig-height: 3.5
-
-seg_income_agg |> ggplot() +
-  geom_col(aes(x=Segment, y=mean_income, fill=ownHome),
-           position = position_dodge(), color='black') +
-  scale_fill_manual(values=terrain.colors(n = 2))
+seg_income_agg |>
+  ggplot() +
+  geom_col(
+    aes(x = Segment, y = mean_income, fill = ownHome),
+    position = position_dodge(),
+    color = 'black'
+  ) +
+  scale_fill_manual(values = terrain.colors(n = 2))
 ```
 
 ## {.smaller}
@@ -331,10 +336,7 @@ seg_income_agg |> ggplot() +
 
 ```{r}
 #| fig-height: 4.5
-
-bwplot(Segment ~ income | ownHome,
-       data = segmentation,
-       xlab = 'Income')
+bwplot(Segment ~ income | ownHome, data = segmentation, xlab = 'Income')
 ```
 
 ## {.smaller}
@@ -343,12 +345,11 @@ bwplot(Segment ~ income | ownHome,
 
 ```{r}
 #| fig-height: 4
-
-segmentation |> ggplot() +
-  geom_boxplot(aes(x=income, y=Segment)) +
+segmentation |>
+  ggplot() +
+  geom_boxplot(aes(x = income, y = Segment)) +
   facet_wrap(facets = vars(ownHome)) +
-  labs(x='Income',
-       y=NULL)
+  labs(x = 'Income', y = NULL)
 ```
 
 # Acknowledgments
