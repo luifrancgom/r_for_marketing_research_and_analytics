@@ -35,7 +35,6 @@ editor: source
 ```{r}
 #| label: libraries
 #| echo: false
-
 library(tidyverse)
 library(skimr)
 ```
@@ -43,7 +42,6 @@ library(skimr)
 ```{r}
 #| label: palette
 #| echo: false
-
 umng_palette <- c(
   "#043074",
   "#fdc600",
@@ -109,7 +107,7 @@ umng_palette <- c(
 
 ```{r}
 customer <- read_csv(file = "http://goo.gl/PmPkaG")
-customer |> head(n=5)
+customer |> head(n = 5)
 ```
 
 ## {.smaller}
@@ -118,14 +116,16 @@ customer |> head(n=5)
 
 ```{r}
 customer <- customer |>
-  mutate(cust.id = factor(x = cust.id, ordered = FALSE),
-         email = factor(x = email, ordered = FALSE),
-         online.visits = as.integer(x = online.visits),
-         online.trans = as.integer(x = online.trans),
-         store.trans = as.integer(x = store.trans),
-         sat.service = factor(x = sat.service, ordered = TRUE),
-         sat.selection = factor(x = sat.selection, ordered = TRUE))
-customer |> head(n=5)
+  mutate(
+    cust.id = factor(x = cust.id, ordered = FALSE),
+    email = factor(x = email, ordered = FALSE),
+    online.visits = as.integer(x = online.visits),
+    online.trans = as.integer(x = online.trans),
+    store.trans = as.integer(x = store.trans),
+    sat.service = factor(x = sat.service, ordered = TRUE),
+    sat.selection = factor(x = sat.selection, ordered = TRUE)
+  )
+customer |> head(n = 5)
 ```
 
 ##
@@ -160,11 +160,14 @@ plot(x = customer$store.spend, y = customer$online.spend)
 -   **Scatterplots: the base R way**
 
 ```{r}
-plot(x = customer$store.spend, y = customer$online.spend,
-     cex=0.7,
-     main="Customers as of June 2014", 
-     xlab="Prior 12 months in-store sales ($)", 
-     ylab="Prior 12 months online sales ($)")
+plot(
+  x = customer$store.spend,
+  y = customer$online.spend,
+  cex = 0.7,
+  main = "Customers as of June 2014",
+  xlab = "Prior 12 months in-store sales ($)",
+  ylab = "Prior 12 months online sales ($)"
+)
 ```
 
 ## {.smaller}
@@ -174,11 +177,16 @@ plot(x = customer$store.spend, y = customer$online.spend,
 ```{r}
 my.col <- c("black", "green3")
 my.pch <- c(1, 19)
-plot(x = customer$store.spend, y = customer$online.spend,
-     cex=0.7, col=my.col[customer$email], pch=my.pch[customer$email],
-     main="Customers as of June 2014", 
-     xlab="Prior 12 months in-store sales ($)", 
-     ylab="Prior 12 months online sales ($)")
+plot(
+  x = customer$store.spend,
+  y = customer$online.spend,
+  cex = 0.7,
+  col = my.col[customer$email],
+  pch = my.pch[customer$email],
+  main = "Customers as of June 2014",
+  xlab = "Prior 12 months in-store sales ($)",
+  ylab = "Prior 12 months online sales ($)"
+)
 ```
 
 ## {.smaller}
@@ -188,12 +196,22 @@ plot(x = customer$store.spend, y = customer$online.spend,
 ```{r}
 my.col <- c("black", "green3")
 my.pch <- c(1, 19)
-plot(x = customer$store.spend, y = customer$online.spend,
-     cex=0.7, col=my.col[customer$email], pch=my.pch[customer$email],
-     main="Customers as of June 2014", 
-     xlab="Prior 12 months in-store sales ($)", 
-     ylab="Prior 12 months online sales ($)")
-legend(x="topright", legend=paste("email on file:", levels(customer$email)), col=my.col, pch=my.pch)
+plot(
+  x = customer$store.spend,
+  y = customer$online.spend,
+  cex = 0.7,
+  col = my.col[customer$email],
+  pch = my.pch[customer$email],
+  main = "Customers as of June 2014",
+  xlab = "Prior 12 months in-store sales ($)",
+  ylab = "Prior 12 months online sales ($)"
+)
+legend(
+  x = "topright",
+  legend = paste("email on file:", levels(customer$email)),
+  col = my.col,
+  pch = my.pch
+)
 ```
 
 ## {.smaller}
@@ -203,13 +221,23 @@ legend(x="topright", legend=paste("email on file:", levels(customer$email)), col
 ```{r}
 my.col <- c("black", "green3")
 my.pch <- c(1, 19)
-plot(x = customer$store.spend + 1, y = customer$online.spend + 1,
-     cex=0.7, col=my.col[customer$email], pch=my.pch[customer$email],
-     log ="xy",
-     main="Customers as of June 2014", 
-     xlab="Prior 12 months in-store sales ($)", 
-     ylab="Prior 12 months online sales ($)")
-legend(x="topright", legend=paste("email on file:", levels(customer$email)), col=my.col, pch=my.pch)
+plot(
+  x = customer$store.spend + 1,
+  y = customer$online.spend + 1,
+  cex = 0.7,
+  col = my.col[customer$email],
+  pch = my.pch[customer$email],
+  log = "xy",
+  main = "Customers as of June 2014",
+  xlab = "Prior 12 months in-store sales ($)",
+  ylab = "Prior 12 months online sales ($)"
+)
+legend(
+  x = "topright",
+  legend = paste("email on file:", levels(customer$email)),
+  col = my.col,
+  pch = my.pch
+)
 ```
 
 ##
@@ -218,8 +246,8 @@ legend(x="topright", legend=paste("email on file:", levels(customer$email)), col
 
 ```{r}
 #| fig-height: 4
-
-customer |> ggplot() +
+customer |>
+  ggplot() +
   geom_point(aes(x = store.spend, y = online.spend, color = email))
 ```
 
@@ -229,11 +257,22 @@ customer |> ggplot() +
 
 ```{r}
 #| fig-height: 4
-
-customer |> ggplot() +
-  geom_point(aes(x = store.spend, y = online.spend, color = email, shape = email)) +
-  scale_color_manual(values = c("black", "green3"), labels = c("email on file: no", "email on file: yes")) +
-  scale_shape_manual(values = c(1, 19), labels = c("email on file: no", "email on file: yes"))
+customer |>
+  ggplot() +
+  geom_point(aes(
+    x = store.spend,
+    y = online.spend,
+    color = email,
+    shape = email
+  )) +
+  scale_color_manual(
+    values = c("black", "green3"),
+    labels = c("email on file: no", "email on file: yes")
+  ) +
+  scale_shape_manual(
+    values = c(1, 19),
+    labels = c("email on file: no", "email on file: yes")
+  )
 ```
 
 ## {.smaller}
@@ -242,12 +281,26 @@ customer |> ggplot() +
 
 ```{r}
 #| fig-height: 4
-
-customer |> ggplot() +
-  geom_point(aes(x = store.spend, y = online.spend, color = email, shape = email)) +
-  scale_color_manual(values = c("black", "green3"), labels = c("email on file: no", "email on file: yes")) +
-  scale_shape_manual(values = c(1, 19), labels = c("email on file: no", "email on file: yes")) +
-  scale_x_continuous(trans = "log1p", breaks = c(1, 2, 5, 10, 20, 50, 100, 500)) + 
+customer |>
+  ggplot() +
+  geom_point(aes(
+    x = store.spend,
+    y = online.spend,
+    color = email,
+    shape = email
+  )) +
+  scale_color_manual(
+    values = c("black", "green3"),
+    labels = c("email on file: no", "email on file: yes")
+  ) +
+  scale_shape_manual(
+    values = c(1, 19),
+    labels = c("email on file: no", "email on file: yes")
+  ) +
+  scale_x_continuous(
+    trans = "log1p",
+    breaks = c(1, 2, 5, 10, 20, 50, 100, 500)
+  ) +
   scale_y_continuous(trans = "log1p", breaks = c(1, 5, 50, 500))
 ```
 
@@ -257,15 +310,32 @@ customer |> ggplot() +
 
 ```{r}
 #| fig-height: 3.5
-
-customer |> ggplot() +
-  geom_point(aes(x = store.spend, y = online.spend, color = email, shape = email)) +
-  scale_color_manual(values = c("black", "green3"), labels = c("email on file: no", "email on file: yes")) +
-  scale_shape_manual(values = c(1, 19), labels = c("email on file: no", "email on file: yes")) +
-  scale_x_continuous(trans = "log1p", breaks = c(1, 2, 5, 10, 20, 50, 100, 500)) + 
+customer |>
+  ggplot() +
+  geom_point(aes(
+    x = store.spend,
+    y = online.spend,
+    color = email,
+    shape = email
+  )) +
+  scale_color_manual(
+    values = c("black", "green3"),
+    labels = c("email on file: no", "email on file: yes")
+  ) +
+  scale_shape_manual(
+    values = c(1, 19),
+    labels = c("email on file: no", "email on file: yes")
+  ) +
+  scale_x_continuous(
+    trans = "log1p",
+    breaks = c(1, 2, 5, 10, 20, 50, 100, 500)
+  ) +
   scale_y_continuous(trans = "log1p", breaks = c(1, 5, 50, 500)) +
-  labs(x = "Prior 12 months in-store sales ($)", y = "Prior 12 months online sales ($)",
-       title = "Customers as of June 2014")
+  labs(
+    x = "Prior 12 months in-store sales ($)",
+    y = "Prior 12 months online sales ($)",
+    title = "Customers as of June 2014"
+  )
 ```
 
 ##
@@ -289,8 +359,11 @@ Where $n$ is the sample size, we must have paired numeric data $\{ (x_1, y_1), .
 ```{r}
 age_mean <- mean(customer$age)
 age_credit.score <- mean(customer$credit.score)
-numerator <- sum((customer$age - age_mean) * (customer$credit.score - age_credit.score)) 
-denominator <- sqrt(sum((customer$age - age_mean)^2)) * sqrt(sum(((customer$credit.score - age_credit.score)^2)))
+numerator <- sum(
+  (customer$age - age_mean) * (customer$credit.score - age_credit.score)
+)
+denominator <- sqrt(sum((customer$age - age_mean)^2)) *
+  sqrt(sum(((customer$credit.score - age_credit.score)^2)))
 pearson_corr <- numerator / denominator
 pearson_corr
 ```
@@ -309,11 +382,13 @@ cor(customer$age, customer$credit.score, method = 'pearson')
 
 ```{r}
 library(corrr) # Remember to install the package if it is not installed
-correlation_matrix <- customer |> 
-  select(where(is.numeric)) |> 
-  correlate(use = "pairwise.complete.obs", # There are NA values
-            method = "pearson",
-            diagonal = NA)
+correlation_matrix <- customer |>
+  select(where(is.numeric)) |>
+  correlate(
+    use = "pairwise.complete.obs", # There are NA values
+    method = "pearson",
+    diagonal = NA
+  )
 correlation_matrix # Ups!!! The tibble is wide. Check out the tibble in your console
 ```
 
@@ -325,7 +400,6 @@ correlation_matrix # Ups!!! The tibble is wide. Check out the tibble in your con
 
 ```{r}
 #| fig-height: 4.5
-
 correlation_matrix |> autoplot(triangular = "lower")
 ```
 
@@ -339,9 +413,7 @@ cor(customer$store.spend, customer$distance.to.store)
 
 ```{r}
 #| fig-height: 4
-
-customer |> ggplot() +
-  geom_point(aes(x = distance.to.store, y = store.spend))
+customer |> ggplot() + geom_point(aes(x = distance.to.store, y = store.spend))
 ```
 
 ## {.smaller}
@@ -354,7 +426,6 @@ cor(customer$store.spend, 1 / sqrt(customer$distance.to.store))
 
 ```{r}
 #| fig-height: 4
-
 customer |>
   mutate(distance.to.store_trans = 1 / sqrt(distance.to.store)) |>
   ggplot() +
@@ -369,11 +440,11 @@ customer |>
 
 ```{r}
 #| fig-height: 4
-
 ggplot() +
-  geom_function(fun = function(x) {1 / sqrt(x)}) +
-  labs(x = "Distance",
-       y = "Inverse square root distance")
+  geom_function(fun = function(x) {
+    1 / sqrt(x)
+  }) +
+  labs(x = "Distance", y = "Inverse square root distance")
 ```
 
 ## {.smaller}
@@ -383,10 +454,13 @@ ggplot() +
     -   **Scatterplots: the base R way**
 
 ```{r}
-plot(as.integer(customer$sat.service), as.integer(customer$sat.selection),
-     xlab = "Customer Satisfaction with Service",
-     ylab = "Customer Satisfaction with Selection",
-     main = "Customer as of June 2014")
+plot(
+  as.integer(customer$sat.service),
+  as.integer(customer$sat.selection),
+  xlab = "Customer Satisfaction with Service",
+  ylab = "Customer Satisfaction with Selection",
+  main = "Customer as of June 2014"
+)
 ```
 
 ##  {.smaller}
@@ -396,10 +470,13 @@ plot(as.integer(customer$sat.service), as.integer(customer$sat.selection),
     -   **Scatterplots: the base R way**
 
 ```{r}
-plot(jitter(as.integer(customer$sat.service)), jitter(as.integer(customer$sat.selection)),
-     xlab = "Customer Satisfaction with Service",
-     ylab = "Customer Satisfaction with Selection",
-     main = "Customer as of June 2014")
+plot(
+  jitter(as.integer(customer$sat.service)),
+  jitter(as.integer(customer$sat.selection)),
+  xlab = "Customer Satisfaction with Service",
+  ylab = "Customer Satisfaction with Selection",
+  main = "Customer as of June 2014"
+)
 ```
 
 ## {.smaller}
@@ -410,13 +487,14 @@ plot(jitter(as.integer(customer$sat.service)), jitter(as.integer(customer$sat.se
 
 ```{r}
 #| fig-height: 3.5
-
-customer |> 
+customer |>
   ggplot() +
   geom_point(aes(x = sat.service, y = sat.selection)) +
-  labs(x = "Customer Satisfaction with Service",
-       y = "Customer Satisfaction with Selection",
-       title = "Customer as of June 2014")
+  labs(
+    x = "Customer Satisfaction with Service",
+    y = "Customer Satisfaction with Selection",
+    title = "Customer as of June 2014"
+  )
 ```
 
 ## {.smaller}
@@ -427,14 +505,17 @@ customer |>
 
 ```{r}
 #| fig-height: 3.5
-
-customer |> 
+customer |>
   ggplot() +
-  geom_point(aes(x = sat.service, y = sat.selection), 
-             position = position_jitter(width = 0.2, height = 0.2)) +
-  labs(x = "Customer Satisfaction with Service",
-       y = "Customer Satisfaction with Selection",
-       title = "Customer as of June 2014")
+  geom_point(
+    aes(x = sat.service, y = sat.selection),
+    position = position_jitter(width = 0.2, height = 0.2)
+  ) +
+  labs(
+    x = "Customer Satisfaction with Service",
+    y = "Customer Satisfaction with Selection",
+    title = "Customer as of June 2014"
+  )
 ```
 
 # Acknowledgments
