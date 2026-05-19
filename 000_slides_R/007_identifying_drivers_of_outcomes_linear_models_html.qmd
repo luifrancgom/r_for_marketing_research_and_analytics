@@ -35,7 +35,6 @@ editor: source
 ```{r}
 #| echo: false
 #| label: libraries
-
 library(tidyverse)
 library(skimr)
 library(tidymodels)
@@ -49,7 +48,6 @@ library(kableExtra)
 ```{r}
 #| label: palette
 #| echo: false
-
 umng_palette <- c(
   "#043074",
   "#fdc600",
@@ -106,13 +104,13 @@ amusement_park |> head(n = 5)
 -   Transform data
 
 ```{r}
-amusement_park <- amusement_park |> 
-  mutate(weekend = factor(x = weekend, 
-                          labels = c('no', 'yes'),
-                          ordered = FALSE),
-         num.child = as.integer(num.child),
-         # logarithmic transform
-         logdist = log(distance, base = exp(x = 1)))
+amusement_park <- amusement_park |>
+  mutate(
+    weekend = factor(x = weekend, labels = c('no', 'yes'), ordered = FALSE),
+    num.child = as.integer(num.child),
+    # logarithmic transform
+    logdist = log(distance, base = exp(x = 1))
+  )
 amusement_park |> head(n = 5)
 ```
 
@@ -134,7 +132,7 @@ amusement_park |> skim()
     -   Pearson correlation coefficients for samples in a tibble
 
 ```{r}
-correlation_matrix <- amusement_park |> 
+correlation_matrix <- amusement_park |>
   select(num.child, rides:logdist) |>
   corrr::correlate()
 correlation_matrix
@@ -155,10 +153,13 @@ correlation_matrix |> autoplot(triangular = "lower")
 -   **Bivariate Association: the base R way**
 
 ```{r}
-plot(overall~rides, data=amusement_park,
-     xlab="Satisfaction with Rides", ylab="Overall Satisfaction")
-abline(reg = lm(formula = overall~rides, data = amusement_park), 
-       col = 'blue')
+plot(
+  overall ~ rides,
+  data = amusement_park,
+  xlab = "Satisfaction with Rides",
+  ylab = "Overall Satisfaction"
+)
+abline(reg = lm(formula = overall ~ rides, data = amusement_park), col = 'blue')
 ```
 
 ##
@@ -166,13 +167,11 @@ abline(reg = lm(formula = overall~rides, data = amusement_park),
 -   **Bivariate Association: the tidyverse way**
 
 ```{r}
-amusement_park |> ggplot(aes(x = rides, y = overall)) +
-  geom_point() + 
-  geom_smooth(method = 'lm', 
-              color = 'blue', 
-              se = FALSE) + 
-  labs(x = "Satisfaction with Rides",
-       y = "Overall Satisfaction")
+amusement_park |>
+  ggplot(aes(x = rides, y = overall)) +
+  geom_point() +
+  geom_smooth(method = 'lm', color = 'blue', se = FALSE) +
+  labs(x = "Satisfaction with Rides", y = "Overall Satisfaction")
 ```
 
 ##
@@ -182,27 +181,20 @@ amusement_park |> ggplot(aes(x = rides, y = overall)) +
 ```{r}
 #| echo: false
 #| out-width: 80%
-
 # A tutorial related to set.seed
 ## https://r-coder.com/set-seed-r/
 set.seed(12345)
-toy_data <- amusement_park |> 
+toy_data <- amusement_park |>
   slice_sample(n = 15)
 
 toy_model <- lm(formula = overall ~ rides, data = toy_data)
 
-augment(x = toy_model) |> 
-  ggplot(aes(x = rides, y = overall)) + 
-  geom_point(shape = 21, 
-             color = 'black', fill = umng_palette[4],
-             size = 2) +
-  geom_smooth(method = 'lm', 
-              color = umng_palette[1],
-              se = FALSE) + 
-  geom_segment(aes(xend=rides, yend=.fitted),
-               color=umng_palette[2]) + 
-  labs(x = "Satisfaction with Rides",
-       y = "Overall Satisfaction")
+augment(x = toy_model) |>
+  ggplot(aes(x = rides, y = overall)) +
+  geom_point(shape = 21, color = 'black', fill = umng_palette[4], size = 2) +
+  geom_smooth(method = 'lm', color = umng_palette[1], se = FALSE) +
+  geom_segment(aes(xend = rides, yend = .fitted), color = umng_palette[2]) +
+  labs(x = "Satisfaction with Rides", y = "Overall Satisfaction")
 ```
 
 ## {.smaller}
@@ -242,7 +234,7 @@ model1$coefficients
 # Make some predictions
 # We want to forecast the overall satisfaction rating
 # if the satisfaction with rides is 95
--94.962246 + 1.703285*95
+-94.962246 + 1.703285 * 95
 ```
 
 ##

@@ -35,7 +35,6 @@ editor: source
 ```{r}
 #| echo: false
 #| label: libraries
-
 library(tidyverse)
 library(skimr)
 library(corrr)
@@ -47,7 +46,6 @@ library(imager)
 ```{r}
 #| label: palette
 #| echo: false
-
 umng_palette <- c(
   "#043074",
   "#fdc600",
@@ -110,11 +108,10 @@ consumer_brand |> head(n = 5)
 -   Transform data
 
 ```{r}
-consumer_brand_scale <- consumer_brand |> 
-  mutate(across(perform:rebuy, 
-                .fns = \(x) scale(x = x,
-                                  center = TRUE,
-                                  scale = TRUE)[,1]))
+consumer_brand_scale <- consumer_brand |>
+  mutate(across(perform:rebuy, .fns = \(x) {
+    scale(x = x, center = TRUE, scale = TRUE)[, 1]
+  }))
 consumer_brand_scale |> head()
 ```
 
@@ -136,11 +133,13 @@ consumer_brand_scale |> skim()
     -   Pearson correlation coefficients for samples in a tibble
 
 ```{r}
-correlation_matrix <- consumer_brand_scale |> 
-  select(perform:rebuy) |> 
-  corrr::correlate(use = "pairwise.complete.obs", # There are NA values
-                   method = "pearson",
-                   diagonal = NA)
+correlation_matrix <- consumer_brand_scale |>
+  select(perform:rebuy) |>
+  corrr::correlate(
+    use = "pairwise.complete.obs", # There are NA values
+    method = "pearson",
+    diagonal = NA
+  )
 correlation_matrix # Ups!!! The tibble is wide. Check out the tibble in your console
 ```
 
@@ -151,10 +150,11 @@ correlation_matrix # Ups!!! The tibble is wide. Check out the tibble in your con
 ```{r}
 #| label: fig-visualizing-correlation-matrix
 #| fig-cap: "Visualizing a correlation matrix"
-
-correlation_matrix |> 
-  autoplot(method = "HC", # Hierarchical clustering: More details in Chapter 11 
-           triangular = "lower")
+correlation_matrix |>
+  autoplot(
+    method = "HC", # Hierarchical clustering: More details in Chapter 11
+    triangular = "lower"
+  )
 ```
 
 ##
@@ -162,8 +162,8 @@ correlation_matrix |>
 -   Mean ratings by brand
 
 ```{r}
-brand_mean <- consumer_brand_scale |> 
-  group_by(brand) |> 
+brand_mean <- consumer_brand_scale |>
+  group_by(brand) |>
   summarise(across(everything(), .fns = mean))
 brand_mean
 ```
@@ -173,12 +173,19 @@ brand_mean
 -   Mean ratings by brand
 
 ```{r}
-brand_mean_longer <- brand_mean |> 
-  pivot_longer(cols = perform:rebuy,
-               names_to = "perceptual_adjectives",
-               values_to = "value_mean") |> 
-  mutate(brand = fct_reorder(.f = brand, .x = value_mean),
-         perceptual_adjectives = fct_reorder(.f = perceptual_adjectives, .x = value_mean))
+brand_mean_longer <- brand_mean |>
+  pivot_longer(
+    cols = perform:rebuy,
+    names_to = "perceptual_adjectives",
+    values_to = "value_mean"
+  ) |>
+  mutate(
+    brand = fct_reorder(.f = brand, .x = value_mean),
+    perceptual_adjectives = fct_reorder(
+      .f = perceptual_adjectives,
+      .x = value_mean
+    )
+  )
 brand_mean_longer
 ```
 
@@ -187,13 +194,19 @@ brand_mean_longer
 ```{r}
 #| label: fig-heat-map-mean-ratings-by-brand
 #| fig-cap: "Heat map mean ratings by brand"
-
 library(tidyheatmaps)
-tidyheatmap(df = brand_mean_longer, 
-            rows = brand, columns = perceptual_adjectives, values = value_mean,
-            cluster_rows = TRUE, cluster_cols = TRUE,
-            clustering_method = "complete", # See ?hclust and chapter 11
-            display_numbers = TRUE, border_color = "black", fontsize = 12)
+tidyheatmap(
+  df = brand_mean_longer,
+  rows = brand,
+  columns = perceptual_adjectives,
+  values = value_mean,
+  cluster_rows = TRUE,
+  cluster_cols = TRUE,
+  clustering_method = "complete", # See ?hclust and chapter 11
+  display_numbers = TRUE,
+  border_color = "black",
+  fontsize = 12
+)
 ```
 
 ## {.smaller}
@@ -205,7 +218,7 @@ tidyheatmap(df = brand_mean_longer,
 ```{r}
 set.seed(seed = 1234)
 consumer_brand_sample <- consumer_brand |>
-  slice_sample(n = 1, by = brand) |> 
+  slice_sample(n = 1, by = brand) |>
   select(brand, perform, leader)
 consumer_brand_sample
 ```
@@ -218,25 +231,26 @@ consumer_brand_sample
 #| echo: false
 #| label: fig-visualizing-original-data
 #| fig-cap: "Visualizing original data"
-
 mean_leader <- mean(consumer_brand_sample$leader)
 mean_perform <- mean(consumer_brand_sample$perform)
 
-consumer_brand_sample |> 
-  ggplot() + 
-  geom_vline(xintercept = mean_leader,
-             color = "black") +
-  geom_hline(yintercept = mean_perform,
-             color = "black") +
+consumer_brand_sample |>
+  ggplot() +
+  geom_vline(xintercept = mean_leader, color = "black") +
+  geom_hline(yintercept = mean_perform, color = "black") +
   geom_point(aes(x = leader, y = perform, color = brand)) +
-  geom_point(data = tibble(x = mean(consumer_brand_sample$leader),
-                           y = mean(consumer_brand_sample$perform)),
-             aes(x = x, y = y), color = "#E31A1C") +
+  geom_point(
+    data = tibble(
+      x = mean(consumer_brand_sample$leader),
+      y = mean(consumer_brand_sample$perform)
+    ),
+    aes(x = x, y = y),
+    color = "#E31A1C"
+  ) +
   scale_x_continuous(breaks = 0:8, limits = c(0, 8)) +
   scale_y_continuous(breaks = 0:11, limits = c(0, 11)) +
   labs(title = "Calculate means") +
-  theme(legend.position = "right", 
-        aspect.ratio = 1)
+  theme(legend.position = "right", aspect.ratio = 1)
 ```
 
 ##
@@ -247,23 +261,21 @@ consumer_brand_sample |>
 #| echo: false
 #| label: fig-centering-data-using-the-mean
 #| fig-cap: "Centering data using the mean"
-
 consumer_brand_sample_center <- consumer_brand_sample |>
-  mutate(perform = perform - mean_perform,
-         leader = leader - mean_leader) 
+  mutate(perform = perform - mean_perform, leader = leader - mean_leader)
 
-consumer_brand_sample_center |> 
-  ggplot() + 
-  geom_vline(xintercept = 0,
-             color = "black") +
-  geom_hline(yintercept = 0,
-             color = "black") +
+consumer_brand_sample_center |>
+  ggplot() +
+  geom_vline(xintercept = 0, color = "black") +
+  geom_hline(yintercept = 0, color = "black") +
   geom_point(aes(x = leader, y = perform, color = brand)) +
-  geom_point(data = tibble(x = 0, y = 0),
-             aes(x = x, y = y), color = "#E31A1C") +
+  geom_point(
+    data = tibble(x = 0, y = 0),
+    aes(x = x, y = y),
+    color = "#E31A1C"
+  ) +
   labs(title = "Center data") +
-  theme(legend.position = "right", 
-        aspect.ratio = 1)
+  theme(legend.position = "right", aspect.ratio = 1)
 ```
 
 ##
@@ -274,26 +286,24 @@ consumer_brand_sample_center |>
 #| echo: false
 #| label: fig-scaling-data-using-the-standard-deviation
 #| fig-cap: "Scaling data using the standard deviation"
-
 sd_leader <- sd(consumer_brand_sample$leader)
 sd_perform <- sd(consumer_brand_sample$perform)
 
 consumer_brand_sample_center_scale <- consumer_brand_sample_center |>
-  mutate(perform = perform / sd_perform,
-         leader = leader / sd_leader)
+  mutate(perform = perform / sd_perform, leader = leader / sd_leader)
 
-consumer_brand_sample_center_scale |> 
-  ggplot() + 
-  geom_vline(xintercept = 0,
-             color = "black") +
-  geom_hline(yintercept = 0,
-             color = "black") +
+consumer_brand_sample_center_scale |>
+  ggplot() +
+  geom_vline(xintercept = 0, color = "black") +
+  geom_hline(yintercept = 0, color = "black") +
   geom_point(aes(x = leader, y = perform, color = brand)) +
-  geom_point(data = tibble(x = 0, y = 0),
-             aes(x = x, y = y), color = "#E31A1C") +
+  geom_point(
+    data = tibble(x = 0, y = 0),
+    aes(x = x, y = y),
+    color = "#E31A1C"
+  ) +
   labs(title = "Calculate standard deviations and scale data") +
-  theme(legend.position = "right", 
-        aspect.ratio = 1)
+  theme(legend.position = "right", aspect.ratio = 1)
 ```
 
 ##
@@ -304,12 +314,14 @@ consumer_brand_sample_center_scale |>
 #| echo: false
 #| label: fig-a-line-by-performing-an-orthogonal-regression
 #| fig-cap: "Fitting a line by performing an orthogonal regression"
-
-# Fit 
-v <- prcomp(as.matrix(select(consumer_brand_sample_center_scale, -brand)),
-            center = TRUE, scale. = TRUE) |> 
+# Fit
+v <- prcomp(
+  as.matrix(select(consumer_brand_sample_center_scale, -brand)),
+  center = TRUE,
+  scale. = TRUE
+) |>
   _$rotation
-beta <- v[2,1] / v[1,1]
+beta <- v[2, 1] / v[1, 1]
 
 # Find fit data
 ## perform = beta*leader
@@ -319,27 +331,28 @@ beta <- v[2,1] / v[1,1]
 #### beta*leader_end = -beta*leader_end + beta*leader1 + perform1
 #### 2beta*leader_end = beta*leader1 + perform1
 #### leader_end = beta*leader1 + perform1 / 2beta
-##### perform_end = beta*(beta*leader1 + perform1 / 2beta) 
-##### perform_end = beta*leader1 + perform1 / 2 
-consumer_brand_sample_center_scale_fit <- consumer_brand_sample_center_scale |> 
-  mutate(perform_end = (beta*leader + perform) / 2,
-         leader_end = (beta*leader + perform) / (2*beta))
+##### perform_end = beta*(beta*leader1 + perform1 / 2beta)
+##### perform_end = beta*leader1 + perform1 / 2
+consumer_brand_sample_center_scale_fit <- consumer_brand_sample_center_scale |>
+  mutate(
+    perform_end = (beta * leader + perform) / 2,
+    leader_end = (beta * leader + perform) / (2 * beta)
+  )
 
-consumer_brand_sample_center_scale_fit |> 
-  ggplot(aes(x = leader, y = perform)) + 
-  geom_vline(xintercept = 0,
-             color = "black") +
-  geom_hline(yintercept = 0,
-             color = "black") +
+consumer_brand_sample_center_scale_fit |>
+  ggplot(aes(x = leader, y = perform)) +
+  geom_vline(xintercept = 0, color = "black") +
+  geom_hline(yintercept = 0, color = "black") +
   geom_abline(slope = beta, intercept = 0, color = "#18BC9C") +
   geom_point(aes(color = brand)) +
-  geom_segment(aes(xend = leader_end, yend = perform_end),
-               color = "#CCBE93") +
-  geom_point(data = tibble(x = 0, y = 0),
-             aes(x = x, y = y), color = "#E31A1C") +
+  geom_segment(aes(xend = leader_end, yend = perform_end), color = "#CCBE93") +
+  geom_point(
+    data = tibble(x = 0, y = 0),
+    aes(x = x, y = y),
+    color = "#E31A1C"
+  ) +
   labs(title = "Fit orthogonal line") +
-  theme(legend.position = "right", 
-        aspect.ratio = 1)
+  theme(legend.position = "right", aspect.ratio = 1)
 ```
 
 ##
@@ -350,23 +363,21 @@ consumer_brand_sample_center_scale_fit |>
 #| echo: false
 #| label: fig-find-a-line-orthoghonal-to-the-fitted-line
 #| fig-cap: "Find a line orthogonal to the fitted line"
-
-consumer_brand_sample_center_scale_fit |> 
-  ggplot(aes(x = leader, y = perform)) + 
-  geom_vline(xintercept = 0,
-             color = "black") +
-  geom_hline(yintercept = 0,
-             color = "black") +
+consumer_brand_sample_center_scale_fit |>
+  ggplot(aes(x = leader, y = perform)) +
+  geom_vline(xintercept = 0, color = "black") +
+  geom_hline(yintercept = 0, color = "black") +
   geom_abline(slope = beta, intercept = 0, color = "#18BC9C") +
   geom_abline(slope = -beta, intercept = 0, color = "#18BC9C") +
   geom_point(aes(color = brand)) +
-  geom_segment(aes(xend = leader_end, yend = perform_end),
-               color = "#CCBE93") +
-  geom_point(data = tibble(x = 0, y = 0),
-             aes(x = x, y = y), color = "#E31A1C") +
+  geom_segment(aes(xend = leader_end, yend = perform_end), color = "#CCBE93") +
+  geom_point(
+    data = tibble(x = 0, y = 0),
+    aes(x = x, y = y),
+    color = "#E31A1C"
+  ) +
   labs(title = "Fit orthogonal line") +
-  theme(legend.position = "right", 
-        aspect.ratio = 1)
+  theme(legend.position = "right", aspect.ratio = 1)
 ```
 
 ##
@@ -377,32 +388,34 @@ consumer_brand_sample_center_scale_fit |>
 #| echo: false
 #| label: fig-find-the-orthoghonal-distances-between-the-points-and-the-new-line
 #| fig-cap: "Find the orthogonal distances between the points and the new line"
-
 #### leader_end2 = -beta*leader1 + perform1 / 2*-beta
-##### perform_end2 = -beta*(-beta*leader1 + perform1 / 2*-beta) 
+##### perform_end2 = -beta*(-beta*leader1 + perform1 / 2*-beta)
 ##### perform_end2 = -beta*leader1 + perform1 / 2
-consumer_brand_sample_center_scale_fit <- consumer_brand_sample_center_scale_fit |> 
-  mutate(perform_end2 = ((-beta)*leader + perform) / 2,
-         leader_end2 = ((-beta)*leader + perform) / (2*(-beta)))
+consumer_brand_sample_center_scale_fit <- consumer_brand_sample_center_scale_fit |>
+  mutate(
+    perform_end2 = ((-beta) * leader + perform) / 2,
+    leader_end2 = ((-beta) * leader + perform) / (2 * (-beta))
+  )
 
-consumer_brand_sample_center_scale_fit |> 
-  ggplot(aes(x = leader, y = perform)) + 
-  geom_vline(xintercept = 0,
-             color = "black") +
-  geom_hline(yintercept = 0,
-             color = "black") +
+consumer_brand_sample_center_scale_fit |>
+  ggplot(aes(x = leader, y = perform)) +
+  geom_vline(xintercept = 0, color = "black") +
+  geom_hline(yintercept = 0, color = "black") +
   geom_abline(slope = beta, intercept = 0, color = "#18BC9C") +
   geom_abline(slope = -beta, intercept = 0, color = "#18BC9C") +
   geom_point(aes(color = brand)) +
-  geom_segment(aes(xend = leader_end, yend = perform_end),
-               color = "#CCBE93") +
-  geom_segment(aes(xend = leader_end2, yend = perform_end2),
-               color = "#CCBE93") +
-  geom_point(data = tibble(x = 0, y = 0),
-             aes(x = x, y = y), color = "#E31A1C") +
+  geom_segment(aes(xend = leader_end, yend = perform_end), color = "#CCBE93") +
+  geom_segment(
+    aes(xend = leader_end2, yend = perform_end2),
+    color = "#CCBE93"
+  ) +
+  geom_point(
+    data = tibble(x = 0, y = 0),
+    aes(x = x, y = y),
+    color = "#E31A1C"
+  ) +
   labs(title = "Find the orthogonal distances to the new line") +
-  theme(legend.position = "right", 
-        aspect.ratio = 1)
+  theme(legend.position = "right", aspect.ratio = 1)
 ```
 
 ##
@@ -413,23 +426,17 @@ consumer_brand_sample_center_scale_fit |>
 #| echo: false
 #| label: fig-project-the-points-onto-each-line
 #| fig-cap: "Project the points onto each line"
-
 # Project the points
-consumer_brand_sample_center_scale_fit |> 
-  ggplot() + 
-  geom_vline(xintercept = 0,
-             color = "black") +
-  geom_hline(yintercept = 0,
-             color = "black") +
+consumer_brand_sample_center_scale_fit |>
+  ggplot() +
+  geom_vline(xintercept = 0, color = "black") +
+  geom_hline(yintercept = 0, color = "black") +
   geom_abline(slope = beta, intercept = 0, color = "#18BC9C") +
   geom_abline(slope = -beta, intercept = 0, color = "#18BC9C") +
   geom_point(aes(x = leader_end, y = perform_end, color = brand)) +
   geom_point(aes(x = leader_end2, y = perform_end2, color = brand)) +
-  labs(x = "leader",
-       y = "perform",
-       title = "Proyected points") +
-  theme(legend.position = "right", 
-        aspect.ratio = 1)
+  labs(x = "leader", y = "perform", title = "Proyected points") +
+  theme(legend.position = "right", aspect.ratio = 1)
 ```
 
 ##
@@ -440,21 +447,29 @@ consumer_brand_sample_center_scale_fit |>
 #| echo: false
 #| label: fig-rotate-the-fitted-line-and-the-projected-points
 #| fig-cap: Rotate the fitted line and the projected points around $(0,0)$
-
 # Rotate the points
 ## arc-tangent
 angle_radians <- atan(beta)
 
 consumer_brand_sample_center_scale_fit_rotation <- consumer_brand_sample_center_scale_fit |>
-  mutate(perform_rotation = 0,
-         leader_rotation = cos(angle_radians)*leader_end + sin(angle_radians)*perform_end,
-         leader_rotation2 = 0,
-         perform_rotation2 = -sin(angle_radians)*leader_end2 + cos(angle_radians)*perform_end2) |> 
+  mutate(
+    perform_rotation = 0,
+    leader_rotation = cos(angle_radians) *
+      leader_end +
+      sin(angle_radians) * perform_end,
+    leader_rotation2 = 0,
+    perform_rotation2 = -sin(angle_radians) *
+      leader_end2 +
+      cos(angle_radians) * perform_end2
+  ) |>
   # Possible clusters
-  mutate(cluster = case_when(
-    leader_rotation <= 0 ~ "Cluster 1",
-    leader_rotation > 0 ~ "Cluster 2", 
-    .default = NULL))
+  mutate(
+    cluster = case_when(
+      leader_rotation <= 0 ~ "Cluster 1",
+      leader_rotation > 0 ~ "Cluster 2",
+      .default = NULL
+    )
+  )
 
 consumer_brand_sample_center_scale_fit_rotation |>
   ggplot() +
@@ -462,13 +477,10 @@ consumer_brand_sample_center_scale_fit_rotation |>
   geom_hline(yintercept = 0, color = "#18BC9C") +
   geom_point(aes(x = leader_rotation2, y = perform_rotation2, color = brand)) +
   geom_point(aes(x = leader_rotation, y = perform_rotation, color = brand)) +
-  scale_x_continuous(limits = c(-2,2)) +
-  scale_y_continuous(limits = c(-2,2)) +
-  labs(x = "leader",
-       y = "perform",
-       title = "Rotated points") +
-  theme(legend.position = "right", 
-        aspect.ratio = 1)
+  scale_x_continuous(limits = c(-2, 2)) +
+  scale_y_continuous(limits = c(-2, 2)) +
+  labs(x = "leader", y = "perform", title = "Rotated points") +
+  theme(legend.position = "right", aspect.ratio = 1)
 ```
 
 ##
@@ -479,27 +491,42 @@ consumer_brand_sample_center_scale_fit_rotation |>
 #| echo: false
 #| label: fig-fix-the-new-points-based-on-the-projected-points
 #| fig-cap: "Fix the new points based on the projected points"
-
 consumer_brand_sample_center_scale_fit_rotation |>
   ggplot() +
   geom_vline(xintercept = 0, color = "#18BC9C") +
   geom_hline(yintercept = 0, color = "#18BC9C") +
-  geom_segment(aes(x = leader_rotation, xend = leader_rotation, 
-                   y = 0, yend = perform_rotation2),
-               color = "#CCBE93") +
-  geom_segment(aes(x = 0, xend = leader_rotation,
-                   y = perform_rotation2, yend = perform_rotation2),
-               color = "#CCBE93") +
-  geom_point(aes(x = leader_rotation2, y = perform_rotation2), color = "black") +
+  geom_segment(
+    aes(
+      x = leader_rotation,
+      xend = leader_rotation,
+      y = 0,
+      yend = perform_rotation2
+    ),
+    color = "#CCBE93"
+  ) +
+  geom_segment(
+    aes(
+      x = 0,
+      xend = leader_rotation,
+      y = perform_rotation2,
+      yend = perform_rotation2
+    ),
+    color = "#CCBE93"
+  ) +
+  geom_point(
+    aes(x = leader_rotation2, y = perform_rotation2),
+    color = "black"
+  ) +
   geom_point(aes(x = leader_rotation, y = perform_rotation), color = "black") +
   geom_point(aes(x = leader_rotation, y = perform_rotation2, color = brand)) +
-  scale_x_continuous(limits = c(-2,2)) +
-  scale_y_continuous(limits = c(-2,2)) +
-  labs(x = "leader",
-       y = "perform",
-       title = "New points based on the rotated points") +
-  theme(legend.position = "right", 
-        aspect.ratio = 1)
+  scale_x_continuous(limits = c(-2, 2)) +
+  scale_y_continuous(limits = c(-2, 2)) +
+  labs(
+    x = "leader",
+    y = "perform",
+    title = "New points based on the rotated points"
+  ) +
+  theme(legend.position = "right", aspect.ratio = 1)
 ```
 
 ##
@@ -510,21 +537,20 @@ consumer_brand_sample_center_scale_fit_rotation |>
 #| echo: false
 #| label: fig-apply-data-complexity-reduction
 #| fig-cap: "Apply data complexity reduction by focusing on the horizontal axis"
-
 consumer_brand_sample_center_scale_fit_rotation |>
   ggplot(aes(x = leader_rotation, y = perform_rotation)) +
-  geom_mark_hull(aes(fill = cluster, label = cluster),
-                 show.legend = FALSE) +
+  geom_mark_hull(aes(fill = cluster, label = cluster), show.legend = FALSE) +
   geom_vline(xintercept = 0, color = "#18BC9C") +
   geom_hline(yintercept = 0, color = "#18BC9C") +
   geom_point(aes(color = brand)) +
-  scale_x_continuous(limits = c(-2,2)) +
-  scale_y_continuous(limits = c(-1,1)) +
-  labs(x = "leader",
-       y = "perform",
-       title = "Data reduction focusing on the horizontal axis") +
-  theme(legend.position = "right", 
-        aspect.ratio = 1)
+  scale_x_continuous(limits = c(-2, 2)) +
+  scale_y_continuous(limits = c(-1, 1)) +
+  labs(
+    x = "leader",
+    y = "perform",
+    title = "Data reduction focusing on the horizontal axis"
+  ) +
+  theme(legend.position = "right", aspect.ratio = 1)
 ```
 
 ##
@@ -535,26 +561,26 @@ consumer_brand_sample_center_scale_fit_rotation |>
 #| echo: false
 #| label: fig-recover-the-data-that-was-reduced
 #| fig-cap: "Recover the data that was reduced when focusing in the horizontal axis"
-
 # Recover reduced data
-consumer_brand_sample_center_scale_fit_rotation_recover <- consumer_brand_sample_center_scale_fit_rotation |>  
-  mutate(perform_recover = (perform_end)*sd_perform + mean_perform,
-         leader_recover = (leader_end)*sd_leader + mean_leader)
+consumer_brand_sample_center_scale_fit_rotation_recover <- consumer_brand_sample_center_scale_fit_rotation |>
+  mutate(
+    perform_recover = (perform_end) * sd_perform + mean_perform,
+    leader_recover = (leader_end) * sd_leader + mean_leader
+  )
 
 consumer_brand_sample_center_scale_fit_rotation_recover |>
   ggplot(aes(x = leader_recover, y = perform_recover)) +
   # geom_vline(xintercept = 0, color = "#18BC9C") +
   # geom_hline(yintercept = 0, color = "#18BC9C") +
   geom_point(aes(color = "Recover data")) +
-  geom_point(data = consumer_brand_sample,
-             aes(x = leader, y = perform, color = "Original data")) +
+  geom_point(
+    data = consumer_brand_sample,
+    aes(x = leader, y = perform, color = "Original data")
+  ) +
   scale_x_continuous(breaks = 0:8, limits = c(0, 8)) +
   scale_y_continuous(breaks = 0:11, limits = c(0, 11)) +
-  labs(x = "leader",
-       y = "perform",
-       title = "Recovered data vs Original data") +
-  theme(legend.position = "bottom",
-        legend.title = element_blank())
+  labs(x = "leader", y = "perform", title = "Recovered data vs Original data") +
+  theme(legend.position = "bottom", legend.title = element_blank())
 ```
 
 # Understanding the reduction of data complexity
@@ -567,7 +593,6 @@ consumer_brand_sample_center_scale_fit_rotation_recover |>
 #| echo: false
 #| label: fig-using-an-image-to-understand-data-complexity-reduction
 #| fig-cap: "Using an image to understand data complexity reduction"
-
 boat_gray <- load.image(file = "../000_images/008_boat_gray_512_x_512.tiff")
 plot(boat_gray)
 ```
@@ -583,8 +608,8 @@ plot(boat_gray)
 
 ```{r}
 #| echo: false
-boat_gray_long <- boat_gray |> 
-  as.data.frame() |> 
+boat_gray_long <- boat_gray |>
+  as.data.frame() |>
   as_tibble()
 boat_gray_long
 ```
@@ -598,9 +623,7 @@ boat_gray_long
 ```{r}
 #| echo: false
 boat_gray_wider <- boat_gray_long |>
-  pivot_wider(id_cols = x, 
-              names_from = y, 
-              values_from = value)
+  pivot_wider(id_cols = x, names_from = y, values_from = value)
 boat_gray_wider
 ```
 
@@ -612,49 +635,55 @@ boat_gray_wider
 #| echo: false
 #| label: fig-data-complexity-reduction
 #| fig-cap: "Data complexity reduction example"
-
-boat_gray_wider_pca <- boat_gray_wider |> 
-  select(-x) |> 
+boat_gray_wider_pca <- boat_gray_wider |>
+  select(-x) |>
   prcomp(retx = TRUE, center = TRUE, scale. = TRUE)
 
 n_pc <- c(1, 5, 10, 50, 100, 500)
-  
-pca_tidy_reconstruction <- tibble(pc = n_pc) |> 
-  mutate(x_hat = map(.x = n_pc, 
-                     .f = ~ boat_gray_wider_pca$x[, 1:.x] %*% 
-                            t(boat_gray_wider_pca$rotation[, 1:.x])),
-         x_hat = map(.x = x_hat,
-                     .f = ~ scale(x = .x, 
-                                  center = FALSE, 
-                                  scale = 1/boat_gray_wider_pca$scale)),
-         x_hat = map(.x = x_hat,
-                     .f = ~ scale(x = .x, 
-                                  center = -boat_gray_wider_pca$center, 
-                                  scale = FALSE)),
-         x_hat = map(.x = x_hat, 
-                     .f = ~ as_tibble(.x)),
-         x_hat = map(.x = x_hat, 
-                     .f = ~ bind_cols(select(boat_gray_wider, x), .x)),
-         x_hat = map(.x = x_hat, 
-                     .f = ~ pivot_longer(.x, 
-                                         cols = -x,
-                                         names_to = "y",
-                                         values_to = "value",
-                                         names_transform = list(y = as.integer)))) |> 
-  mutate(pc_label = str_glue("Number of components: {pc}"),
-         .after = pc) |>
-  mutate(pc_label = fct_reorder(.f = pc_label, .x = pc)) |>  
+
+pca_tidy_reconstruction <- tibble(pc = n_pc) |>
+  mutate(
+    x_hat = map(
+      .x = n_pc,
+      .f = ~ boat_gray_wider_pca$x[, 1:.x] %*%
+        t(boat_gray_wider_pca$rotation[, 1:.x])
+    ),
+    x_hat = map(
+      .x = x_hat,
+      .f = ~ scale(
+        x = .x,
+        center = FALSE,
+        scale = 1 / boat_gray_wider_pca$scale
+      )
+    ),
+    x_hat = map(
+      .x = x_hat,
+      .f = ~ scale(x = .x, center = -boat_gray_wider_pca$center, scale = FALSE)
+    ),
+    x_hat = map(.x = x_hat, .f = ~ as_tibble(.x)),
+    x_hat = map(.x = x_hat, .f = ~ bind_cols(select(boat_gray_wider, x), .x)),
+    x_hat = map(
+      .x = x_hat,
+      .f = ~ pivot_longer(
+        .x,
+        cols = -x,
+        names_to = "y",
+        values_to = "value",
+        names_transform = list(y = as.integer)
+      )
+    )
+  ) |>
+  mutate(pc_label = str_glue("Number of components: {pc}"), .after = pc) |>
+  mutate(pc_label = fct_reorder(.f = pc_label, .x = pc)) |>
   unnest(x_hat)
 
-pca_tidy_reconstruction |> 
-  ggplot(aes(x = x, y = y)) + 
+pca_tidy_reconstruction |>
+  ggplot(aes(x = x, y = y)) +
   geom_raster(aes(fill = value)) +
   scale_y_reverse() +
   scale_fill_gradient(low = "black", high = "white") +
-  facet_wrap(facets = vars(pc), 
-             nrow = 2, ncol = 3) +
-  theme(legend.position = "none",
-        aspect.ratio = 1)
+  facet_wrap(facets = vars(pc), nrow = 2, ncol = 3) +
+  theme(legend.position = "none", aspect.ratio = 1)
 ```
 
 # Consumer brand perception survey
@@ -666,7 +695,7 @@ pca_tidy_reconstruction |>
     -   Applying to the reduced example
 
 ```{r}
-consumer_brand_sample_matrix <- consumer_brand_sample |> 
+consumer_brand_sample_matrix <- consumer_brand_sample |>
   select(-brand) |>
   as.matrix()
 consumer_brand_sample_matrix |> head()
@@ -679,7 +708,7 @@ consumer_brand_sample_matrix |> head()
     -   `prcomp` output from R
 
 ```{r}
-consumer_brand_sample_matrix_pca <- consumer_brand_sample_matrix |> 
+consumer_brand_sample_matrix_pca <- consumer_brand_sample_matrix |>
   prcomp(center = TRUE, scale. = TRUE)
 consumer_brand_sample_matrix_pca
 ```
@@ -724,7 +753,7 @@ loadings
     -   Extracting loadings: map from principle components space back into the original space
 
 ```{r}
-consumer_brand_sample_matrix_center_scale <- consumer_brand_sample_matrix |> 
+consumer_brand_sample_matrix_center_scale <- consumer_brand_sample_matrix |>
   scale(center = TRUE, scale = TRUE)
 consumer_brand_sample_matrix_center_scale
 ```

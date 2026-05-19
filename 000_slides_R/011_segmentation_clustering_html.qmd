@@ -35,7 +35,6 @@ editor: source
 ```{r}
 #| echo: false
 #| label: libraries
-
 library(tidyverse)
 library(skimr)
 library(latex2exp)
@@ -48,7 +47,6 @@ library(kableExtra)
 ```{r}
 #| label: palette
 #| echo: false
-
 umng_palette <- c(
   "#043074",
   "#fdc600",
@@ -94,7 +92,7 @@ umng_palette <- c(
 -   **Import data**
 
 ```{r}
-segmentation <- read_csv(file = "http://goo.gl/qw303p") |> 
+segmentation <- read_csv(file = "http://goo.gl/qw303p") |>
   select(-Segment) # Remove Segment column to understand how it was build
 segmentation |> head(n = 5)
 ```
@@ -113,10 +111,12 @@ segmentation |> glimpse()
 
 ```{r}
 segmentation <- segmentation |>
-  mutate(gender = factor(gender, ordered = FALSE),
-         kids = as.integer(kids),
-         ownHome = factor(ownHome, ordered = FALSE),
-         subscribe = factor(subscribe, ordered = FALSE))
+  mutate(
+    gender = factor(gender, ordered = FALSE),
+    kids = as.integer(kids),
+    ownHome = factor(ownHome, ordered = FALSE),
+    subscribe = factor(subscribe, ordered = FALSE)
+  )
 
 segmentation |> head(n = 5)
 ```
