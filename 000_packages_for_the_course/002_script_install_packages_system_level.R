@@ -1,8 +1,8 @@
 # Network and SSL configuration  ----
-# We use 'wget' with the '--no-check-certificate' flag to bypass SSL handshake 
+# We use 'wget' with the '--no-check-certificate' flag to bypass SSL handshake
 # errors and handle redirects to the binary package servers reliably on RHEL 10.
 options(download.file.method = "wget")
-options(download.file.extra  = "--no-check-certificate")
+options(download.file.extra = "--no-check-certificate")
 
 # Configuration ----
 # Check R.home() to obtain R_HOME and
@@ -76,9 +76,12 @@ packages <- c(
   "rmarkdown",
   ### Maps ----
   "tigris",
+  "sf",
   ### LaTeX ----
   "latex2exp",
-  "tinytex"
+  "tinytex",
+  ## Python
+  "reticulate"
 )
 
 # Installation Logic ----
