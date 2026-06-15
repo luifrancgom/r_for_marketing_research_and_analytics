@@ -9,7 +9,7 @@ options(download.file.extra = "--no-check-certificate")
 # R.home(component = 'bin') to obtain
 # the executable path
 # <executable-path> -e ".libPaths()"
-target_lib <- "/opt/R/4.5.2/lib/R/library"
+target_lib <- "/opt/R/4.6.0/lib/R/library"
 # Check the SETUP in https://packagemanager.posit.co
 # for the specific Operating System, Linux Distribution
 # and environment
@@ -80,7 +80,7 @@ packages <- c(
   ### LaTeX ----
   "latex2exp",
   "tinytex",
-  ## Python
+  ## Python ----
   "reticulate"
 )
 
