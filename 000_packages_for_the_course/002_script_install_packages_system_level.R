@@ -91,11 +91,15 @@ installed <- rownames(installed.packages(lib.loc = target_lib))
 for (package in packages) {
   if (!(package %in% installed)) {
     message(paste("Installing:", package))
-    install.packages(
-      package,
-      lib = target_lib,
-      repos = my_repo,
-      dependencies = TRUE
+    tryCatch(
+      install.packages(
+        package,
+        lib = target_lib,
+        repos = my_repo,
+        dependencies = TRUE
+      ),
+      error = function(e) message(paste("FAILED:", package, "-", e$message)),
+      warning = function(w) message(paste("WARNING:", package, "-", w$message))
     )
   } else {
     message(paste("Skipping:", package, "(already installed globally)"))
