@@ -1,0 +1,62 @@
+<h5>Fitting a line to data</h5>
+
+<div style="text-align: center; max-width: 80ch; margin: 0 auto;">
+    <div style="position: relative; padding-bottom: 56.25%; height: 0; margin-bottom: 20px;">
+        <iframe src="https://www.youtube.com/embed/PaFPbb66DxQ?si=VChNxBxd_2SGKDVq" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" style="position:  
+ absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
+    </div>
+</div>
+
+<h5>Linear regression</h5>
+
+<div style="text-align: center; max-width: 80ch; margin: 0 auto;">
+    <div style="position: relative; padding-bottom: 56.25%; height: 0; margin-bottom: 20px;">
+        <iframe src="https://www.youtube.com/embed/nk2CQITm_eo?si=T62ELWEROA_MrOek" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" style="position:  
+ absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
+    </div>
+</div>
+
+<h5>Multiple linear regression</h5>
+
+<div style="text-align: center; max-width: 80ch; margin: 0 auto;">
+    <div style="position: relative; padding-bottom: 56.25%; height: 0; margin-bottom: 20px;">
+        <iframe src="https://www.youtube.com/embed/zITIFTsivN8?si=3MYna8PO38KhPDQj" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" style="position:  
+ absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
+    </div>
+</div>
+
+<h5>Linear models for t-tests and ANOVA</h5>
+
+<div style="text-align: center; max-width: 80ch; margin: 0 auto;">
+    <div style="position: relative; padding-bottom: 56.25%; height: 0; margin-bottom: 20px;">
+        <iframe src="https://www.youtube.com/embed/NF5_btOaCig?si=D0-L3gK7QJqs9slw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" style="position:  
+ absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
+    </div>
+</div>
+
+<h5>Main ideas: Principal Component Analysis - PCA</h5>
+
+<div style="text-align: center; max-width: 80ch; margin: 0 auto;">
+    <div style="position: relative; padding-bottom: 56.25%; height: 0; margin-bottom: 20px;">
+        <iframe src="https://www.youtube.com/embed/FgakZw6K1QQ?si=55YJzCyXrkuKpSot" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" style="position:  
+ absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
+    </div>
+</div>
+
+<h5>Hierarchical Clustering</h5>
+
+<div style="text-align: center; max-width: 80ch; margin: 0 auto;">
+    <div style="position: relative; padding-bottom: 56.25%; height: 0; margin-bottom: 20px;">
+        <iframe src="https://www.youtube.com/embed/7xHsRkOdVwo?si=FKtRX1ER94z63KUP" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" style="position:  
+ absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
+    </div>
+</div>
+
+<h5>K-means clustering</h5>
+
+<div style="text-align: center; max-width: 80ch; margin: 0 auto;">
+    <div style="position: relative; padding-bottom: 56.25%; height: 0; margin-bottom: 20px;">
+        <iframe src="https://www.youtube.com/embed/4b5d3muPQmA?si=PUGq3nLdgiK0mT_C" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" style="position:  
+ absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
+    </div>
+</div>

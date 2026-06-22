@@ -1,0 +1,37 @@
+<h4>Purposes</h4>
+
+<ol>
+    <li>
+        <strong>Welcome to R:</strong> Deliver essential knowledge within a minimal timeframe by employing hands-on learning techniques to enhance productivity in the R programming language.
+    </li>
+    <li>
+        <strong>An Overview of the R Language:</strong> Equip beginners with a programming foundation by leveraging the R language, enabling practical application in marketing research and analytics.
+    </li>
+    <li>
+        <strong>Describing Data:</strong> Utilize descriptive statistics and single variable visualization techniques for summarizing and exploring a data set.
+    </li>
+</ol>
+
+<h4>Resources</h4>
+
+<p>
+    The course will use for this part, as the main study material, the e-book:
+</p>
+<p>
+    <i>Chapman, Chris, and Elea McDonnell Feit. 2019. R For Marketing Research and Analytics. 2nd ed. 2019. Use R! Cham: Springer International Publishing : Imprint: Springer.
+    </i>
+</p>
+<p>
+    You can download the book in the following link:
+</p>
+<div style="text-align: center;">
+    <a href="https://doi-org.ezproxy.umng.edu.co/10.1007/978-3-030-14316-9" target="_blank">https://doi-org.ezproxy.umng.edu.co/10.1007/978-3-030-14316-9</a>
+</div>
+<p></p>
+
+<h4>Methodological Process</h4>
+
+<ol>
+    <li>Read and review Chapters 1, 2 and 3.</li>
+    <li>Check out the additional materials offer by the book in <a href="https://r-marketing.r-forge.r-project.org/" target="_blank">https://r-marketing.r-forge.r-project.org/</a> like code, data and exercises solutions.<br></li>
+</ol>

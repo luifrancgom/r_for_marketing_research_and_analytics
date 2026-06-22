@@ -1,0 +1,89 @@
+<h5>Covariance</h5>
+
+<div style="text-align: center; max-width: 80ch; margin: 0 auto;">
+    <div style="position: relative; padding-bottom: 56.25%; height: 0; margin-bottom: 20px;">
+        <iframe src="https://www.youtube.com/embed/qtaqvPAeEJY?si=aMzPT3xpbRObxV7g" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" style="position:  
+ absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
+    </div>
+</div>
+
+<h5>Pearson's Correlation</h5>
+
+<div style="text-align: center; max-width: 80ch; margin: 0 auto;">
+    <div style="position: relative; padding-bottom: 56.25%; height: 0; margin-bottom: 20px;">
+        <iframe src="https://www.youtube.com/embed/xZ_z8KWkhXE?si=QP6O3vLqq2LO84aq" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" style="position:  
+ absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
+    </div>
+</div>
+
+<h5>Logarithms</h5>
+
+<div style="text-align: center; max-width: 80ch; margin: 0 auto;">
+    <div style="position: relative; padding-bottom: 56.25%; height: 0; margin-bottom: 20px;">
+        <iframe src="https://www.youtube.com/embed/VSi0Z04fWj0?si=fR0vxocev-SpT4fL" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" style="position:  
+ absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
+    </div>
+</div>
+
+<h5>Probability distributions</h5>
+
+<div style="text-align: center; max-width: 80ch; margin: 0 auto;">
+    <div style="position: relative; padding-bottom: 56.25%; height: 0; margin-bottom: 20px;">
+        <iframe src="https://www.youtube.com/embed/oI3hZJqXJuc?si=iOgGENfReNA2oMxS" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" style="position:  
+ absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
+    </div>
+</div>
+
+<h5>Population and estimated parameters</h5>
+
+<div style="text-align: center; max-width: 80ch; margin: 0 auto;">
+    <div style="position: relative; padding-bottom: 56.25%; height: 0; margin-bottom: 20px;">
+        <iframe src="https://www.youtube.com/embed/vikkiwjQqfU?si=R2ZADPFvR96YyZka" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" style="position:  
+ absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
+    </div>
+</div>
+
+<h5>Hypothesis Testing and the null hypothesis</h5>
+
+<div style="text-align: center; max-width: 80ch; margin: 0 auto;">
+    <div style="position: relative; padding-bottom: 56.25%; height: 0; margin-bottom: 20px;">
+        <iframe src="https://www.youtube.com/embed/0oc49DyA3hU?si=GpWSCTIy_70Ca2TX" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" style="position:  
+ absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
+    </div>
+</div>
+
+<h5>Alternative hypotheses</h5>
+
+<div style="text-align: center; max-width: 80ch; margin: 0 auto;">
+    <div style="position: relative; padding-bottom: 56.25%; height: 0; margin-bottom: 20px;">
+        <iframe src="https://www.youtube.com/embed/5koKb5B_YWo?si=LnVb8G4B86BnbQ5O" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" style="position:  
+ absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
+    </div>
+</div>
+
+<h5>What are p-values and how to interpret them</h5>
+
+<div style="text-align: center; max-width: 80ch; margin: 0 auto;">
+    <div style="position: relative; padding-bottom: 56.25%; height: 0; margin-bottom: 20px;">
+        <iframe src="https://www.youtube.com/embed/vemZtEM63GY?si=URzNr289d8vnRmJe" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" style="position:  
+ absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
+    </div>
+</div>
+
+<h5>How to calculate p-values</h5>
+
+<div style="text-align: center; max-width: 80ch; margin: 0 auto;">
+    <div style="position: relative; padding-bottom: 56.25%; height: 0; margin-bottom: 20px;">
+        <iframe src="https://www.youtube.com/embed/JQc3yx0-Q9E?si=jxONSCiI6LrHL4Dw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" style="position:  
+ absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
+    </div>
+</div>
+
+<h5>Confidence intervals</h5>
+
+<div style="text-align: center; max-width: 80ch; margin: 0 auto;">
+    <div style="position: relative; padding-bottom: 56.25%; height: 0; margin-bottom: 20px;">
+        <iframe src="https://www.youtube.com/embed/TqOeMYtOc1w?si=IrE9689fo87woYT0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" style="position:  
+ absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
+    </div>
+</div>

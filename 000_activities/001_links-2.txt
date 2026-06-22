@@ -1,0 +1,35 @@
+<h5>Mean, variance and standard deviation</h5>
+
+<div style="text-align: center; max-width: 80ch; margin: 0 auto;">
+    <div style="position: relative; padding-bottom: 56.25%; height: 0; margin-bottom: 20px;">
+        <iframe src="https://www.youtube.com/embed/SzZ6GpcfoQY?si=LcVWqO4-SSiIs54h" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" style="position:  
+ absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
+    </div>
+</div>
+
+<h5>Histograms</h5>
+
+<div style="text-align: center; max-width: 80ch; margin: 0 auto;">
+    <div style="position: relative; padding-bottom: 56.25%; height: 0; margin-bottom: 20px;">
+        <iframe src="https://www.youtube.com/embed/qBigTkBLU6g?si=wcBfvHCApSnL9m8f" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" style="position:  
+ absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
+    </div>
+</div>
+
+<h5>Quantiles and percentiles</h5>
+
+<div style="text-align: center; max-width: 80ch; margin: 0 auto;">
+    <div style="position: relative; padding-bottom: 56.25%; height: 0; margin-bottom: 20px;">
+        <iframe src="https://www.youtube.com/embed/IFKQLDmRK0Y?si=eZp_jDWlzhcElFUQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" style="position:  
+ absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
+    </div>
+</div>
+
+<h5>Boxplots</h5>
+
+<div style="text-align: center; max-width: 80ch; margin: 0 auto;">
+    <div style="position: relative; padding-bottom: 56.25%; height: 0; margin-bottom: 20px;">
+        <iframe src="https://www.youtube.com/embed/fHLhBnmwUM0?si=8f84A_5yq80VRo2m" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" style="position:  
+ absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
+    </div>
+</div>

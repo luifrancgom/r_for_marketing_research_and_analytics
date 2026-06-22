@@ -1,0 +1,46 @@
+<h4 style="text-align: center;">Instruccions</h4>
+
+<p><strong>Link to present:</strong> Communication channels &gt; Link Virtual meetings</p>
+
+<h4 style="text-align: center;">General instructions</h4>
+<ol>
+    <li>Throughout the course, you will complete a 3-part project. This activity corresponds to the <strong>third</strong> delivery. The project requires group work, and collaboration is mandatory.</li>
+    <li>The project must be submitted in English. Projects submitted in other languages will not be accepted. This requirement is mandatory, and projects that do not meet this requirement will not be graded. However, the oral presentation may be delivered in either Spanish or English, as you prefer.</li>
+    <li>The course instructor has already set the groups. Students are responsible for contacting their group members to complete the assignments. The group assignments and presentation schedule can be found here:</li>
+    <div style="text-align: center;"> <strong>Primer Corte 30% &gt; Learning Resources &gt; Support material &gt; Groups</strong> </div>
+    <li>Please note that you'll have weekly meetings with your instructor to present your progress on the assigned deliverables. Attendance at these meetings is mandatory, with at least one group member required to attend. You can find the meeting schedule in the route mentioned above.</li>
+    <li>
+        It is recommended that you share additional contact information beyond your institutional email in the Forum: Questions or concerns. This will help you and your group members stay connected and collaborate effectively. Remember, group work is mandatory for this project, and individual deliveries will not be accepted. Failure to contact and work with your group members will prevent you from submitting the activity.
+    </li>
+    <li>Throughout the course, you will not be able to change groups or withdraw from your assigned group due to personal differences with other members. As a student, it is your responsibility to resolve and overcome any conflicts that may arise when working in a group.</li>
+</ol>
+<h4 style="text-align: center;">Specific instructions</h4>
+<ol>
+    <li>Please check out the specific instructions in relation to the <strong>third</strong> delivery in:</li>
+    <div style="text-align: center;"> <strong>Tercer Corte 40% &gt; Learning Resources &gt; Support material &gt; Specific instructions</strong> </div>
+</ol>
+<h4 style="text-align: center;">Product presentation format</h4>
+<ol>
+    <li>Attendance is mandatory by all the members of the group at the designated time provided in the link in point 3 of the General Instructions. Access the meeting through the link at the beginning of the instructions. Excused absences are only granted for force majeure or illness, requiring a submitted excuse from the absent member.</li>
+    <li>If a group member did not contribute to the assignment, the group must notify the instructor. The instructor will exclude the member from the presentation. However, the member should be contacted again for future submissions.</li>
+    <li>After all group members are present, a random member will be selected to present. The remaining members cannot interrupt the presentation. Additionally, another group member must upload the 2 supporting <strong>.qmd</strong> and <strong>.html</strong> files related to the marketing report through the activity link to support the presentation. Only one member needs to upload these files.</li>
+    <li>The randomly selected group member will present the group's work for 20 minutes. They will use the .qmd file and the RStudio IDE integrated development environment, following the specific instructions. For a reference on how to present using a .qmd file and RStudio IDE, please consult:
+        <div style="text-align: center;"><strong><a href="https://rfortherestofus.com" target="_blank">www.rfortherestofus.com</a> &gt; R in 3 Months &gt; How Much Can You Learn in 3 Months?</strong></div>
+        The final grade will be based on the project developed throughout the course and the specific instructions. The resource above is only a reference.
+    </li>
+    <li>The instructor will set the grade after the 20-minute presentation. The grade will be the same for all group members where you can find the score criterias in:
+        <div style="text-align: center;"><strong>Tercer Corte 40% &gt; Learning Resources &gt; Support material &gt; Score criterias</strong></div>
+    </li>
+</ol>
+
+<h4 style="text-align: center;">Use of artificial intelligence</h4>
+<ol>
+    <li>In case artificial intelligence tools have been used, indicate which tools were used and the uses given to them at the end of the marketing report, following the best practices and references indicated in <strong>Primer corte 30% &gt; Learning Resources &gt; Support material &gt; Presentations &gt; 000_syllabus_marketing_research_and_analytics…</strong>. For the course, the authorized uses for students are:
+        <ul>
+            <li>Assistance in text writing</li>
+            <li>Assistance in image creation</li>
+            <li>Assistance in developing ideas and exploring arguments</li>
+            <li>Assistance with computer programming</li>
+        </ul>
+    </li>
+</ol>

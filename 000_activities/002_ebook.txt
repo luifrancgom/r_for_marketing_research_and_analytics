@@ -1,0 +1,37 @@
+<h4>Purposes</h4>
+
+<ol>
+    <li>
+        <strong>Relationships Between Continuous Variables: </strong> Understand the relationships between pairs of variables in multivariate data and examine how to visualize the relationships and compute statistics that describe their associations.
+    </li>
+    <li>
+        <strong>Comparing Groups Tables and Visualizations:</strong> Use descriptive summaries by groups and visualize them to investigate differences between groups.
+    </li>
+    <li>
+        <strong>Comparing Groups Statistical Tests:</strong> Understand the use of statistical tests to identify differences between groups in data.
+    </li>
+</ol>
+
+<h4>Resources</h4>
+
+<p>
+    The course will use for this part, as the main study material, the e-book:
+</p>
+<p>
+    <i>Chapman, Chris, and Elea McDonnell Feit. 2019. R For Marketing Research and Analytics. 2nd ed. 2019. Use R! Cham: Springer International Publishing : Imprint: Springer.
+    </i>
+</p>
+<p>
+    You can download the book in the following link:
+</p>
+<div style="text-align: center;">
+    <a href="https://doi-org.ezproxy.umng.edu.co/10.1007/978-3-030-14316-9" target="_blank">https://doi-org.ezproxy.umng.edu.co/10.1007/978-3-030-14316-9</a>
+</div>
+<p></p>
+
+<h4>Methodological Process</h4>
+
+<ol>
+    <li>Read and review Chapters 4, 5 and 6.</li>
+    <li>Check out the additional materials offer by the book in <a href="https://r-marketing.r-forge.r-project.org/" target="_blank">https://r-marketing.r-forge.r-project.org/</a> like code, data and exercises solutions.</li>
+</ol>

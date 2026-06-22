@@ -1,0 +1,69 @@
+<h5>Posit Workbench and Positron Pro</h5>
+
+<div style="text-align: center; max-width: 80ch; margin: 0 auto;">
+
+    <div style="position: relative; padding-bottom: 56.25%; height: 0; margin-bottom: 20px;">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/9rkkR8oikcI?si=tIDIboZIrbLoyWO8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
+        </iframe>
+    </div>
+
+    <div style="position: relative; padding-bottom: 56.25%; height: 0;  
+ margin-bottom: 20px;">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/9rkkR8oikcI?si=tIDIboZIrbLoyWO8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
+        </iframe>
+    </div>
+
+    <div style="position: relative; padding-bottom: 56.25%; height: 0;  
+ margin-bottom: 20px;">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/FI4sShASSfc?si=wfja7S8jgYGfP1ZJ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
+        </iframe>
+    </div>
+
+    <div style="position: relative; padding-bottom: 56.25%; height: 0;  
+ margin-bottom: 20px;">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/_HctAgKpL-g?si=CLysrfSqCxVmHztn" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
+        </iframe>
+    </div>
+
+</div>
+
+<h5>Project sharing and Wrap up</h5>
+
+<div style="text-align: center; max-width: 80ch; margin: 0 auto;">
+
+    <div style="position: relative; padding-bottom: 56.25%; height: 0; margin-bottom: 20px;">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/IhwDh89aFho?si=Vr9UjQC4I7d2zsVx" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
+        </iframe>
+    </div>
+
+    <div style="position: relative; padding-bottom: 56.25%; height: 0; margin-bottom: 20px;">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/7cPp1JSbcDo?si=DkYZRHmLEPKozyVj" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
+        </iframe>
+    </div>
+
+</div>
+
+<h5>GitHub</h5>
+
+<div style="text-align: center; max-width: 80ch; margin: 0 auto;">
+
+    <div style="position: relative; padding-bottom: 56.25%; height: 0; margin-bottom: 20px;">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/33CGHdn5OOw?si=EbzEwrlCP4kLiiTs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
+        </iframe>
+    </div>
+
+    <div style="position: relative; padding-bottom: 56.25%; height: 0;  
+ margin-bottom: 20px;">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/pFiszi8LCE4?si=wH3jRpkGnq4VAOV3" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
+        </iframe>
+    </div>
+</div>
+
+<h5>Large Language Models</h5>
+
+<div style="text-align: center; max-width: 80ch; margin: 0 auto;">
+    <div style="position: relative; padding-bottom: 56.25%; height: 0; margin-bottom: 20px;">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/1oK3XHa6UeU?si=yzVKp7u_8WTgEVjB" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
+        </iframe>
+    </div>
+</div>
