@@ -137,11 +137,10 @@ Develop skills in programming, statistics, and data analysis to solve business p
 
     -   Prepare a reproducible market report by using statistical analysis techniques and programming to identify trends and opportunities for improvement in products and commercial strategies.
 
--   Competencies SABE curriculum
+-   Transversal learning outcomes
 
-    -   Ability to use digital technologies effectively and efficiently
-    -   Skills in handling a second language
-    -   Ability to use the scientific method and logical thinking
+    -   Work collaboratively in interdisciplinary teams to meet shared objectives responsibly and respectfully.
+    -   Leverage digital technologies within learning environments to optimize information access, analysis and application.
 
 # Schedule and contents
 
