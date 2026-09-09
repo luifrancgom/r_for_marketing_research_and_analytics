@@ -27,4 +27,4 @@ Use the template `002_marketing_report_part-2.qmd` to build the marketing report
 
 -   <https://github.com/luifrancgom/marketing_research_and_analytics/> \> 000_templates \> 002_marketing_report_part-2.qmd
 
--   Segundo Corte 30% \> Learning Resources \> Support material \> Templates \> 002_marketing_report_part-2.qmd
+-   Segundo Corte \> Contenido y actividades complementarias \> Support material \> Templates \> 002_marketing_report_part-2.qmd

@@ -25,4 +25,4 @@ Use the template `003_marketing_report_part-3.qmd` to build the marketing report
 
 -   <https://github.com/luifrancgom/marketing_research_and_analytics/> \> 000_templates \> 003_marketing_report_part-3.qmd
 
--   Tercer Corte 40% \> Learning Resources \> Support material \> Templates \> 003_marketing_report_part-3.qmd
+-   Tercer Corte \> Contenido y actividades complementarias \> Support material \> Templates \> 003_marketing_report_part-3.qmd

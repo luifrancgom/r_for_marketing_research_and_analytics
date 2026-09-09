@@ -8,14 +8,14 @@ format:
       - "Author name 2 here"
     embed-resources: true
 lang: en
-editor: visual
+editor: source
 ---
 
 # This is a title header
 
 This is a quarto document. If you want to know more about quarto and using it with RStudio IDE check out: [Quarto](https://quarto.org/) \> Get Started \> Step 2 \> Rstudio
 
-In particular the video **Get started with Quarto | Mine Çetinkaya-Rundel**
+In particular the video **Get started with Quarto \| Mine Çetinkaya-Rundel**
 
 ## This is a title subheader
 
@@ -41,7 +41,7 @@ For more information about inserting code chunks check out: [Quarto](https://qua
 
 ### Inline math
 
-To familiarize with $\LaTeX$ basics apply to quarto check out: [https://biostats-r.github.io/biostats/quarto/](https://biostats-r.github.io/biostats/quarto/) > Figures, tables and equations > Equations
+To familiarize with $\LaTeX$ basics apply to quarto check out: <https://biostats-r.github.io/biostats/quarto/> \> Figures, tables and equations \> Equations
 
 The solution to $\sqrt{x} = 3$ is $x = 9$
 

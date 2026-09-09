@@ -82,6 +82,6 @@ Use the template `001_marketing_report_part-1.qmd` to build the marketing report
 
 -   <https://github.com/luifrancgom/marketing_research_and_analytics/> \> 000_templates \> 001_marketing_report_part-1.qmd
 
--   Primer Corte 30% \> Learning Resources \> Support material \> Templates \> 001_marketing_report_part-1.qmd
+-   Primer Corte \> Contenido y actividades complementarias \> Support material \> Templates \> 001_marketing_report_part-1.qmd
 
-# References
+# References {.unnumbered}
