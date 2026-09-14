@@ -41,19 +41,19 @@ editor: source
 #| label: palette
 
 umng_palette <- c(
-    "#043074",
-    "#fdc600",
-    "#0d5e30",
-    "#ee2a24",
-    "#fc6700",
-    "#00b3f0",
-    "#6e3c1a",
-    "#f8941c",
-    "#8e44ad",
-    "#2c3e50",
-    "#16a085",
-    "#c0392b",
-    "#e91e63"
+  "#043074",
+  "#fdc600",
+  "#0d5e30",
+  "#ee2a24",
+  "#fc6700",
+  "#00b3f0",
+  "#6e3c1a",
+  "#f8941c",
+  "#8e44ad",
+  "#2c3e50",
+  "#16a085",
+  "#c0392b",
+  "#e91e63"
 )
 ```
 
@@ -162,12 +162,12 @@ Analogy of R vs R packages
 ```{r}
 #| eval: false
 #| echo: true
-
 packages <- c("tidyverse")
+
 for (package in packages) {
-    if (!(package %in% rownames(installed.packages()))) {
-        install.packages(package)
-    }
+  if (!(package %in% rownames(installed.packages()))) {
+    install.packages(package)
+  }
 }
 ```
 \
