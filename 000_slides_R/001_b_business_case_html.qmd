@@ -216,24 +216,44 @@ bike_shops_map |>
 
 ## {.smaller}
 
--   Understand the business data
-
+:::: {.columns}
+::: {.column width="60%"}
 ```{r}
 #| eval: false
 library(tidyverse) # Remember to load the tidyverse library
 library(sweep) # Remember to load the sweep library
 ```
-
+\
 ```{r}
 bike_sales |> head(n = 8)
 ```
-
--   Only works in Positron Pro
-
+\
 ```{r}
 #| eval: false
 bike_sales |> View()
 ```
+:::
+::: {.column width="40%"}
+-   Understand the business data
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+-   Only works in Positron Pro
+:::
+::::
 
 ##
 
