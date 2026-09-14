@@ -67,7 +67,7 @@ umng_palette <- c(
 
 - **Purpose**
 
-    - Deliver essential knowledge within a minimal timeframe by employing hands-on learning techniques to enhance productivity in the R programming language
+    - Deliver essential knowledge within a minimal timeframe by employing hands-on learning techniques to enhance productivity in the R programming language.
     
 # Forgetting curves
 
