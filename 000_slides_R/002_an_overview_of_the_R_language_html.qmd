@@ -69,7 +69,7 @@ umng_palette <- c(
 
 - **Purpose**
 
-    - Equip beginners with a programming foundation by leveraging the R language, enabling practical application in marketing research and analytics
+    - Equip beginners with a programming foundation by leveraging the R language, enabling practical application in marketing research and analytics.
     
 # Sales and product satisfaction survey
 
@@ -95,53 +95,67 @@ umng_palette <- c(
     -   iSalesREC: likelihood to recommend the sales person
     -   Segment: market segment assigned by a clustering algorithm [@chapman_r_2019, Chapter 11]
 
-##
+## {.smaller .center}
 
--   **Import data: the base R way**
-
+:::: {.columns}
+::: {.column width="60%"}
 ```{r}
-satisfaction_data <- read.csv(file = "http://goo.gl/UDv12g")
-satisfaction_data |> head(n = 5)
-```
-
-##
-
--   **Import data: the tidyverse way**
-
-```{r}
+#| code-line-numbers: "|3-5|"
 library(tidyverse) # Remember to load the tidyverse library
-satisfaction_data <- read_csv(file = "http://goo.gl/UDv12g")
-satisfaction_data |> head(n = 5)
-```
 
-##
-
--   **Transform data: the base R way**
-
-```{r}
-satisfaction_data$Segment <- factor(
-  x = satisfaction_data$Segment,
-  ordered = FALSE
+satisfaction_data <- read_csv(
+  file = "http://goo.gl/UDv12g"
 )
-summary(object = satisfaction_data)
+
+satisfaction_data |>
+  head(n = 5)
 ```
+:::
+::: {.column width="40%"}
+-  **Import data**
 
-##
+   - The tidyverse way
+:::
+::::
 
--   **Transform data: the skimr and the tidyverse way**
+## {.smaller .center}
 
-    -   Ups the table is really big!!! Try it in your console to see the complete table
-
+:::: {.columns}
+::: {.column width="50%"}
 ```{r}
+#| code-line-numbers: "|4-9|"
 library(skimr)
-satisfaction_data <- satisfaction_data |>
-  mutate(Segment = factor(x = Segment, ordered = FALSE))
-```
 
+satisfaction_data <- satisfaction_data |>
+  mutate(
+    Segment = factor(
+      x = Segment,
+      ordered = FALSE
+    )
+  )
+```
+\
 ```{r}
 #| eval: false
-satisfaction_data |> skim()
+#| code-line-numbers: "|2|"
+satisfaction_data |>
+  skim()
 ```
+:::
+::: {.column width="50%"}
+-  **Transform data**
+
+   - The tidyverse way
+\
+\
+\
+\
+\
+-  **Using `skimr`**
+
+   - Ups the table is really big!!! Try it in your console to see the complete table
+::: 
+::::
 
 ##
 
@@ -161,175 +175,204 @@ satisfaction_data |> skim()
 
 [^1]: In R the atomic vectors are logical, integer, double, numeric (which includes integer and double), character, complex and raw but for pedagogical purposes we are going to check later character, numeric includes integer and double and we are not going to use complex and raw
 
-##
+## {.smaller .center}
 
--   **Atomic vectors**
-
-    -   Logical
-
+:::: {.columns}
+::: {.column width="50%"}
 ```{r}
 #| echo: true
 as.integer(satisfaction_data$Segment)[1:5] == 1
 ```
-
+\
 ```{r}
 #| echo: true
 as.integer(satisfaction_data$Segment)[1:5] > 1
 ```
-
+\
 ```{r}
 #| echo: true
 as.integer(satisfaction_data$Segment)[1:5] >= 1
 ```
+:::
+::: {.column width="50%"}
+-  **Atomic vectors**
+   -  Logical
+:::
+::::
 
-##
+## {.smaller .center}
 
--   **Atomic vectors**
-
-    -   Integer
-
+:::: {.columns}
+::: {.column width="55%"}
 ```{r}
 as.integer(satisfaction_data$Segment)[1:5]
 ```
-
--   **Atomic vectors**
-
-    -   Double
-
+\
+\
+\
 ```{r}
 sprintf("%.2f", satisfaction_data$iProdSAT[1:5])
 ```
+:::
+::: {.column width="45%"}
+-   **Atomic vectors**
 
-##
+    -   Integer
+\
+\
+\
+-   **Atomic vectors**
 
--   **Factors**
+    -   Double
+:::
+::::
 
+## {.smaller .center}
+
+:::: {.columns}
+::: {.column width="50%"}
 ```{r}
 satisfaction_data$Segment[1:5]
 ```
-
--   **Data Frames**
-
+\
+\
 ```{r}
 #| echo: true
-as.data.frame(satisfaction_data) |> head(n = 5)
+as.data.frame(satisfaction_data) |>
+  head(n = 5)
 ```
+:::
+::: {.column width="50%"}
+-   **Factors**
+\
+\
+\
+\
+-   **Data Frames**
+:::
+::::
 
-##
+## {.smaller .center}
 
--   **Tibble**
-
+:::: {.columns}
+::: {.column width="50%"}
+```{r}
+satisfaction_data |>
+  head(n = 5)
+```
+\
+\
 ```{r}
 class(satisfaction_data)
 ```
+:::
+::: {.column width="50%"}
+-  **Tibble**
+   - The tidyverse way
+\
+\
+\
+\
+\
+\
+\
+-  Checking the object class of a **tibble**
+:::
+::::
 
+## {.smaller .center}
+
+:::: {.columns}
+::: {.column width="55%"}
 ```{r}
-satisfaction_data |> head(n = 5)
+#| code-line-numbers: "|2-4|"
+satisfaction_data <- satisfaction_data |>
+  mutate(
+    customer = 1:nrow(satisfaction_data)
+  ) |>
+  head(n = 5)
+
+satisfaction_data
 ```
+:::
+::: {.column width="45%"}
+-  **Add new variables**
 
-##
+   - The tidyverse way
+:::
+::::
 
--   **Add new variables: the base R way**
+## {.smaller .center}
 
+:::: {.columns}
+::: {.column width="55%"}
 ```{r}
-satisfaction_data$customer <- 1:nrow(satisfaction_data)
-as.data.frame(satisfaction_data) |> head(n = 5)
-```
-
-##
-
--   **Add new variables: the tidyverse way**
-
-```{r}
+#| code-line-numbers: "|2-9|"
 satisfaction_data |>
-  mutate(customer = 1:nrow(satisfaction_data)) |>
+  select(
+    customer,
+    Segment,
+    iProdSAT,
+    iSalesSAT,
+    iProdREC,
+    iSalesREC
+  ) |>
   head(n = 5)
 ```
+:::
+::: {.column width="45%"}
+-  **Picks variables based on their names**
 
-##
+   - The tidyverse way
+:::
+::::
 
--   **Picks variables based on their names: the base R way**
+## {.smaller .center}
 
+:::: {.columns}
+::: {.column width="55%"}
 ```{r}
-as.data.frame(satisfaction_data)[c(
-  "customer",
-  "Segment",
-  "iProdSAT",
-  "iSalesSAT",
-  "iProdREC",
-  "iSalesREC"
-)] |>
-  head(n = 5)
-```
-
-##
-
--   **Picks variables based on their names: the tidyverse way**
-
-```{r}
+#| code-line-numbers: "|2-4|"
 satisfaction_data |>
-  select(customer, Segment, iProdSAT, iSalesSAT, iProdREC, iSalesREC) |>
+  filter(
+    Segment == 2
+  ) |>
   head(n = 5)
 ```
+:::
+::: {.column width="45%"}
+-  **Picks cases based on their values**
 
-##
+   - The tidyverse way
+:::
+::::
 
--   **Picks cases based on their values: the base R way**
+## {.smaller .center}
 
+:::: {.columns}
+::: {.column width="50%"}
 ```{r}
-as.data.frame(satisfaction_data)[satisfaction_data$Segment == 2, ] |>
-  head(n = 5)
-```
-
-##
-
--   **Picks cases based on their values: the tidyverse way**
-
-```{r}
-satisfaction_data |>
-  filter(Segment == 2) |>
-  head(n = 5)
-```
-
-##
-
--   **Reduces multiple values to a single summary: the base R way**
-
-```{r}
-data.frame(
-  mean_iProdSAT = mean(satisfaction_data$iProdSAT),
-  median_iSalesSAT = median(satisfaction_data$iSalesSAT)
-)
-```
-
-##
-
--   **Reduces multiple values to a single summary: the tidyverse way**
-
-```{r}
+#| code-line-numbers: "|2-5|"
 satisfaction_data |>
   summarise(
     mean_iProdSAT = mean(iProdSAT),
     median_iSalesSAT = median(iSalesSAT)
   )
 ```
+:::
+::: {.column width="50%"}
+-  **Reduces multiple values to a single summary**
 
-##
+   - The tidyverse way
+:::
+::::
 
--   **Does product and sales satisfaction differ by segment?: the base R way**
+## {.smaller .center}
 
+:::: {.columns}
+::: {.column width="50%"}
 ```{r}
-#| echo: true
-satisfaction_data[c("iProdSAT", "iSalesSAT")] |>
-  aggregate(by = satisfaction_data[c("Segment")], FUN = mean) |>
-  setNames(nm = c("Segment", "mean_iProdSAT", "mean_iSalesSAT"))
-```
-
-##
-
--   **Does product and sales satisfaction differ by segment?: the tidyverse way**
-
-```{r}
+#| code-line-numbers: "|2|3|4-7|"
 satisfaction_data |>
   group_by(Segment) |>
   select(iProdSAT, iSalesSAT) |>
@@ -338,6 +381,13 @@ satisfaction_data |>
     mean_iSalesSAT = mean(iSalesSAT)
   )
 ```
+:::
+::: {.column width="50%"}
+-  **Does product and sales satisfaction differ by segment?**
+
+   - The tidyverse way
+:::
+::::
 
 # Acknowledgments
 
