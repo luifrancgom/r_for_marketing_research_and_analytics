@@ -41,19 +41,19 @@ editor: source
 #| label: palette
 
 umng_palette <- c(
-  "#043074",
-  "#fdc600",
-  "#0d5e30",
-  "#ee2a24",
-  "#fc6700",
-  "#00b3f0",
-  "#6e3c1a",
-  "#f8941c",
-  "#8e44ad",
-  "#2c3e50",
-  "#16a085",
-  "#c0392b",
-  "#e91e63"
+    "#043074",
+    "#fdc600",
+    "#0d5e30",
+    "#ee2a24",
+    "#fc6700",
+    "#00b3f0",
+    "#6e3c1a",
+    "#f8941c",
+    "#8e44ad",
+    "#2c3e50",
+    "#16a085",
+    "#c0392b",
+    "#e91e63"
 )
 ```
 
@@ -155,43 +155,52 @@ R versus Positron Pro
 Analogy of R vs R packages
 :::
 
-## {.smaller}
+## {.smaller .center}
 
--   **Installing the tidyverse as an example**
-
-    -   Copy and paste this code in the console. The tidyverse package is already installed in your session so nothing will happen but if you don't have installed the tidyverse then the package is going to be installed
-
-    -   Installing a package is like downloading an app from a store where you need to do it only once
-
+:::: {.columns}
+::: {.column width="55%"}
 ```{r}
 #| eval: false
 #| echo: true
 
 packages <- c("tidyverse")
 for (package in packages) {
-  if (!(package %in% rownames(installed.packages()))) {
-    install.packages(package)
-  }
+    if (!(package %in% rownames(installed.packages()))) {
+        install.packages(package)
+    }
 }
 ```
-
--   **Loading a package**
-
-    -   Loading a package is like opening an app you already installed on your phone where you need to do it every time you want to use the app
-
+\
+\
+\
+\
+\
+\
 ```{r}
 #| eval: false
 #| echo: true
 
 library(tidyverse)
 ```
+:::
+::: {.column width="45%"}
+-   **Installing the tidyverse as an example**
 
-# Please help me: Errors, warnings, and messages
+    -  Copy and paste this code in the console. The `tidyverse` package is already installed in your session so nothing will happen
+    -  If you don't have installed the `tidyverse` then the package is going to be installed
 
-## 
+-   **Loading a package**
 
--   **Error**: Generally when there's an error, the code will not run and a message will try to explain what went wrong [@ismay_statistical_2025, Chapter 1]
+    -   Loading a package is like opening an app you already installed on your phone where you need to do it every time you want to use the app
+:::
+::::
 
+# Please help me: Errors, warnings, and messages 
+
+## {.smaller .center}
+
+:::: {.columns}
+::: {.column width="50%"}
 ```{r}
 #| error: true
 #| echo: true
@@ -199,37 +208,43 @@ library(tidyverse)
 x <- c(1, 2, 3, 4, 5)
 X
 ```
-
--   **Warning**: Generally your code will still work, but with some caveats [@ismay_statistical_2025, Chapter 1]
-
+\
+\
 ```{r}
 #| warning: true
 #| echo: true
 
 sqrt(-9)
 ```
+:::
+::: {.column width="50%"}
+-   **Error**: Generally when there's an error, the code will not run and a message will try to explain what went wrong [@ismay_statistical_2025, Chapter 1]
+\
+\
+-   **Warning**: Generally your code will still work, but with some caveats [@ismay_statistical_2025, Chapter 1]
+:::
+::::
 
-## {.smaller}
+## {.smaller .center}
 
--   **Message**: it's just a friendly message [@ismay_statistical_2025, Chapter 1]
-
-    -   Read it, wave back at R, and thank it for talking to you [@ismay_statistical_2025, Chapter 1]
-
+:::: {.columns}
+::: {.column width="50%"}
 ```{r}
 #| message: true
 #| echo: true
-packages <- c("tidyverse")
-for (package in packages) {
-  if (!(package %in% rownames(installed.packages()))) {
-    install.packages(package)
-  }
-}
 library(tidyverse)
 ```
+:::
+::: {.column width="50%"}
+-   **Message**: it's just a friendly message [@ismay_statistical_2025, Chapter 1]
+
+    -   Read it, wave back at R, and thank it for talking to you [@ismay_statistical_2025, Chapter 1]
+:::
+:::
 
 # R for Marketing Research and Analytics, 2nd Ed
 
-## 
+## {.center}
 
 -   **Download from UMNG Springer Link database**:
 
