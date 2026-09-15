@@ -101,20 +101,30 @@ umng_palette <- c(
         -   Extremely unsatisfied: 1
         -   NA: customer did not response the survey
 
-##
+## {.smaller .center}
 
--   **Import data**
-
+:::: {.columns}
+::: {.column width="75%"}
 ```{r}
-customer <- read_csv(file = "http://goo.gl/PmPkaG")
+#| code-line-numbers: "|1-3|"
+customer <- read_csv(
+  file = "http://goo.gl/PmPkaG"
+)
+
 customer |> head(n = 5)
 ```
+:::
+::: {.column width="25%"}
+-   **Import data**
+:::
+::::
 
-## {.smaller}
+## {.smaller .center}
 
--   **Transform data**
-
+:::: {.columns}
+::: {.column width="75%"}
 ```{r}
+#| code-line-numbers: "|2-10|"
 customer <- customer |>
   mutate(
     cust.id = factor(x = cust.id, ordered = FALSE),
@@ -125,162 +135,172 @@ customer <- customer |>
     sat.service = factor(x = sat.service, ordered = TRUE),
     sat.selection = factor(x = sat.selection, ordered = TRUE)
   )
+
 customer |> head(n = 5)
 ```
+:::
+::: {.column width="25%"}
+-   **Transform data**
+:::
+::::
 
-##
+## {.smaller .center}
 
--   **Inspect data**
-
+:::: {.columns}
+::: {.column width="70%"}
 ```{r}
-customer |> glimpse()
+#| code-line-numbers: "|2|"
+customer |>
+  glimpse()
 ```
+:::
+::: {.column width="30%"}
+-   **Inspect data**
+:::
+::::
 
-##
+## {.smaller .center}
 
+:::: {.columns}
+::: {.column width="50%"}
+```{r}
+#| eval: false
+#| code-line-numbers: "|2|"
+customer |>
+  skim()
+```
+:::
+::: {.column width="50%"}
 -   **Summarize data**
 
     -   Ups the table is really big!!! Try it in your console to see the complete table
+:::
+::::
 
+## {.smaller .center}
+
+:::: {.columns}
+::: {.column width="50%"}
+- **Scatterplots**
+
+  - the tidyverse way
 ```{r}
 #| eval: false
-customer |> skim()
-```
-
-##
-
--   **Scatterplots: the base R way**
-
-```{r}
-plot(x = customer$store.spend, y = customer$online.spend)
-```
-
-##
-
--   **Scatterplots: the base R way**
-
-```{r}
-plot(
-  x = customer$store.spend,
-  y = customer$online.spend,
-  cex = 0.7,
-  main = "Customers as of June 2014",
-  xlab = "Prior 12 months in-store sales ($)",
-  ylab = "Prior 12 months online sales ($)"
-)
-```
-
-## {.smaller}
-
--   **Scatterplots: the base R way**
-
-```{r}
-my.col <- c("black", "green3")
-my.pch <- c(1, 19)
-plot(
-  x = customer$store.spend,
-  y = customer$online.spend,
-  cex = 0.7,
-  col = my.col[customer$email],
-  pch = my.pch[customer$email],
-  main = "Customers as of June 2014",
-  xlab = "Prior 12 months in-store sales ($)",
-  ylab = "Prior 12 months online sales ($)"
-)
-```
-
-## {.smaller}
-
--   **Scatterplots: the base R way**
-
-```{r}
-my.col <- c("black", "green3")
-my.pch <- c(1, 19)
-plot(
-  x = customer$store.spend,
-  y = customer$online.spend,
-  cex = 0.7,
-  col = my.col[customer$email],
-  pch = my.pch[customer$email],
-  main = "Customers as of June 2014",
-  xlab = "Prior 12 months in-store sales ($)",
-  ylab = "Prior 12 months online sales ($)"
-)
-legend(
-  x = "topright",
-  legend = paste("email on file:", levels(customer$email)),
-  col = my.col,
-  pch = my.pch
-)
-```
-
-## {.smaller}
-
--   **Scatterplots: the base R way**
-
-```{r}
-my.col <- c("black", "green3")
-my.pch <- c(1, 19)
-plot(
-  x = customer$store.spend + 1,
-  y = customer$online.spend + 1,
-  cex = 0.7,
-  col = my.col[customer$email],
-  pch = my.pch[customer$email],
-  log = "xy",
-  main = "Customers as of June 2014",
-  xlab = "Prior 12 months in-store sales ($)",
-  ylab = "Prior 12 months online sales ($)"
-)
-legend(
-  x = "topright",
-  legend = paste("email on file:", levels(customer$email)),
-  col = my.col,
-  pch = my.pch
-)
-```
-
-##
-
--   **Scatterplots: the tidyverse way**
-
-```{r}
-#| fig-height: 4
+#| code-line-numbers: "|3-9|"
 customer |>
   ggplot() +
-  geom_point(aes(x = store.spend, y = online.spend, color = email))
+  geom_point(
+    aes(
+      x = store.spend,
+      y = online.spend,
+      color = email
+    )
+  )
 ```
-
-## {.smaller}
-
--   **Scatterplots: the tidyverse way**
-
+:::
+::: {.column width="50%"}
+\
+\
 ```{r}
-#| fig-height: 4
+#| label: fig-geom-point
+#| fig-cap: Using `geom_point()` to apply a geometry
+#| echo: false
+#| lightbox: true
 customer |>
   ggplot() +
-  geom_point(aes(
-    x = store.spend,
-    y = online.spend,
-    color = email,
-    shape = email
-  )) +
+  geom_point(
+    aes(
+      x = store.spend,
+      y = online.spend,
+      color = email
+    )
+  )
+```
+:::
+::::
+
+## {.smaller .center}
+
+:::: {.columns}
+::: {.column width="55%"}
+- **Scatterplots**
+
+  - the tidyverse way
+```{r}
+#| eval: false
+#| code-line-numbers: "|8|11-17|18-24|"
+customer |>
+  ggplot() +
+  geom_point(
+    aes(
+      x = store.spend,
+      y = online.spend,
+      color = email,
+      shape = email
+    )
+  ) +
   scale_color_manual(
     values = c("black", "green3"),
-    labels = c("email on file: no", "email on file: yes")
+    labels = c(
+      "email on file: no",
+      "email on file: yes"
+    )
   ) +
   scale_shape_manual(
     values = c(1, 19),
-    labels = c("email on file: no", "email on file: yes")
+    labels = c(
+      "email on file: no",
+      "email on file: yes"
+    )
   )
 ```
-
-## {.smaller}
-
--   **Scatterplots: the tidyverse way**
-
+:::
+::: {.column width="45%"}
+\
+\
 ```{r}
-#| fig-height: 4
+#| label: fig-scale-color-shape-manual
+#| fig-cap: Using `scale_color_manual()` and `scale_shape_manual()` to modify scales for the `color` and `shape` aesthetics
+#| echo: false
+#| lightbox: true
+customer |>
+  ggplot() +
+  geom_point(
+    aes(
+      x = store.spend,
+      y = online.spend,
+      color = email,
+      shape = email
+    )
+  ) +
+  scale_color_manual(
+    values = c("black", "green3"),
+    labels = c(
+      "email on file: no",
+      "email on file: yes"
+    )
+  ) +
+  scale_shape_manual(
+    values = c(1, 19),
+    labels = c(
+      "email on file: no",
+      "email on file: yes"
+    )
+  )
+```
+:::
+::::
+
+## {.smaller .center}
+
+:::: {.columns}
+::: {.column width="55%"}
+- **Scatterplots**
+
+  - the tidyverse way
+```{r}
+#| eval: false
+#| code-line-numbers: "|17-20|21-24|"
 customer |>
   ggplot() +
   geom_point(aes(
@@ -301,15 +321,20 @@ customer |>
     trans = "log1p",
     breaks = c(1, 2, 5, 10, 20, 50, 100, 500)
   ) +
-  scale_y_continuous(trans = "log1p", breaks = c(1, 5, 50, 500))
+  scale_y_continuous(
+    transform = "log1p",
+    breaks = c(1, 5, 50, 500)
+  )
 ```
-
-## {.smaller}
-
--   **Scatterplots: the tidyverse way**
-
+:::
+::: {.column width="45%"}
+\
+\
 ```{r}
-#| fig-height: 3.5
+#| label: fig-scale-continuous
+#| fig-cap: Using `scale_x_continuous()` and `scale_y_continuous()` to modify scales for the `x` and `y` coordinates
+#| echo: false
+#| lightbox: true
 customer |>
   ggplot() +
   geom_point(aes(
@@ -328,6 +353,44 @@ customer |>
   ) +
   scale_x_continuous(
     trans = "log1p",
+    breaks = c(1, 2, 5, 10, 20, 50, 100, 500)
+  ) +
+  scale_y_continuous(
+    transform = "log1p",
+    breaks = c(1, 5, 50, 500)
+  )
+```
+:::
+::::
+
+## {.smaller .center}
+
+:::: {.columns}
+::: {.column width="60%"}
+- **Scatterplots**
+
+  - the tidyverse way
+```{r}
+#| eval: false
+#| code-line-numbers: "|22-26|"
+customer |>
+  ggplot() +
+  geom_point(aes(
+    x = store.spend,
+    y = online.spend,
+    color = email,
+    shape = email
+  )) +
+  scale_color_manual(
+    values = c("black", "green3"),
+    labels = c("email on file: no", "email on file: yes")
+  ) +
+  scale_shape_manual(
+    values = c(1, 19),
+    labels = c("email on file: no", "email on file: yes")
+  ) +
+  scale_x_continuous(
+    transform = "log1p",
     breaks = c(1, 2, 5, 10, 20, 50, 100, 500)
   ) +
   scale_y_continuous(trans = "log1p", breaks = c(1, 5, 50, 500)) +
@@ -337,25 +400,71 @@ customer |>
     title = "Customers as of June 2014"
   )
 ```
+:::
+::: {.column width="40%"}
+\
+\
+```{r}
+#| label: fig-labs-scatter
+#| fig-cap: Using `labs()` to modify the labels
+#| echo: false
+#| lightbox: true
+customer |>
+  ggplot() +
+  geom_point(aes(
+    x = store.spend,
+    y = online.spend,
+    color = email,
+    shape = email
+  )) +
+  scale_color_manual(
+    values = c("black", "green3"),
+    labels = c("email on file: no", "email on file: yes")
+  ) +
+  scale_shape_manual(
+    values = c(1, 19),
+    labels = c("email on file: no", "email on file: yes")
+  ) +
+  scale_x_continuous(
+    transform = "log1p",
+    breaks = c(1, 2, 5, 10, 20, 50, 100, 500)
+  ) +
+  scale_y_continuous(trans = "log1p", breaks = c(1, 5, 50, 500)) +
+  labs(
+    x = "Prior 12 months in-store sales ($)",
+    y = "Prior 12 months online sales ($)",
+    title = "Customers as of June 2014"
+  )
+```
+:::
+::::
 
-##
+## {.smaller .center}
 
+:::: {.columns}
+::: {.column width="70%"}
+$$
+r_{xy} = \frac{\sum_{i=1}^n (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_{i=1}^n (x_i - \bar{x})^2}\sqrt{\sum_{i=1}^n (y_i - \bar{y})^2}}
+$$ {#eq-pearson-cor-coef}
+
+- $n$ is the sample size
+- we must have paired numeric data $\{ (x_1, y_1), ..., (x_n, y_n) \}$
+- $\bar{x} = \sum_{i=1}^n x_i$
+- $\bar{y} = \sum_{i=1}^n y_i$
+:::
+::: {.column width="30%"}
 -   **Correlation Coefficients**
 
     -   Pearson correlation coefficient for a sample
+    -   @eq-pearson-cor-coef is a "nasty" formula but we can brake it down in smaller chunks
+:::
+::::
 
-$$r_{xy} = \frac{\sum_{i=1}^n (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_{i=1}^n (x_i - \bar{x})^2}\sqrt{\sum_{i=1}^n (y_i - \bar{y})^2}}$$ 
+## {.smaller .center}
 
-Where $n$ is the sample size, we must have paired numeric data $\{ (x_1, y_1), ..., (x_n, y_n) \}$, $\bar{x} = \sum_{i=1}^n x_i$ and $\bar{y} = \sum_{i=1}^n y_i$
+:::: {.columns}
 
--   This is a "nasty" formula but we can brake it down in smaller chunks
-
-##
-
--   **Correlation Coefficients**
-
-    -   Pearson correlation coefficient for a sample
-
+::: {.column width="70%"}
 ```{r}
 age_mean <- mean(customer$age)
 age_credit.score <- mean(customer$credit.score)
@@ -367,21 +476,44 @@ denominator <- sqrt(sum((customer$age - age_mean)^2)) *
 pearson_corr <- numerator / denominator
 pearson_corr
 ```
-
--   **But don't worry be happy!!!: Use `cor`**
-
+\
+\
 ```{r}
-cor(customer$age, customer$credit.score, method = 'pearson')
+#| classes: fragment
+cor(
+  customer$age,
+  customer$credit.score,
+  method = "pearson"
+)
 ```
+:::
 
-## {.smaller}
+::: {.column width="30%"}
+-   **Correlation Coefficients**
 
--   **Correlation matrices**
+    -   Pearson correlation coefficient for a sample
 
-    -   Pearson correlation coefficients for samples in a tibble
+\
+\
+\
 
+::: {.fragment}
+-   **But don't worry be happy!!!**
+
+    -   Use `cor`
+:::
+:::
+
+::::
+
+## {.smaller .center}
+
+:::: {.columns}
+::: {.column width="80%"}
 ```{r}
+#| code-line-numbers: "|5-9|"
 library(corrr) # Remember to install the package if it is not installed
+
 correlation_matrix <- customer |>
   select(where(is.numeric)) |>
   correlate(
@@ -389,122 +521,270 @@ correlation_matrix <- customer |>
     method = "pearson",
     diagonal = NA
   )
+
 correlation_matrix # Ups!!! The tibble is wide. Check out the tibble in your console
 ```
-
-## {.smaller}
-
+:::
+::: {.column width="20%"}
 -   **Correlation matrices**
 
     -   Pearson correlation coefficients for samples in a tibble
+:::
+::::
 
+## {.smaller .center}
+
+:::: {.columns}
+::: {.column width="50%"}
+-   **Correlation matrices**
+
+    -   Pearson correlation coefficients for samples in a tibble
 ```{r}
-#| fig-height: 4.5
-correlation_matrix |> autoplot(triangular = "lower")
+#| eval: false
+#| code-line-numbers: "|2|"
+correlation_matrix |>
+  autoplot(triangular = "lower")
 ```
+:::
+::: {.column width="50%"}
+\
+\
+\
+```{r}
+#| label: fig-correlation-matrix-plot
+#| fig-cap: Visualizing a correlation matrix using `corrr`
+#| echo: false
+#| lightbox: true
+correlation_matrix |>
+  autoplot(triangular = "lower")
+```
+:::
+::::
 
-## {.smaller}
+## {.smaller .center}
 
+:::: {.columns}
+::: {.column width="55%"}
 -   **Transforming variables**
 
 ```{r}
 cor(customer$store.spend, customer$distance.to.store)
 ```
-
+\
 ```{r}
-#| fig-height: 4
-customer |> ggplot() + geom_point(aes(x = distance.to.store, y = store.spend))
+#| eval: false
+customer |>
+  ggplot() +
+  geom_point(
+    aes(
+      x = distance.to.store,
+      y = store.spend
+    )
+  )
 ```
+:::
+::: {.column width="45%"}
+\
+\
+\
+\
+```{r}
+#| label: fig-distance-untransformed
+#| fig-cap: Scatterplot of store spending vs distance to store
+#| echo: false
+#| lightbox: true
+customer |>
+  ggplot() +
+  geom_point(
+    aes(
+      x = distance.to.store,
+      y = store.spend
+    )
+  )
+```
+:::
+::::
 
-## {.smaller}
+## {.smaller .center}
 
+:::: {.columns}
+::: {.column width="60%"}
 -   **Transforming variables**
 
 ```{r}
 cor(customer$store.spend, 1 / sqrt(customer$distance.to.store))
 ```
-
+\
 ```{r}
-#| fig-height: 4
+#| eval: false
+#| code-line-numbers: "|2-4|8|"
 customer |>
-  mutate(distance.to.store_trans = 1 / sqrt(distance.to.store)) |>
+  mutate(
+    distance.to.store_trans = 1 / sqrt(distance.to.store)
+  ) |>
   ggplot() +
-  geom_point(aes(x = distance.to.store_trans, y = store.spend))
+  geom_point(
+    aes(
+      x = distance.to.store_trans,
+      y = store.spend
+    )
+  )
 ```
+:::
+::: {.column width="40%"}
+\
+\
+\
+\
+```{r}
+#| label: fig-distance-transformed
+#| fig-cap: Scatterplot of store spending vs inverse square root distance
+#| echo: false
+#| lightbox: true
+customer |>
+  mutate(
+    distance.to.store_trans = 1 / sqrt(distance.to.store)
+  ) |>
+  ggplot() +
+  geom_point(
+    aes(
+      x = distance.to.store_trans,
+      y = store.spend
+    )
+  )
+```
+:::
+::::
 
-## {.smaller}
+## {.smaller .center}
 
+:::: {.columns}
+::: {.column width="55%"}
 -   **Transforming variables**
 
     -   Understanding the logic behind inverse square root distance
-
 ```{r}
-#| fig-height: 4
+#| eval: false
+#| code-line-numbers: "|2-6|"
+ggplot() +
+  geom_function(
+    fun = function(x) {
+      1 / sqrt(x)
+    }
+  ) +
+  labs(
+    x = "Distance",
+    y = "Inverse square root distance"
+  )
+```
+:::
+::: {.column width="45%"}
+\
+\
+\
+```{r}
+#| label: fig-inverse-sqrt-function
+#| fig-cap: Using `geom_function()` to visualize inverse square root distance
+#| echo: false
+#| lightbox: true
 ggplot() +
   geom_function(fun = function(x) {
     1 / sqrt(x)
   }) +
-  labs(x = "Distance", y = "Inverse square root distance")
+  labs(
+    x = "Distance",
+    y = "Inverse square root distance"
+  )
 ```
+:::
+::::
 
-## {.smaller}
+## {.smaller .center}
 
--   **Visualizing categorical variables**
-
-    -   **Scatterplots: the base R way**
-
-```{r}
-plot(
-  as.integer(customer$sat.service),
-  as.integer(customer$sat.selection),
-  xlab = "Customer Satisfaction with Service",
-  ylab = "Customer Satisfaction with Selection",
-  main = "Customer as of June 2014"
-)
-```
-
-##  {.smaller}
-
--   **Visualizing categorical variables**
-
-    -   **Scatterplots: the base R way**
-
-```{r}
-plot(
-  jitter(as.integer(customer$sat.service)),
-  jitter(as.integer(customer$sat.selection)),
-  xlab = "Customer Satisfaction with Service",
-  ylab = "Customer Satisfaction with Selection",
-  main = "Customer as of June 2014"
-)
-```
-
-## {.smaller}
-
+:::: {.columns}
+::: {.column width="55%"}
 -   **Visualizing categorical variables**
 
     -   **Scatterplots: the tidyverse way**
-
 ```{r}
-#| fig-height: 3.5
+#| eval: false
+#| code-line-numbers: "|3-8|"
 customer |>
   ggplot() +
-  geom_point(aes(x = sat.service, y = sat.selection)) +
+  geom_point(
+    aes(
+      x = sat.service,
+      y = sat.selection
+    )
+  ) +
   labs(
     x = "Customer Satisfaction with Service",
     y = "Customer Satisfaction with Selection",
     title = "Customer as of June 2014"
   )
 ```
+:::
+::: {.column width="45%"}
+\
+\
+\
+```{r}
+#| label: fig-categorical-overplotting
+#| fig-cap: Using `geom_point()` with categorical variables (overplotting)
+#| echo: false
+#| lightbox: true
+customer |>
+  ggplot() +
+  geom_point(
+    aes(
+      x = sat.service,
+      y = sat.selection
+    )
+  ) +
+  labs(
+    x = "Customer Satisfaction with Service",
+    y = "Customer Satisfaction with Selection",
+    title = "Customer as of June 2014"
+  )
+```
+:::
+::::
 
-## {.smaller}
+## {.smaller .center}
 
+:::: {.columns}
+::: {.column width="55%"}
 -   **Visualizing categorical variables**
 
     -   **Scatterplots: the tidyverse way**
-
 ```{r}
-#| fig-height: 3.5
+#| eval: false
+#| code-line-numbers: "|5-8|"
+customer |>
+  ggplot() +
+  geom_point(
+    aes(x = sat.service, y = sat.selection),
+    position = position_jitter(
+      width = 0.2,
+      height = 0.2
+    )
+  ) +
+  labs(
+    x = "Customer Satisfaction with Service",
+    y = "Customer Satisfaction with Selection",
+    title = "Customer as of June 2014"
+  )
+```
+:::
+::: {.column width="45%"}
+\
+\
+\
+```{r}
+#| label: fig-categorical-jitter
+#| fig-cap: Using `position_jitter()` to reduce overplotting
+#| echo: false
+#| lightbox: true
 customer |>
   ggplot() +
   geom_point(
@@ -517,6 +797,8 @@ customer |>
     title = "Customer as of June 2014"
   )
 ```
+:::
+::::
 
 # Acknowledgments
 
