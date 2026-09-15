@@ -91,20 +91,31 @@ umng_palette <- c(
     -   **Travelers**: consumers who prioritize experiences and adventures
     -   **Urban Hip**: consumers interested in urban culture, artistic expression, and modern trends
 
-##
+## {.smaller .center}
 
--   **Import data**
-
+:::: {.columns}
+::: {.column width="60%"}
 ```{r}
-segmentation <- read_csv(file = "http://goo.gl/qw303p")
-segmentation |> head(n = 5)
+#| code-line-numbers: "|1-3|"
+segmentation <- read_csv(
+  file = "http://goo.gl/qw303p"
+)
+
+segmentation |>
+  head(n = 5)
 ```
+:::
+::: {.column width="40%"}
+-   **Import data**
+:::
+::::
 
-##
+## {.smaller .center}
 
--   **Transform data**
-
+:::: {.columns}
+::: {.column width="60%"}
 ```{r}
+#| code-line-numbers: "|2-8|"
 segmentation <- segmentation |>
   mutate(
     gender = factor(gender, ordered = FALSE),
@@ -114,11 +125,27 @@ segmentation <- segmentation |>
     Segment = factor(Segment, ordered = FALSE)
   )
 
-segmentation |> head(n = 5)
+segmentation |>
+  head(n = 5)
 ```
+:::
+::: {.column width="40%"}
+-   **Transform data**
+:::
+::::
 
-## {.smaller}
+## {.smaller .center}
 
+:::: {.columns}
+::: {.column width="40%"}
+```{r}
+#| eval: false
+?`+` # Arithmetic Operators
+
+?formula # operators in a formula
+```
+:::
+::: {.column width="60%"}
 -   **Basic Formula Syntax**
 
     -   $\sim$ and $+$: operators
@@ -131,59 +158,65 @@ segmentation |> head(n = 5)
 
         -   $+$ is used to indicate the addition of predictor variables to the right of the formula
         -   Be careful not to confuse the arithmetic operator $+$ with $+$ within a formula
+:::
+::::
 
+## {.smaller .center}
+
+:::: {.columns}
+::: {.column width="50%"}
 ```{r}
-#| eval: false
-?`+` # Arithmetic Operators
-?formula # operators in a formula
-```
-
-##
-
--   **Descriptives for n-Way Groups: the base R way**
-
-    -   Split data into $n$ subsets and compute summary statistics
-
-```{r}
-aggregate(x = income ~ Segment + ownHome, data = segmentation, FUN = mean)
-```
-
-##
-
--   **Descriptives for n-Way Groups: the base R way**
-
-    -   Split data into $n$ subsets and compute summary statistics
-
-```{r}
-aggregate(x = kids ~ Segment + ownHome, data = segmentation, FUN = sum)
-```
-
-##
-
--   **Descriptives for n-Way Groups: the tidyverse way**
-
-    -   Split data into $n$ subsets and compute summary statistics
-
-```{r}
+#| code-line-numbers: "|2-3|"
 segmentation |>
   group_by(Segment, ownHome) |>
   summarise(mean_income = mean(income))
 ```
+:::
+::: {.column width="50%"}
+-   **Descriptives for n-Way Groups**
 
-##
+    - the tidyverse way
 
--   **Descriptives for n-Way Groups: the tidyverse way**
+      - Split data into $n$ subsets
+      - Compute summary statistics
+:::
+::::
 
-    -   Split data into $n$ subsets and compute summary statistics
+## {.smaller .center}
 
+:::: {.columns}
+::: {.column width="50%"}
 ```{r}
+#| code-line-numbers: "|2-3|"
 segmentation |>
   group_by(Segment, ownHome) |>
   summarise(sum_kids = sum(kids))
 ```
+:::
+::: {.column width="50%"}
+-   **Descriptives for n-Way Groups**
 
-## {.smaller}
+    - the tidyverse way
+    
+      - Split data into $n$ subsets
+      - Compute summary statistics
+:::
+::::
 
+## {.smaller .center}
+
+:::: {.columns}
+::: {.column width="50%"}
+```{r}
+#| eval: false
+?`|` # Logical Operators
+
+?lattice::xyplot # operators in a formula
+# -------------- # you need first to install
+# -------------- # the package lattice
+```
+:::
+::: {.column width="50%"}
 -   **Basic Formula Syntax**
 
     -   $\sim$, $+$ and $|$: operators
@@ -198,27 +231,15 @@ segmentation |>
 
         -   $|$ is used to separate the grouping variable from the explanatory variable
         -   Be careful not to confuse the logical operator $|$ with $|$ within a formula
+:::
+::::
 
+## {.smaller .center}
+
+:::: {.columns}
+::: {.column width="60%"}
 ```{r}
-#| eval: false
-?`|` # Logical Operators
-?lattice::xyplot # operators in a formula (you need first to install the package lattice)
-```
-
-## {.smaller}
-
--   **Visualization by group as frequencies: the lattice way**
-
-```{r}
-library(lattice)
-histogram(~ subscribe | Segment + ownHome, data = segmentation)
-```
-
-## {.smaller}
-
--   **Visualization by group as frequencies: the tidyverse way**
-
-```{r}
+#| code-line-numbers: "|3-7|"
 # Prepare data
 subscriber_by_segment_home_ownership <- segmentation |>
   count(subscribe, Segment, ownHome) |>
@@ -229,128 +250,213 @@ subscriber_by_segment_home_ownership <- segmentation |>
 
 subscriber_by_segment_home_ownership
 ```
+:::
+::: {.column width="40%"}
+-   **Visualization by group as frequencies**
 
-## {.smaller}
+    - the tidyverse way
+:::
+::::
 
--   **Visualization by group as frequencies: the tidyverse way**
+## {.smaller .center}
 
+:::: {.columns}
+::: {.column width="55%"}
+-   **Visualization by group as frequencies**
+
+    -   the tidyverse way
 ```{r}
-#| fig-height: 4
+#| eval: false
+#| code-line-numbers: "|4-8|"
 subscriber_by_segment_home_ownership |>
   ggplot() +
   geom_col(aes(x = subscribe, y = n_pct)) +
-  facet_wrap(facets = vars(Segment, ownHome), nrow = 2, ncol = 4)
+  facet_wrap(
+    facets = vars(Segment, ownHome),
+    nrow = 2,
+    ncol = 4
+  )
 ```
-
-## {.smaller}
-
--   **Visualization by group as proportions: the lattice way**
-
+:::
+::: {.column width="45%"}
+\
+\
+\
 ```{r}
-# Prepare data
-prop_table <- table(segmentation$subscribe, segmentation$Segment) |>
-  prop.table(margin = 2) |>
-  _[2, ] # You can use _ as a placeholder. Check ?pipeOp
+#| label: fig-subscriber-by-segment-home-ownership
+#| fig-cap: Visualization by group as frequencies using `facet_wrap()`
+#| echo: false
+#| lightbox: true
+subscriber_by_segment_home_ownership |>
+  ggplot() +
+  geom_col(aes(x = subscribe, y = n_pct)) +
+  facet_wrap(
+    facets = vars(Segment, ownHome),
+    nrow = 2,
+    ncol = 4
+  )
 ```
+:::
+::::
 
+## {.smaller .center}
+
+:::: {.columns}
+::: {.column width="55%"}
+-   **Visualization by group as proportions**
+
+    -   the tidyverse way
 ```{r}
-#| fig-height: 4
-barchart(
-  prop_table,
-  xlab = 'Subscriber proportion by Segment',
-  col = 'darkolivegreen'
-)
-```
-
-## {.smaller}
-
--   **Visualization by group as proportions: the tidyverse way**
-
-```{r}
+#| eval: false
+#| code-line-numbers: "|3-6|"
 # Prepare data
 prop_table <- segmentation |>
   count(subscribe, Segment) |>
   group_by(Segment) |>
   mutate(n_pct = n / sum(n)) |>
-  filter(subscribe == 'subYes')
+  filter(subscribe == "subYes")
 ```
-
+\
 ```{r}
-#| fig-height: 3
+#| eval: false
+#| code-line-numbers: "|3-6|"
 prop_table |>
   ggplot() +
-  geom_col(aes(x = n_pct, y = Segment), fill = 'darkolivegreen') +
-  labs(x = 'Subscriber proportion by Segment', y = NULL)
+  geom_col(
+    aes(x = n_pct, y = Segment),
+    fill = "darkolivegreen"
+  ) +
+  labs(
+    x = "Subscriber proportion by Segment",
+    y = NULL
+  )
 ```
-
-## {.smaller}
-
--   **Visualization by group with continuous data: the lattice way**
-
+:::
+::: {.column width="45%"}
+\
+\
+\
+\
+\
+\
+\
+\
 ```{r}
-# Prepare data
-seg_income_agg <- aggregate(
-  income ~ Segment + ownHome,
-  data = segmentation,
-  FUN = mean
-)
+#| label: fig-subscriber-prop-by-segment
+#| fig-cap: Visualization of subscriber proportions by segment
+#| echo: false
+#| lightbox: true
+prop_table <- segmentation |>
+  count(subscribe, Segment) |>
+  group_by(Segment) |>
+  mutate(n_pct = n / sum(n)) |>
+  filter(subscribe == "subYes")
+
+prop_table |>
+  ggplot() +
+  geom_col(
+    aes(x = n_pct, y = Segment),
+    fill = "darkolivegreen"
+  ) +
+  labs(x = "Subscriber proportion by Segment", y = NULL)
 ```
+:::
+::::
 
+## {.smaller .center}
+
+:::: {.columns}
+::: {.column width="55%"}
+-   **Visualization by group with continuous data**
+
+    -   the tidyverse way
 ```{r}
-barchart(
-  income ~ Segment,
-  data = seg_income_agg,
-  groups = ownHome,
-  auto.key = TRUE, # Add groups
-  par.settings = simpleTheme(col = terrain.colors(n = 2))
-) # Change default colors
-```
-
-## {.smaller}
-
--   **Visualization by group with continuous data: the tidyverse way**
-
-```{r}
+#| eval: false
+#| code-line-numbers: "|3-5|"
 # Prepare data
 seg_income_agg <- segmentation |>
   group_by(Segment, ownHome) |>
   summarise(mean_income = mean(income)) |>
   ungroup()
 ```
-
+\
 ```{r}
-#| fig-height: 3.5
+#| eval: false
+#| code-line-numbers: "|3-7|8|"
 seg_income_agg |>
   ggplot() +
   geom_col(
     aes(x = Segment, y = mean_income, fill = ownHome),
     position = position_dodge(),
-    color = 'black'
+    color = "black"
   ) +
   scale_fill_manual(values = terrain.colors(n = 2))
 ```
-
-## {.smaller}
-
--   **Visualization by group with continuous data: the lattice way**
-
+:::
+::: {.column width="45%"}
+\
+\
+\
+\
+\
+\
+\
 ```{r}
-#| fig-height: 4.5
-bwplot(Segment ~ income | ownHome, data = segmentation, xlab = 'Income')
+#| label: fig-mean-income-by-segment-home-ownership
+#| fig-cap: Mean income by segment and home ownership
+#| echo: false
+#| lightbox: true
+seg_income_agg <- segmentation |>
+  group_by(Segment, ownHome) |>
+  summarise(mean_income = mean(income)) |>
+  ungroup()
+
+seg_income_agg |>
+  ggplot() +
+  geom_col(
+    aes(x = Segment, y = mean_income, fill = ownHome),
+    position = position_dodge(),
+    color = "black"
+  ) +
+  scale_fill_manual(values = terrain.colors(n = 2))
 ```
+:::
+::::
 
-## {.smaller}
+## {.smaller .center}
 
--   **Visualization by group with continuous data: the tidyverse way**
+:::: {.columns}
+::: {.column width="55%"}
+-   **Visualization by group with continuous data**
 
+    -   the tidyverse way
 ```{r}
-#| fig-height: 4
+#| eval: false
+#| code-line-numbers: "|3-4|"
 segmentation |>
   ggplot() +
   geom_boxplot(aes(x = income, y = Segment)) +
   facet_wrap(facets = vars(ownHome)) +
-  labs(x = 'Income', y = NULL)
+  labs(x = "Income", y = NULL)
 ```
+:::
+::: {.column width="45%"}
+\
+\
+\
+```{r}
+#| label: fig-income-by-segment-boxplot
+#| fig-cap: Income distribution by segment faceted by home ownership
+#| echo: false
+#| lightbox: true
+segmentation |>
+  ggplot() +
+  geom_boxplot(aes(x = income, y = Segment)) +
+  facet_wrap(facets = vars(ownHome)) +
+  labs(x = "Income", y = NULL)
+```
+:::
+::::
 
 # Acknowledgments
 
