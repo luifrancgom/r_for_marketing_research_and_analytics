@@ -77,30 +77,52 @@ umng_palette <- c(
 
 # Consumer segmentation survey
 
-##
+## {.smaller .center}
 
+:::: {.columns}
+::: {.column width="60%"}
+```{r}
+#| code-line-numbers: "|1-3|"
+segmentation <- read_csv(
+  file = "http://goo.gl/qw303p"
+)
+
+segmentation |>
+  head(n = 5)
+```
+:::
+::: {.column width="40%"}
 -   **Import data**
+:::
+::::
 
+## {.smaller .center}
+
+:::: {.columns}
+::: {.column width="50%"}
 ```{r}
-segmentation <- read_csv(file = "http://goo.gl/qw303p")
-segmentation |> head(n = 5)
+#| code-line-numbers: "|2|"
+segmentation |>
+  count(Segment)
 ```
-
-## {.smaller}
-
--   Chi-squared test
-
+\
 ```{r}
-segmentation |> count(Segment)
-```
-
-```{r}
+#| code-line-numbers: "|3-7|"
 segmentation |>
   count(subscribe, ownHome) |>
-  pivot_wider(id_cols = subscribe, names_from = ownHome, values_from = n)
+  pivot_wider(
+    id_cols = subscribe,
+    names_from = ownHome,
+    values_from = n
+  )
 ```
+:::
+::: {.column width="50%"}
+-   Chi-squared test
+:::
+::::
 
-## {.smaller}
+## {.smaller .center}
 
 -   Chi-squared test for given probabilities
 
@@ -108,29 +130,65 @@ $H_0: p_1 = \frac{1}{4} \land p_2 = \frac{1}{4} \land p_3 = \frac{1}{4} \land p_
 
 $H_1: p_1 \neq \frac{1}{4} \lor p_2 \neq \frac{1}{4} \lor p_3 = \frac{1}{4} \lor p_4 \neq \frac{1}{4}$
 
-$\begin{align}
+\
+
+::: {.fragment}
+$$
+\begin{align}
   \chi^2 & = \sum_{i=1}^n \frac{(Observed_i - Expected_i)^2}{Expected_i} \\ 
   & = \frac{(70 - 300\frac{1}{4})^2}{300\frac{1}{4}} + \frac{(100 - 300\frac{1}{4})^2}{300\frac{1}{4}} +
                               \frac{(80 - 300\frac{1}{4})^2}{300\frac{1}{4}} + 
                               \frac{(50 - 300\frac{1}{4})^2}{300\frac{1}{4}}
-  \end{align}$
+  \end{align}
+$$
+:::
 
-##
+## {.smaller .center}
 
--   **Base R way**
-
+:::: {.columns}
+::: {.column width="70%"}
+-   Chi-squared test for given probabilities
 ```{r}
 chi_statistic <- table(segmentation$Segment) |>
-  chisq.test(p = c(1 / 4, 1 / 4, 1 / 4, 1 / 4))
+  chisq.test(
+    p = c(1 / 4, 1 / 4, 1 / 4, 1 / 4)
+  )
+
 chi_statistic
 ```
+\
+```{r}
+library(tidymodels)
+segmentation |>
+  chisq_test(
+    response = Segment,
+    p = c(1 / 4, 1 / 4, 1 / 4, 1 / 4)
+  )
+```
+:::
+::: {.column width="30%"}
+\
 
-##
+-   **Base R way**
+\
+\
+\
+\
+\
+\
+\
+\
+-   **tidymodels way**
+:::
+::::
 
--   Chi-squared test for given probabilities
+## {.center}
 
 ```{r}
+#| label: fig-chi-2-test-given-propabilities
+#| fig-cap: Chi-squared test for given probabilities 
 #| echo: false
+#| lightbox: true
 ggplot() +
   geom_function(
     fun = dchisq,
@@ -172,8 +230,8 @@ ggplot() +
     title = 'Chi-squared distribution function',
     subtitle = str_glue(
       'k=3
-                           Critical value: {qchisq(p = 0.05, df = 3, lower.tail = FALSE) |> round(digits=2)}
-                           Chi-squared statistic: {chi_statistic$statistic |> round(digits=2)}'
+      Critical value: {qchisq(p = 0.05, df = 3, lower.tail = FALSE) |> round(digits=2)}
+      Chi-squared statistic: {chi_statistic$statistic |> round(digits=2)}'
     )
   ) +
   theme(
@@ -188,30 +246,7 @@ ggplot() +
   )
 ```
 
-## {.smaller}
-
--   Chi-squared test for given probabilities
-
-$H_0: p_1 = \frac{1}{4} \land p_2 = \frac{1}{4} \land p_3 = \frac{1}{4} \land p_4 = \frac{1}{4}$
-
-$H_1: p_1 \neq \frac{1}{4} \lor p_2 \neq \frac{1}{4} \lor p_3 = \frac{1}{4} \lor p_4 \neq \frac{1}{4}$
-
-$\begin{align}
- \chi^2 & = \sum_{i=1}^n \frac{(Observed_i - Expected_i)^2}{Expected_i} \\
- & = \frac{(70 - 300\frac{1}{4})^2}{300\frac{1}{4}} + \frac{(100 - 300\frac{1}{4})^2}{300\frac{1}{4}} + \frac{(80 - 300\frac{1}{4})^2}{300\frac{1}{4}} + \frac{(50 - 300\frac{1}{4})^2}{300\frac{1}{4}}
- \end{align}$
-
-##
-
--   **tidymodels way**
-
-```{r}
-library(tidymodels)
-segmentation |>
-  chisq_test(response = Segment, p = c(1 / 4, 1 / 4, 1 / 4, 1 / 4))
-```
-
-## {.smaller}
+## {.smaller .center}
 
 -   Pearson's Chi-squared test
 
@@ -219,30 +254,68 @@ $H_0: p_{11} = \frac{260}{300}\frac{159}{300} \land p_{12} = \frac{260}{300}\fra
 
 $H_1: p_{11} \neq \frac{260}{300}\frac{159}{300} \lor p_{12} \neq \frac{260}{300}\frac{141}{300} \lor p_{21} \neq \frac{40}{300}\frac{159}{300} \lor p_{22} \neq \frac{40}{300}\frac{141}{300}$
 
-$\begin{align}
+\
+
+::: {.fragment}
+$$
+\begin{align}
   \chi^2 & = \sum_{i=1}^n \frac{(Observed_i - Expected_i)^2}{Expected_i} \\
   & = \frac{(137 - 300\frac{260}{300}\frac{159}{300})^2}{300\frac{260}{300}\frac{159}{300}} + \frac{(123 - 300\frac{260}{300}\frac{141}{300})^2}{300\frac{260}{300}\frac{141}{300}} \\
-  & \: \: \: + \frac{(22 - 300\frac{40}{300}\frac{159}{300})^2}{300\frac{40}{300}\frac{159}{300}} + \frac{(18 - 300\frac{40}{300}\frac{141}{300})^2}{300\frac{40}{300}\frac{141}{300}}
- \end{align}$
+  & \: \: \: \: \: + \frac{(22 - 300\frac{40}{300}\frac{159}{300})^2}{300\frac{40}{300}\frac{159}{300}} + \frac{(18 - 300\frac{40}{300}\frac{141}{300})^2}{300\frac{40}{300}\frac{141}{300}}
+ \end{align}
+$$
+:::
 
-##
+## {.smaller .center}
 
--   **Base R way**
-
+:::: {.columns}
+::: {.column width="60%"}
+-   Pearson's Chi-squared test
 ```{r}
 chi_statistic <- chisq.test(
-  table(segmentation$subscribe, segmentation$ownHome),
+  table(
+    segmentation$subscribe,
+    segmentation$ownHome
+  ),
   correct = FALSE
 )
+
 chi_statistic
 ```
+\
+```{r}
+segmentation |>
+  chisq_test(
+    formula = subscribe ~ ownHome,
+    correct = FALSE
+  )
+```
+:::
+::: {.column width="40%"}
+\
+\
 
-##
+-   **Base R way**
+\
+\
+\
+\
+\
+\
+\
+\
+\
+-   **tidymodels way**
+:::
+::::
 
--   Pearson's Chi-squared test
+## {.center}
 
 ```{r}
+#| label: fig-chi-2-test-pearson
+#| fig-cap: Pearson's Chi-squared test 
 #| echo: false
+#| lightbox: true
 ggplot() +
   geom_function(
     fun = dchisq,
@@ -283,8 +356,8 @@ ggplot() +
     title = 'Chi-squared distribution function',
     subtitle = str_glue(
       'k=1
-                           Critical value: {qchisq(p = 0.05, df = 1, lower.tail = FALSE) |> round(digits=2)}
-                           Chi-squared statistic: {chi_statistic$statistic |> round(digits=2)}'
+      Critical value: {qchisq(p = 0.05, df = 1, lower.tail = FALSE) |> round(digits=2)}
+      Chi-squared statistic: {chi_statistic$statistic |> round(digits=2)}'
     )
   ) +
   theme(
@@ -299,78 +372,153 @@ ggplot() +
   )
 ```
 
-## {.smaller}
+## {.smaller .center}
 
--   Pearson's Chi-squared test
-
-$H_0: p_{11} = \frac{260}{300}\frac{159}{300} \land p_{12} = \frac{260}{300}\frac{141}{300} \land p_{21} = \frac{40}{300}\frac{159}{300} \land p_{22} = \frac{40}{300}\frac{141}{300}$
-
-$H_1: p_{11} \neq \frac{260}{300}\frac{159}{300} \lor p_{12} \neq \frac{260}{300}\frac{141}{300} \lor p_{21} \neq \frac{40}{300}\frac{159}{300} \lor p_{22} \neq \frac{40}{300}\frac{141}{300}$
-
-$\begin{align}
-  \chi^2 & = \sum_{i=1}^n \frac{(Observed_i - Expected_i)^2}{Expected_i} \\
-  & = \frac{(137 - 300\frac{260}{300}\frac{159}{300})^2}{300\frac{260}{300}\frac{159}{300}} + \frac{(123 - 300\frac{260}{300}\frac{141}{300})^2}{300\frac{260}{300}\frac{141}{300}} \\
-  & \: \: \: + \frac{(22 - 300\frac{40}{300}\frac{159}{300})^2}{300\frac{40}{300}\frac{159}{300}} + \frac{(18 - 300\frac{40}{300}\frac{141}{300})^2}{300\frac{40}{300}\frac{141}{300}}
- \end{align}$
-
-##
-
--   **tidymodels way**
-
-```{r}
-segmentation |>
-  chisq_test(formula = subscribe ~ ownHome, correct = FALSE)
-```
-
-## {.smaller}
-
+:::: {.columns}
+::: {.column width="50%"}
 -   2 sample t-test: independent samples
 
 ```{r}
-#| fig-height: 4
+#| eval: false
 segmentation |>
   ggplot() +
-  geom_histogram(aes(x = income), color = 'black') +
+  geom_histogram(
+    aes(x = income),
+    color = 'black'
+  ) +
   facet_wrap(facets = vars(ownHome))
 ```
-
-##
-
--   2 sample t-test: independent samples
-
+\
+\
+\
+\
 ```{r}
+#| eval: false
 segmentation |>
   group_by(ownHome) |>
-  summarise(mean_income = mean(income), var_income = var(income), n = n())
+  summarise(
+    mean_income = mean(income),
+    var_income = var(income),
+    n = n()
+  )
 ```
+:::
+::: {.column width="50%"}
+\
+```{r}
+#| label: fig-2-sample-test-comparing-means
+#| fig-cap: Visualizing distributions to compare means in 2 samples
+#| echo: false
+#| lightbox: true
+segmentation |>
+  ggplot() +
+  geom_histogram(
+    aes(x = income),
+    color = 'black'
+  ) +
+  facet_wrap(facets = vars(ownHome))
+```
+```{r}
+#| echo: false
+segmentation |>
+  group_by(ownHome) |>
+  summarise(
+    mean_income = mean(income),
+    var_income = var(income),
+    n = n()
+  )
+```
+:::
+::::
 
-## {.smaller}
+## {.center .smaller}
 
 -   2 sample t-test: independent samples
 
-$H_0: \mu_{ownNo} - \mu_{ownYes}= 0$ $H_1: \mu_{ownNo} - \mu_{ownYes} \neq 0$
+$H_0: \mu_{ownNo} - \mu_{ownYes}= 0$ 
 
-$t = \frac{\overline{ownNo} - \overline{ownYes}}{\sqrt{\frac{s_{ownNo}^2}{n_{ownNo}} - \frac{s_{ownYes}^2}{n_{ownYes}}}} = \frac{47391.01 - 54934.68}{\sqrt{ \frac{358692875}{159} - \frac{430890091}{141}}} \approx -3.273094$
+$H_1: \mu_{ownNo} - \mu_{ownYes} \neq 0$
 
--   **R base way**
+\
 
+::: {.fragment}
+$$
+\begin{aligned}
+t  & = \frac{\overline{ownNo} - \overline{ownYes}}{\sqrt{\frac{s_{ownNo}^2}{n_{ownNo}} - \frac{s_{ownYes}^2}{n_{ownYes}}}} \\
+& = \frac{47391.01 - 54934.68}{\sqrt{ \frac{358692875}{159} - \frac{430890091}{141}}} \\ 
+& \approx -3.273094
+\end{aligned}
+$$
+:::
+
+## {.smaller .center}
+
+::::: {.columns}
+
+:::: {.column style="width: 70%; font-size: 85%;"}
+-   2 sample t-test: independent samples
 ```{r}
-t_test <- t.test(
-  income ~ ownHome,
+#| code-line-numbers: "|3|"
+t.test(
+  formula = income ~ ownHome,
   data = segmentation,
   alternative = 'two.sided',
   mu = 0,
   conf.level = 0.95
 )
-t_test
 ```
+```{r}
+#| code-line-numbers: "|1|5|"
+#| classes: fragment
+segmentation |>
+  t_test(
+    formula = income ~ ownHome,
+    alternative = "two-sided",
+    order = c("ownNo", "ownYes"),
+    mu = 0,
+    conf_level = 0.95
+  )
+```
+::::
 
-##
+:::: {.column width="30%"}
+\
 
--   2 sample t-test: independent samples
+-   **R base way**
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+
+::: {.fragment}
+-   **tidymodels way**
+:::
+
+::::
+
+:::::
+
+## {.center}
 
 ```{r}
+#| label: fig-2-sample-t-test-independent-samples
+#| fig-cap: "2 sample t-test: independent samples" 
 #| echo: false
+#| lightbox: true
+t_test <- t.test(
+  formula = income ~ ownHome,
+  data = segmentation,
+  alternative = 'two.sided',
+  mu = 0,
+  conf.level = 0.95
+)
+
 ggplot() +
   geom_function(
     fun = dt,
@@ -445,10 +593,10 @@ ggplot() +
     title = "Student's t-distribution distribution function",
     subtitle = str_glue(
       'Degrees of freedom= {t_test$parameter |> round(digits=2)},
-                           Critical values: ({qt(p = 0.025, df = t_test$parameter, ncp = 0, 
-                                                lower.tail = TRUE) |> round(digits=2)},{qt(p = 0.025, df = t_test$parameter, ncp = 0, 
-                                                lower.tail = FALSE) |> round(digits=2)})
-                           T statistic: {unname(t_test$statistic) |> round(digits=2)}'
+      Critical values: ({qt(p = 0.025, df = t_test$parameter, ncp = 0,
+                         lower.tail = TRUE) |> round(digits=2)},{qt(p = 0.025, df = t_test$parameter, ncp = 0,
+                         lower.tail = FALSE) |> round(digits=2)})
+                         T statistic: {unname(t_test$statistic) |> round(digits=2)}'
     )
   ) +
   theme(
@@ -463,87 +611,103 @@ ggplot() +
   )
 ```
 
-## {.smaller}
+## {.smaller .center}
 
 -   2 sample t-test: independent samples
 
-    -   Confidence interval:
+    -   Confidence interval
 
-$$c_L < \mu_{ownNo} - \mu_{ownYes} < c_U$$
+        $$
+        c_L < \mu_{ownNo} - \mu_{ownYes} < c_U
+        $$
 
--   $\mu_{ownNo} - \mu_{ownYes}$ is not a random variable so we need to use a random variable
+        -   $\mu_{ownNo} - \mu_{ownYes}$ is not a random variable, so we need to use a random variable
 
-$$P \Biggr( t_L < \frac{\overline{x}_{ownNo} - \overline{x}_{ownYes} - (\mu_{ownNo} - \mu_{ownYes})}{\sqrt{\frac{s^2_{ownNo}}{n_{ownNo} } +\frac{s^2_{ownYes}}{n_{ownYes}}}} < t_U \Biggr) = 0.95$$
+        $$
+        P \left( t_L < \frac{(\overline{x}_{ownNo} - \overline{x}_{ownYes}) - (\mu_{ownNo} - \mu_{ownYes})}{\sqrt{\frac{s^2_{ownNo}}{n_{ownNo} } +\frac{s^2_{ownYes}}{n_{ownYes}}}} < t_U \right) = 0.95
+        $$
 
--   $\overline{x}_{ownNo} - \overline{x}_{ownYes}$ is a random variable
+        -   $\overline{x}_{ownNo} - \overline{x}_{ownYes}$ is a random variable
 
-## {.smaller}
+## {.smaller .center}
 
 -   2 sample t-test: independent samples
 
-    -   Confidence interval:
+    -   Confidence interval
 
-        -   $\frac{\overline{x}_{ownNo} - \overline{x}_{ownYes} - (\mu_{ownNo} - \mu_{ownYes})}{\sqrt{\frac{s^2_{ownNo}}{n_{ownNo} } +\frac{s^2_{ownYes}}{n_{ownYes}}}}$ is also a random variable with student's t-distribution and $\nu \approx \frac{(\frac{s_{ownNo}^2}{n_{ownNo}} + \frac{s_2^2}{n_{ownYes}})^2}{\frac{(\frac{s_{ownNo}^2}{n_{ownNo}})^2}{n_{ownNo}-1} + \frac{(\frac{s_2^2}{n_{ownYes}})^2}{n_{ownYes}-1}} = 285.2521$ degrees of freedom
+        -   $\frac{(\overline{x}_{ownNo} - \overline{x}_{ownYes}) - (\mu_{ownNo} - \mu_{ownYes})}{\sqrt{\frac{s^2_{ownNo}}{n_{ownNo} } +\frac{s^2_{ownYes}}{n_{ownYes}}}}$ is also a random variable with student's t-distribution and $\nu \approx \frac{\left(\frac{s_{ownNo}^2}{n_{ownNo}} + \frac{s_2^2}{n_{ownYes}}\right)^2}{\frac{\left(\frac{s_{ownNo}^2}{n_{ownNo}}\right)^2}{n_{ownNo}-1} + \frac{\left(\frac{s_2^2}{n_{ownYes}}\right)^2}{n_{ownYes}-1}} = 285.2521$ degrees of freedom
 
         -   Also we need to specify $t_L$ and $t_U$
 
-```{r}
-t_L <- qt(p = 0.025, df = 285.25, lower.tail = TRUE)
-t_L
-t_U <- qt(p = 0.975, df = 285.25, lower.tail = TRUE)
-t_U
-```
+            ```{r}
+            t_L <- qt(p = 0.025, df = 285.25, lower.tail = TRUE)
+            t_L
+            t_U <- qt(p = 0.975, df = 285.25, lower.tail = TRUE)
+            t_U
+            ```
 
-## {.smaller}
-
--   2 sample t-test: independent samples
-
-    -   Confidence interval:
-
-$$P(-7543.674 - 1.968315\times2304.753 \\ < \mu_{ownNo} - \mu_{ownYes} < -7543.674 - 1.968315\times2304.753) = 0.95$$ 
-$$P(-12080.16 < \mu_{ownNo} - \mu_{ownYes} < -3007.193) = 0.95$$
-
--   In the long run 95% of confidence intervals constructed in this manner will contain the true parameter
-
-## {.smaller}
+## {.smaller .center}
 
 -   2 sample t-test: independent samples
 
-$H_0: \mu_{ownNo} - \mu_{ownYes}= 0$ 
+    -   Confidence interval
 
-$H_1: \mu_{ownNo} - \mu_{ownYes} \neq 0$
+        ::: {style="font-size: 75%;"}
 
-$t = \frac{\overline{ownNo} - \overline{ownYes}}{\sqrt{\frac{s_{ownNo}^2}{n_{ownNo}} - \frac{s_{ownYes}^2}{n_{ownYes}}}} = \frac{47391.01 - 54934.68}{\sqrt{ \frac{358692875}{159} - \frac{430890091}{141}}} \approx -3.273094$
+        $$
+        \begin{alignedat}{2}
+        & P \left( (\overline{x}_{ownNo} - \overline{x}_{ownYes}) - t_U \times \sqrt{\frac{s^2_{ownNo}}{n_{ownNo} } + \frac{s^2_{ownYes}}{n_{ownYes}}} \right. \\
+        & \left. \quad \quad < \mu_{ownNo} - \mu_{ownYes} < (\overline{x}_{ownNo} - \overline{x}_{ownYes}) - t_L \times \sqrt{\frac{s^2_{ownNo}}{n_{ownNo} } + \frac{s^2_{ownYes}}{n_{ownYes}}} \right) &&= 0.95 \\[1.5ex]
+        & P \left( -7543.674 - 1.968315 \times 2304.753 \right. \\
+        & \left. \quad \quad < \mu_{ownNo} - \mu_{ownYes} < -7543.674 + 1.968315 \times 2304.753 \right) &&= 0.95 \\[1.5ex]
+        & P \left( -12080.16 < \mu_{ownNo} - \mu_{ownYes} < -3007.193 \right) &&= 0.95
+        \end{alignedat}
+        $$
 
--   **tidymodels way**
+        :::
 
+        -   In the long run 95% of confidence intervals constructed in this manner will contain the true parameter
+
+## {.smaller .center}
+
+:::: {.columns}
+::: {.column width="50%"}
+-   Testing Multiple Group Means
+
+    - Analysis of Variance (ANOVA)
 ```{r}
+#| code-line-numbers: "|3-5|"
+#| classes: fragment
 segmentation |>
-  t_test(
-    formula = income ~ ownHome,
-    alternative = "two-sided",
-    order = c("ownNo", "ownYes"),
-    mu = 0,
-    conf_level = 0.95
+  summarise(
+    mean = mean(income),
+    variance = var(income),
+    n = n()
   )
 ```
-
-## {.smaller}
-
--   Testing Multiple Group Means: Analysis of Variance (ANOVA)
-
 ```{r}
+#| code-line-numbers: "|2|4-6|"
+#| classes: fragment
 segmentation |>
   group_by(Segment) |>
-  summarise(mean = mean(income), variance = var(income), n = n())
+  summarise(
+    mean = mean(income),
+    variance = var(income),
+    n = n()
+  )
 ```
-
-##
-
--   Testing Multiple Group Means: Analysis of Variance (ANOVA)
-
+:::
+::: {.column width="50%"}
+\
+\
+\
+\
+\
 ```{r}
+#| label: fig-visualization-anova
+#| fig-cap: "Visualizing Analysis of Variance (ANOVA)" 
 #| echo: false
+#| lightbox: true
 segmentation |>
   ggplot(aes(x = Segment, y = income)) +
   geom_point(position = position_jitter(width = 0.1)) +
@@ -557,6 +721,8 @@ segmentation |>
     color = 'black'
   )
 ```
+:::
+::::
 
 ## {.smaller}
 
@@ -566,60 +732,97 @@ $H_0: \mu_{Moving\;up} = \mu_{Suburb\;mix} = \mu_{Travelers} = \mu_{Urban\;hip}$
 
 $H_1: \text{At least one group mean is different from the rest}$
 
+\
+
+::: {.fragment}
 $n = \sum_{j=1}^4 n_j = n_1 + \cdots + n_4 = 70 + 100 + 80 + 50 = 300$
 
-$\overline{income} = \frac{1}{n} \sum_{j=1}^4 \sum_{i=1}^{n_j} income_{ij}$
+$\overline{income} = \frac{1}{n} \sum_{j=1}^4 \sum_{i=1}^{n_j} income_{ij} = 50936.54$
 
 $\overline{income}_j = \frac{1}{n_j} \sum_{i=1}^{n_j} income_{ij}$
+:::
 
-$F = \frac{\frac{\sum_{j=1}^4 \sum_{i=1}^{n_j} (\overline{income}_j - \overline{income})^2}{4-1}}{\frac{\sum_{j=1}^4 \sum_{i=1}^{n_j} (income_{ij} - \overline{income}_j)^2}{300 - 4}} = \frac{\frac{54969675428}{3}}{\frac{66281072794}{296}} = \frac{18323225143}{223922543} = 81.82841$
+\
 
-##
+::: {.fragment}
+$$
+F = \frac{\frac{\sum_{j=1}^4 \sum_{i=1}^{n_j} (\overline{income}_j - \overline{income})^2}{4-1}}{\frac{\sum_{j=1}^4 \sum_{i=1}^{n_j} (income_{ij} - \overline{income}_j)^2}{300 - 4}} = \frac{\frac{54969675428}{3}}{\frac{66281072794}{296}} = \frac{18323225143}{223922543} = 81.82841
+$$
+:::
 
--   Testing Multiple Group Means: Analysis of Variance (ANOVA)
+## {.smaller .center}
 
-    -   **R base way**
-
+:::: {.columns}
+::: {.column width="60%"}
 ```{r}
-anova_table <- aov(data = segmentation, formula = income ~ Segment) |>
-  anova()
+#| code-line-numbers: "|1-4|5|6|"
+anova_table <- aov(
+  data = segmentation,
+  formula = income ~ Segment
+) |>
+  anova() |>
+  tidy()
+
 anova_table
 ```
+:::
+::: {.column width="40%"}
+-   Testing Multiple Group Means
 
-##
+    -  Analysis of Variance (ANOVA)
 
--   Testing Multiple Group Means: Analysis of Variance (ANOVA)
+       -   **tidymodels way**
+:::
+::::
+
+## {.center}
 
 ```{r}
+#| label: fig-anova
+#| fig-cap: "Testing Multiple Group Means: Analysis of Variance (ANOVA)" 
 #| echo: false
+#| lightbox: true
+anova_table <- aov(
+  data = segmentation,
+  formula = income ~ Segment
+) |>
+  anova()
+
+n <- nrow(segmentation)
+k <- segmentation |>
+  count(Segment) |>
+  nrow()
+df1 <- k - 1
+df2 <- n - k
+
 ggplot() +
   geom_function(
     fun = df,
-    args = list(df1 = 3, df2 = 294, log = FALSE),
+    args = list(df1 = df1, df2 = df2, log = FALSE),
     xlim = c(0, 90),
     color = '#2C3E50'
   ) +
   geom_ribbon(
     data = tibble(
       x = seq.int(
-        from = qf(p = 0.05, df1 = 3, df2 = 294, lower.tail = FALSE),
+        from = qf(p = 0.05, df1 = df1, df2 = df2, lower.tail = FALSE),
         to = 90,
         by = 0.01
       ),
-      y = df(x = x, df1 = 3, df2 = 294)
+      y = df(x = x, df1 = df1, df2 = df2)
     ),
     aes(x = x, ymin = 0, ymax = y),
     fill = '#E31A1C',
     alpha = 0.1
   ) +
   geom_vline(
-    xintercept = qf(p = 0.05, df1 = 3, df2 = 294, lower.tail = FALSE),
+    xintercept = qf(p = 0.05, df1 = df1, df2 = df2, lower.tail = FALSE),
     color = "#E31A1C"
   ) +
   geom_vline(xintercept = unname(anova_table$`F value`)[1], color = "#18BC9C") +
   scale_x_continuous(
     breaks = c(
-      qf(p = 0.05, df1 = 3, df2 = 294, lower.tail = FALSE),
+      qf(p = 0.05, df1 = df1, df2 = df2, lower.tail = FALSE),
       unname(anova_table$`F value`)[1],
       90
     ),
@@ -631,10 +834,10 @@ ggplot() +
     color = NULL,
     title = 'F-squared distribution function',
     subtitle = str_glue(
-      'df1=3,
-                           df2=294,
-                           Critical value: {qf(p = 0.05, df1 = 3, df2=294, lower.tail = FALSE) |> round(digits=2)}
-                           F statistic: {unname(anova_table$`F value`)[1] |> round(digits=2)}'
+      'df1={df1},
+      df2={df2},
+      Critical value: {qf(p = 0.05, df1 = df1, df2=df2, lower.tail = FALSE) |> round(digits=2)}
+      F statistic: {unname(anova_table$`F value`)[1] |> round(digits=2)}'
     )
   ) +
   theme(
@@ -649,69 +852,124 @@ ggplot() +
   )
 ```
 
-##
+## {.smaller .center}
 
--   Testing Multiple Group Means: Analysis of Variance (ANOVA)
-
-    -   **tidymodels way**
-
-```{r}
-anova_table <- aov(data = segmentation, formula = income ~ Segment) |>
-  anova() |>
-  tidy()
-anova_table
-```
-
-## {.smaller}
-
--   Testing Multiple Group Means: Analysis of Variance (ANOVA)
-
+:::: {.columns}
+::: {.column width="50%"}
+-   Testing Multiple Group Means
+    
+    -  Analysis of Variance (ANOVA)
 ```{r}
 segmentation |>
   distinct(Segment) |>
   arrange(Segment) |>
   rowid_to_column(var = 'i')
 ```
-
 ```{r}
 segmentation |>
   distinct(ownHome) |>
   rowid_to_column(var = 'j')
 ```
+:::
+::: {.column width="50%"}
+\
+\
 
-##
+-  By `Segment`
 
--   Testing Multiple Group Means: Analysis of Variance (ANOVA)
+\
+\
+\
+\
+\
 
+-  By `ownHome` 
+:::
+::::
+
+## {.smaller .center}
+
+:::: {.columns}
+::: {.column width="50%"}
+-   Testing Multiple Group Means
+    
+    -  Analysis of Variance (ANOVA)
 ```{r}
 segmentation |>
-  count(Segment, ownHome, name = "n_ij")
+  count(
+    Segment,
+    ownHome,
+    name = "n_ij"
+  )
 ```
+:::
+::: {.column width="50%"}
+\
+\
 
-## {.smaller}
+-  Number of elements in each group
 
--   Testing Multiple Group Means: Analysis of Variance (ANOVA)
+   -  $n_{11} = 47, n_{12} = 23$ 
+   -  $n_{21} = 52, n_{22} = 48$
+   -  $n_{31} = 20, n_{32} = 60$
+   -  $n_{41} = 40, n_{42} = 10$
+:::
+::::
 
+## {.smaller .center}
+
+:::: {.columns}
+::: {.column width="50%"}
+-   Testing Multiple Group Means
+    
+    -  Analysis of Variance (ANOVA)
 ```{r}
 mu_ij <- segmentation |>
   group_by(Segment, ownHome) |>
   summarise(mean = mean(income)) |>
   ungroup()
-mu_11 <- mu_ij$mean[1]
-mu_11
+mu_ij
 ```
-
 ```{r}
 segmentation |>
   select(income, Segment, ownHome) |>
-  head(n = 5)
+  head(n = 2)
 ```
+:::
+::: {.column style="width: 50%; font-size: 75%;"}
+\
+\
+\
+\
 
-##
+-  Means
 
--   Testing Multiple Group Means: Analysis of Variance (ANOVA)
+   -  $\mu_{11} = 54497.68, \mu_{12} = 50216.37$ 
+   -  $\mu_{21} = 54932.83, \mu_{22} = 55143.21$
+   -  $\mu_{31} = 63188.42, \mu_{32} = 61889.12$
+   -  $\mu_{41} = 21337.59, \mu_{42} = 23059.27$
+
+\
+\
+\
+\
+
+-  Incomes
+
+   - $income_{211} = 49482.81$
+   - $income_{221} = 35546.29$
+   - $\phantom{income_{ijk}}\:\:\: \vdots$
+:::
+::::
+
+## {.center}
 
 ```{r}
+#| label: fig-visualizing-anova-2-categories
+#| fig-cap: "Visualizing Analysis of Variance (ANOVA) for 2 variables" 
+#| echo: false
+#| lightbox: true
+
 #| echo: false
 mean_Segment <- segmentation |>
   group_by(Segment) |>
@@ -784,11 +1042,12 @@ g3 <- segmentation |>
 (g1 / g2) | g3
 ```
 
-## {.smaller}
+## {.smaller .center}
 
 -   Testing Multiple Group Means: Analysis of Variance (ANOVA)
 
-$$\begin{split}
+$$
+\begin{split}
   income_{ijk} =  & \mu + \alpha_i + \beta_j + (\alpha\beta)_{ij} + \epsilon_{ijk} \\ 
   & \text{ where } + \epsilon_i \sim \mathcal{N}(0, \sigma^2) \\ 
   & \text{ and } i = 1, 2, 3, 4 \\
@@ -798,14 +1057,16 @@ $$\begin{split}
   & \alpha_1 = \beta_1 = 0 \\
   & (\alpha\beta)_{11} = (\alpha\beta)_{12} = 0 \\ 
   & (\alpha\beta)_{21} = (\alpha\beta)_{31} = (\alpha\beta)_{41} = 0 \\  
-  \end{split}$$
+  \end{split}
+$$
 
-## {.smaller}
+## {.smaller .center}
 
 -   Testing Multiple Group Means: Analysis of Variance (ANOVA)
 
-$$\begin{split}
-  \widehat{income}_{ijk} =  & \widehat{\mu} + \widehat{\alpha}_i + \widehat{\beta}_j + (\widehat{\alpha\beta})_{ij} + \widehat{\epsilon}_{ijk} \\ 
+$$
+\begin{split}
+  \widehat{income}_{ijk} & = \widehat{\mu} + \widehat{\alpha}_i + \widehat{\beta}_j + (\widehat{\alpha\beta})_{ij} + \widehat{\epsilon}_{ijk} \\ 
   & \text{ and } i = 1, 2, 3, 4 \\
   & j = 1, 2 \\
   & k = 1, \ldots n_{ij} \\
@@ -813,35 +1074,77 @@ $$\begin{split}
   & \widehat{\alpha}_2, \widehat{\alpha}_3, \widehat{\alpha}_4 \\
   & \widehat{\beta}_2 \\ 
   & (\widehat{\alpha\beta})_{22}, (\widehat{\alpha\beta})_{32}, (\widehat{\alpha\beta})_{42}
-  \end{split}$$
+  \end{split}
+$$
 
-$$income_{ijk} - \widehat{income}_{ijk} = \widehat{\epsilon}_{ijk}$$
+$$
+income_{ijk} - \widehat{income}_{ijk} = \widehat{\epsilon}_{ijk}
+$$
 
-## {.smaller}
-
--   Testing Multiple Group Means: Analysis of Variance (ANOVA)
+## {.smaller .center}
 
 ::: columns
-::: {.column width="40%"}
+::: {.column width="56%"}
+-   Testing Multiple Group Means
+
+    -  Analysis of Variance (ANOVA)
 ```{r}
-segmentation |> 
-  select(income, Segment, ownHome) |> 
-  head(n=2) |> 
+#| eval: false
+segmentation |>
+  select(
+    income,
+    Segment,
+    ownHome
+  ) |>
+  head(n = 2)
+```
+\
+```{r}
+#| eval: false
+framed <- model_frame(
+  formula = income ~ Segment + ownHome + Segment:ownHome,
+  data = segmentation
+)
+
+model_matrix(
+  terms = framed$terms,
+  data = framed$data
+) |>
+  head(n = 2) |>
   glimpse()
 ```
 :::
 
-::: {.column width="50%"}
-```{r}
-framed <- model_frame(formula = income ~ 
-                                Segment + 
-                                ownHome + 
-                                Segment:ownHome,
-            data = segmentation)
+::: {.column width="44%"}
+\
+\
 
-model_matrix(terms = framed$terms,
-             data = framed$data) |> 
-  head(n = 2) |> 
+-  Data
+```{r}
+#| echo: false
+segmentation |>
+  select(
+    income,
+    Segment,
+    ownHome
+  ) |>
+  head(n = 2)
+```
+\
+
+-  Model matrix
+```{r}
+#| echo: false
+framed <- model_frame(
+  formula = income ~ Segment + ownHome + Segment:ownHome,
+  data = segmentation
+)
+
+model_matrix(
+  terms = framed$terms,
+  data = framed$data
+) |>
+  head(n = 2) |>
   glimpse()
 ```
 :::
@@ -853,7 +1156,8 @@ model_matrix(terms = framed$terms,
 
     -   Model
 
-        $$\begin{bmatrix}
+        $$
+        \begin{bmatrix}
           49482.81 \\
           35546.29 \\
           \vdots
@@ -866,28 +1170,56 @@ model_matrix(terms = framed$terms,
           \begin{bmatrix}
           \mu \\
           \alpha_2 \\
+          \alpha_3 \\
+          \alpha_4 \\
           \beta_2 \\
-          (\alpha\beta)_{13} \\
-          (\alpha\beta)_{14} \\
           (\alpha\beta)_{22} \\
           (\alpha\beta)_{32} \\
           (\alpha\beta)_{42} \\
-          \end{bmatrix}$$
+          \end{bmatrix}
+        $$
 
     -   Coefficients to estimate using `aov`
 
-        $$\widehat{\mu} = \widehat{\mu}_{11}, \widehat{\alpha}_2, \widehat{\alpha}_3, \widehat{\alpha}_4, \widehat{\beta}_2, (\widehat{\alpha\beta})_{22}, (\widehat{\alpha\beta})_{32}, (\widehat{\alpha\beta})_{42}$$
+        $$
+        \widehat{\mu} = \widehat{\mu}_{11}, \widehat{\alpha}_2, \widehat{\alpha}_3, \widehat{\alpha}_4, \widehat{\beta}_2, (\widehat{\alpha\beta})_{22}, (\widehat{\alpha\beta})_{32}, (\widehat{\alpha\beta})_{42}
+        $$
 
-##
+## {.smaller .center}
 
--   Testing Multiple Group Means: Analysis of Variance (ANOVA)
+:::: {.columns}
+::: {.column width="60%"}
+-   Testing Multiple Group Means
 
+    -  Analysis of Variance (ANOVA)
 ```{r}
 #| echo: true
-model_aov <- aov(formula = income ~ Segment + ownHome + Segment:ownHome,
-                 data = segmentation)
-coef(model_aov) |> enframe(name = "coef")
+model_aov <- aov(
+  formula = income ~ Segment + ownHome + Segment:ownHome,
+  data = segmentation
+)
+
+coef(model_aov) |>
+  enframe(name = "coef")
 ```
+:::
+::: {.column style="width: 40%; font-size: 75%;"}
+\
+\
+\
+
+-  Estimated coefficients
+
+   -  $\widehat{\mu} = \widehat{\mu}_{11} = 54497.682$
+   -  $\widehat{\alpha}_2 = 435.152$
+   -  $\widehat{\alpha}_3 = 8690.738$
+   -  $\widehat{\alpha}_4 = -33160.091$
+   -  $\widehat{\beta}_2 = -4281.313$ 
+   -  $(\widehat{\alpha\beta})_{22} = 4491.690$
+   -  $(\widehat{\alpha\beta})_{32} = 2982.007$ 
+   -  $(\widehat{\alpha\beta})_{42} = 6002.996$
+:::
+::::
 
 ## {.smaller}
 
@@ -916,42 +1248,30 @@ coef(model_aov) |> enframe(name = "coef")
         
         $H_1: \text{At least one difference group mean is different from the rest}$
 
-##
+## {.smaller .center}
 
--   Testing Multiple Group Means: Analysis of Variance (ANOVA)
-
+:::: {.columns}
+::: {.column width="30%"}
 ```{r}
-model_aov |> 
-  anova()
+#| code-line-numbers: '|2|'
+#| eval: false
+model_aov |>
+  anova() |>
+  tidy()
 ```
+:::
+::: {.column width="70%"}
+-   Testing Multiple Group Means
 
-## {.smaller}
-
--   Testing Multiple Group Means: Analysis of Variance (ANOVA)
-
-```{r}
-model_aov <- lm(formula = income ~ -1 + Segment,
-                 data = segmentation) |> 
-  tidy(conf.int = TRUE)
-```
-
+    -  Analysis of Variance (ANOVA)
 ```{r}
 #| echo: false
-#| fig-height: 4
-
-model_aov  |> 
-  mutate(term = as_factor(term) |> fct_rev()) |> 
-  ggplot() +
-  geom_segment(aes(x = conf.low, xend = conf.high,  
-                   y = term, yend = term)) +
-  geom_point(aes(x = estimate, y = term),
-             shape = 21, 
-             color = "black", fill = "#E31A1C") +
-  labs(x="Income",
-       y=NULL,
-       title="Average income by segment",
-       subtitle = "95% confidence interval")
+model_aov |>
+  anova() |>
+  tidy()
 ```
+:::
+::::
 
 # Acknowledgments
 
